@@ -4,11 +4,11 @@ import core.NodeKey;
 
 /**
  * Class represents Red-Black tree structure. Works only with Red-Black nodes
- * {@link RBNode}.
+ * {@link RBNode<T>}.
  * 
  * @author Banik
  */
-public class RBTree {
+public class RBTree<T extends Comparable<T>> {
 	protected static final int INDENT_STEP = 6;
 
 	private static void printHelper(RBNode n, int indent) {
@@ -22,21 +22,21 @@ public class RBTree {
 	    for (int i = 0; i < indent; i++)
 	        System.out.print(" ");
 	    if (n.getColor() == RBNode.COLOR_NODE_BLACK)
-	        System.out.println(n.getKey().getKeyValue());
+	        System.out.println(n);
 	    else
-	        System.out.println("<" + n.getKey().getKeyValue() + ">");
+	        System.out.println("<" + n + ">");
 	    if (n.getLeftChild() != null) {
 	        printHelper(n.getLeftChild(), indent + INDENT_STEP);
 	    }
 	}
 	
-	protected RBNode root = null;
+	protected RBNode<T> root = null;
 
-	private void rightRotation(RBNode topOfRotation) {
-		RBNode centerOfRotaion = topOfRotation.getLeftChild();
+	private void rightRotation(RBNode<T> topOfRotation) {
+		RBNode<T> centerOfRotaion = topOfRotation.getLeftChild();
 		centerOfRotaion.setParent(topOfRotation.getParent());
 		if (topOfRotation.getParent() != null) {
-			RBNode yParent = ((RBNode) topOfRotation.getParent());
+			RBNode<T> yParent = ((RBNode<T>) topOfRotation.getParent());
 			if (yParent != null && topOfRotation.equals(yParent.getLeftChild())) {
 				yParent.setLeftChild(centerOfRotaion);
 			} else {
@@ -52,11 +52,11 @@ public class RBTree {
 		centerOfRotaion.setRightChild(topOfRotation);
 	}
 
-	private void leftRotation(RBNode topOfRotation/* topOfRotation */) {
-		RBNode centerOfRotaion = topOfRotation.getRightChild();
+	private void leftRotation(RBNode<T> topOfRotation/* topOfRotation */) {
+		RBNode<T> centerOfRotaion = topOfRotation.getRightChild();
 		centerOfRotaion.setParent(topOfRotation.getParent());
 		if (topOfRotation.getParent() != null) {
-			RBNode yParent = ((RBNode) topOfRotation.getParent());
+			RBNode<T> yParent = ((RBNode<T>) topOfRotation.getParent());
 			if (yParent != null && topOfRotation.equals(yParent.getRightChild())) {
 				yParent.setRightChild(centerOfRotaion);
 			} else {
@@ -73,21 +73,21 @@ public class RBTree {
 		centerOfRotaion.setLeftChild(topOfRotation);
 	}
 
-	public void insert(RBNode newNode) {
-		RBNode x = root;
-		RBNode parent = null;
+	public void insert(RBNode<T> newNode) {
+		RBNode<T> x = root;
+		RBNode<T> parent = null;
 		while (x != null) {
 			parent = x;
-			if (newNode.getKey().compareTo(x.getKey()) < 0) {
-				x = (RBNode) x.getLeftChild();
+			if (newNode.compareTo(x) < 0) {
+				x = (RBNode<T>) x.getLeftChild();
 			} else {
-				x = (RBNode) x.getRightChild();
+				x = (RBNode<T>) x.getRightChild();
 			}
 		}
 		newNode.setParent(parent);
 		if (parent == null) {
 			root = newNode;
-		} else if (newNode.getKey().compareTo(parent.getKey()) < 0) {
+		} else if (newNode.compareTo(parent) < 0) {
 			parent.setLeftChild(newNode);
 		} else {
 			parent.setRightChild(newNode);
@@ -99,7 +99,7 @@ public class RBTree {
 		System.out.print("");
 	}
 
-	private void insertFixUp(RBNode z) {
+	private void insertFixUp(RBNode<T> z) {
 		//@f:off
 //		while color[p[z]] = RED
 //			    do if p[z] = left[p[p[z]]]
@@ -120,17 +120,17 @@ public class RBTree {
 //      color[root[T ]] <- BLACK
 		//@f:on
 
-		RBNode pZ = (RBNode) z.getParent();
+		RBNode<T> pZ = (RBNode<T>) z.getParent();
 		while (pZ != null && pZ.getColor() == RBNode.COLOR_NODE_RED) {
 			if (pZ.equals(root)) {
 				pZ.setColor(RBNode.COLOR_NODE_BLACK);
 			}
 
-			RBNode ppZ = (RBNode) z.getParent().getParent();
+			RBNode<T> ppZ = (RBNode<T>) z.getParent().getParent();
 			if (ppZ != null) { // added for null object checking. both branches
 								// had same condition
 				if (pZ.equals(ppZ.getLeftChild())) {
-					RBNode y = ppZ.getRightChild();
+					RBNode<T> y = ppZ.getRightChild();
 					if (y != null && y.getColor() == RBNode.COLOR_NODE_RED) {
 						pZ.setColor(RBNode.COLOR_NODE_BLACK);
 						y.setColor(RBNode.COLOR_NODE_BLACK);
@@ -140,7 +140,7 @@ public class RBTree {
 						if (z.equals(pZ.getRightChild())) {
 							z = pZ;
 							leftRotation(z);
-							pZ = (RBNode) z.getParent();
+							pZ = (RBNode<T>) z.getParent();
 						}
 						pZ.setColor(RBNode.COLOR_NODE_BLACK);
 						ppZ.setColor(RBNode.COLOR_NODE_RED);
@@ -157,7 +157,7 @@ public class RBTree {
 						if (z.equals(pZ.getLeftChild())) {
 							z = pZ;
 							rightRotation(z);
-							pZ = (RBNode) z.getParent();
+							pZ = (RBNode<T>) z.getParent();
 						}
 						pZ.setColor(RBNode.COLOR_NODE_BLACK);
 						ppZ.setColor(RBNode.COLOR_NODE_RED);
@@ -165,13 +165,13 @@ public class RBTree {
 					}
 				}
 			}
-			pZ = (RBNode) z.getParent();
+			pZ = (RBNode<T>) z.getParent();
 
 		}
 		root.setColor(RBNode.COLOR_NODE_BLACK);
 	}
 
-	public void delete(RBNode z) {
+	public void delete(RBNode<T> z) {
 		// if left[z] = nil or right[z] = nil
 		// then y ← z
 		// else y ← BST-Successor(z)
@@ -199,7 +199,7 @@ public class RBTree {
 		// Move other data from y to z }
 		// return (y)
 
-		RBNode y;
+		RBNode<T> y;
 		if (z.getLeftChild() == null || z.getRightChild() == null)
 			y = z;
 		else
@@ -210,7 +210,7 @@ public class RBTree {
 		// y is the node that is actually removing
 		// now the y node does not have two children
 
-		RBNode x;
+		RBNode<T> x;
 		boolean xIsLeftChild = false;
 		boolean xIsRightChild = false;
 		if (y.getLeftChild() != null) {
@@ -219,10 +219,10 @@ public class RBTree {
 			x = y.getRightChild();
 		}
 		// x node is the node that is moving to y's position
-		RBNode yP;
+		RBNode<T> yP;
 		// pre zachovanie ref na rodica vymazavaneho prvku
-		RBNode xP = null;
-		if ((yP = (RBNode) y.getParent()) == null)
+		RBNode<T> xP = null;
+		if ((yP = (RBNode<T>) y.getParent()) == null)
 			// if yP is null then y was root and the its child will be new root
 			root = x;
 		else {
@@ -270,7 +270,7 @@ public class RBTree {
 				z.getLeftChild().setParent(y);
 			if (z.getRightChild()!=null)
 				z.getRightChild().setParent(y);
-			RBNode zP = (RBNode) z.getParent();
+			RBNode<T> zP = (RBNode<T>) z.getParent();
 			if (z.equals(zP.getLeftChild())) {
 				zP.setLeftChild(y);
 			} else {
@@ -285,9 +285,9 @@ public class RBTree {
 
 	}
 
-	private RBNode treeSuccessor(RBNode node) {
+	private RBNode<T> treeSuccessor(RBNode<T> node) {
 
-		RBNode succ;
+		RBNode<T> succ;
 		if ((succ = node.getRightChild()) != null) {
 			// ak ma vrchol pravy podstrom tak najdeme minimum v tomto podstrome
 			while (succ.getLeftChild() != null) {
@@ -298,16 +298,16 @@ public class RBTree {
 			// (najblizsieho podla hodnoty kluca)
 			// prechadzame rodicov az do kym nejaky rodic vrcholu "node" je lavy
 			// syn
-			RBNode x = node;
-			succ = (RBNode) x.getParent();
+			RBNode<T> x = node;
+			succ = (RBNode<T>) x.getParent();
 			while (succ != null && x.equals(succ.getRightChild())) {
 				x = succ;
-				succ = (RBNode) x.getParent();
+				succ = (RBNode<T>) x.getParent();
 			}
 
 			// // for version
-			// for (succ = (RBNode) node.getParent();
-			// node.equals(succ.getRightChild()); succ = (RBNode)
+			// for (succ = (RBNode<T>) node.getParent();
+			// node.equals(succ.getRightChild()); succ = (RBNode<T>)
 			// succ.getParent()) {
 			// node = succ;
 			// }
@@ -316,7 +316,7 @@ public class RBTree {
 		return succ;
 	}
 
-	private void deleteFixUp(RBNode x, RBNode xP, boolean isLeftChild, boolean isRightChild) {
+	private void deleteFixUp(RBNode<T> x, RBNode<T> xP, boolean isLeftChild, boolean isRightChild) {
 		int xColor = RBNode.COLOR_NODE_BLACK;
 
 		//kym xP nieje null a teda do kym x nieje root (root nema parenta)
@@ -327,7 +327,7 @@ public class RBTree {
 			
 			// set which child the x is (if the x is not null)
 			if (x != null && xP != null) {
-				xP = (RBNode) x.getParent();
+				xP = (RBNode<T>) x.getParent();
 				if (x.equals(xP.getLeftChild())) {
 					isLeftChild = true;
 					isRightChild = false;
@@ -337,14 +337,14 @@ public class RBTree {
 				}
 			}
 			
-//			RBNode w = (isLeftChild ? xP.getRightChild() : (isRightChild ? xP.getLeftChild() : null));
-			RBNode w = null;
+//			RBNode<T> w = (isLeftChild ? xP.getRightChild() : (isRightChild ? xP.getLeftChild() : null));
+			RBNode<T> w = null;
 			if (isLeftChild) {
 				w = xP.getRightChild();
 				if (w != null) {
 					if (w.getColor() == RBNode.COLOR_NODE_BLACK) {
-						RBNode wLc = w.getLeftChild();
-						RBNode wRc = w.getRightChild();
+						RBNode<T> wLc = w.getLeftChild();
+						RBNode<T> wRc = w.getRightChild();
 
 						if (((wLc != null && wLc.getColor() == RBNode.COLOR_NODE_BLACK) || wLc == null) &&
 								((wRc != null && wRc.getColor() == RBNode.COLOR_NODE_BLACK) || wRc == null)) {
@@ -393,8 +393,8 @@ public class RBTree {
 				w = xP.getLeftChild();
 				if (w != null) {
 					if (w.getColor() == RBNode.COLOR_NODE_BLACK) {
-						RBNode wLc = w.getLeftChild();
-						RBNode wRc = w.getRightChild();
+						RBNode<T> wLc = w.getLeftChild();
+						RBNode<T> wRc = w.getRightChild();
 
 						if (((wLc != null && wLc.getColor() == RBNode.COLOR_NODE_BLACK) || wLc == null) &&
 								((wRc != null && wRc.getColor() == RBNode.COLOR_NODE_BLACK) || wRc == null)) {
@@ -503,11 +503,11 @@ public class RBTree {
 //		}
 	}
 
-	public RBNode find(NodeKey key) {
-		RBNode x = root;
+	public void find(T key) {
+		RBNode<T> x = root;
 
-		while (x != null && x.getKey().compareTo(key) != 0) {
-			if (key.compareTo(x.getKey()) < 0) {
+		while (x != null && x.compareTo(key) != 0) {
+			if (x.compareTo(key) > 0) {
 				x = x.getLeftChild();
 			} else {
 				x = x.getRightChild();
@@ -521,10 +521,10 @@ public class RBTree {
 		inOrderTraverse(root);
 	}
 
-	public void inOrderTraverse(RBNode root) {
+	public void inOrderTraverse(RBNode<T> root) {
 		if (root != null) {
 			inOrderTraverse(root.getLeftChild());
-			System.out.println("  " + root.getKey().getKeyValue() + " " +
+			System.out.println("  " + root + " " +
 					(root.getColor() == RBNode.COLOR_NODE_BLACK ? "Black" :
 							root.getColor() == RBNode.COLOR_NODE_RED ? "Red" : "") +
 					(root.equals(this.root) ? " (root)" : ""));
@@ -536,7 +536,7 @@ public class RBTree {
 	    printHelper(root, 0);
 	}
 
-	public RBNode getRoot(){
+	public RBNode<T> getRoot(){
 		return root;
 	}
 }

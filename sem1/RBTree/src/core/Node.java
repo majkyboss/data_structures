@@ -23,7 +23,5 @@ public interface Node {
 	
 	Node getParent();
 	
-	Object getKey();
-	
 	Object getValue();
 }

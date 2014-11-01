@@ -12,11 +12,9 @@ public class BinaryNode implements Node {
 	public static final int RIGHT_NODE = 1;
 	private Node[] nodes = new BinaryNode[2]; // 0-Left node , 1-Right node
 	private Node parent;
-	private NodeKey key;
 	private NodeValue value;
 
-	public BinaryNode(NodeKey key, NodeValue value) {
-		this.key = key;
+	public BinaryNode(NodeValue value) {
 		this.value = value;
 	}
 
@@ -52,13 +50,15 @@ public class BinaryNode implements Node {
 	public BinaryNode getRightChild() {
 		return (BinaryNode) getChild(RIGHT_NODE);
 	}
-	
-//	public void setChild(int nodeNumber, Node node) throws IndexOutOfBoundsException{
-//		if (nodeNumber > 2/*nodes.length*/) {
-//			throw new IndexOutOfBoundsException("Entered parameter is out of bounds. Binary tree node has not more than 2 children.");
-//		}
-//		nodes[nodeNumber] = node;
-//	}
+
+	// public void setChild(int nodeNumber, Node node) throws
+	// IndexOutOfBoundsException{
+	// if (nodeNumber > 2/*nodes.length*/) {
+	// throw new
+	// IndexOutOfBoundsException("Entered parameter is out of bounds. Binary tree node has not more than 2 children.");
+	// }
+	// nodes[nodeNumber] = node;
+	// }
 
 	public void setLeftChild(Node node) {
 		nodes[LEFT_NODE] = node;
@@ -74,21 +74,11 @@ public class BinaryNode implements Node {
 	}
 
 	@Override
-	public NodeKey getKey() {
-		return key;
-	}
-
-	@Override
 	public NodeValue getValue() {
 		return value;
 	}
-	
-	public void setParent(Node parent){
-		this.parent = parent;
-	}
 
-	@Override
-	public String toString() {
-		return "BinaryNode k:"+ key.getKeyValue() +" v:"+ value.getNodeValue();
+	public void setParent(Node parent) {
+		this.parent = parent;
 	}
 }

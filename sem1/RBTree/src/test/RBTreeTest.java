@@ -45,7 +45,7 @@ public class RBTreeTest {
 		assertTrue(false);
 	}
 	
-	class RBNodeItemByEan extends rb.abst.RBNode<RBNodeItemByEan> implements Comparable<RBNodeItemByEan>{
+	class RBNodeItemByEan extends rb.abst.RBNode implements Comparable<RBNodeItemByEan>{
 		private int ean; 
 		
 		public RBNodeItemByEan(NodeKey key, NodeValue value) {
