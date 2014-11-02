@@ -273,10 +273,16 @@ public class RBTree<T extends Comparable<T>> {
 			if (z.getRightChild()!=null)
 				z.getRightChild().setParent(y);
 			RBNode<T> zP = (RBNode<T>) z.getParent();
-			if (z.equals(zP.getLeftChild())) {
-				zP.setLeftChild(y);
+			//set new references for parent of z item (entered item)
+			if(zP != null){
+				if (z.equals(zP.getLeftChild())) {
+					zP.setLeftChild(y);
+				} else {
+					zP.setRightChild(y);
+				}
 			} else {
-				zP.setRightChild(y);
+				//if parent of z was null z was root, so set root to new moved item
+				root = y;
 			}
 		}
 
