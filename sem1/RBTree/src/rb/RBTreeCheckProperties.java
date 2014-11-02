@@ -3,11 +3,13 @@ package rb;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import core.NodeKey;
+public class RBTreeCheckProperties<T extends Comparable<T>> {
+	public RBTreeCheckProperties() {
+		super();
+	}
 
-public class RBTreeCheckProperties {
-
-	public static boolean checkProperties(RBNode treeRoot) {
+	public boolean checkProperties(RBTree<T> tree/*RBNode treeRoot*/) {
+		RBNode<T> treeRoot = tree.root;
 		boolean rootProp = checkRoot(treeRoot);
 		boolean redsChildren = checkRedNodesChildren(treeRoot);
 		boolean blackHeight = checkBH(treeRoot);
@@ -15,24 +17,24 @@ public class RBTreeCheckProperties {
 		return rootProp && redsChildren && blackHeight;
 	}
 
-	private static boolean checkRoot(RBNode root) {
+	private boolean checkRoot(RBNode<T> root) {
 		if (root.getColor() != RBNode.COLOR_NODE_BLACK) {
 			return false;
 		}
 		return true;
 	}
 
-	private static boolean checkRedNodesChildren(RBNode node) {
-		RBNode problemNode = null;
+	private boolean checkRedNodesChildren(RBNode<T> node) {
+		RBNode<T> problemNode = null;
 		boolean ret = true;
 		if (node != null) {
 			if (node.getColor() == RBNode.COLOR_NODE_RED) {
-				RBNode lc = node.getLeftChild();
+				RBNode<T> lc = node.getLeftChild();
 				if (lc != null && lc.getColor() != RBNode.COLOR_NODE_BLACK) {
 					ret = false;
 					problemNode = lc;
 				}
-				RBNode rc = node.getRightChild();
+				RBNode<T> rc = node.getRightChild();
 				if (rc != null && rc.getColor() != RBNode.COLOR_NODE_BLACK) {
 					ret = false;
 					problemNode = rc;
@@ -46,7 +48,7 @@ public class RBTreeCheckProperties {
 		return ret;
 	}
 
-	private static void inOrderTraverse(RBNode root) {
+	private void inOrderTraverse(RBNode<T> root) {
 		if (root != null) {
 			inOrderTraverse(root.getLeftChild());
 
@@ -54,13 +56,13 @@ public class RBTreeCheckProperties {
 		}
 	}
 
-	private static HashMap<RBNode, Integer> calcBH(RBNode node, int counter, HashMap<RBNode, Integer> bh) {
+	private HashMap<RBNode<T>, Integer> calcBH(RBNode<T> node, int counter, HashMap<RBNode<T>, Integer> bh) {
 		if (node != null) {
 			if (node.getColor() == RBNode.COLOR_NODE_BLACK) {
 				counter++;
 			}
-			RBNode left = node.getLeftChild();
-			RBNode right = node.getRightChild();
+			RBNode<T> left = node.getLeftChild();
+			RBNode<T> right = node.getRightChild();
 			if (left == null && right == null) {
 				bh.put(node, counter);
 			} else {
@@ -71,12 +73,12 @@ public class RBTreeCheckProperties {
 		return bh;
 	}
 
-	private static boolean checkBH(RBNode treeRoot) {
-		HashMap<RBNode, Integer> bhsTable = new HashMap<>();
+	private boolean checkBH(RBNode<T> treeRoot) {
+		HashMap<RBNode<T>, Integer> bhsTable = new HashMap<>();
 		bhsTable = calcBH(treeRoot, 0, bhsTable);
 
 		int bh = 0;
-		Iterator iterator = bhsTable.keySet().iterator();
+		Iterator<RBNode<T>> iterator = bhsTable.keySet().iterator();
 		bh = bhsTable.get(iterator.next());
 		for (; iterator.hasNext();) {
 			if (bhsTable.get(iterator.next()) != bh) {

@@ -1,16 +1,13 @@
 package test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import core.IntegerNodeKey;
-import core.IntegerNodeValue;
-import core.NodeKey;
-import core.NodeValue;
-import rb.RBNode;
 import rb.RBTree;
 import rb.RBTreeCheckProperties;
+import core.IntegerNodeValue;
+import core.NodeValue;
 
 public class RBTreeTest {
 
@@ -21,47 +18,41 @@ public class RBTreeTest {
 		// 10^6.5 - time: ~12s
 
 		// fail("Not yet implemented");
-		RBTree tree = new RBTree();
+		RBTree<Integer> tree = new RBTree<Integer>();
 
 		for (int i = 0; i < itemsCount; i++) {
 			// generate one item
 			int key = (int) (Math.random() * itemsCount);
-			IntegerNodeKey treeKey = new IntegerNodeKey(key);
+			//IntegerNodeKey treeKey = new IntegerNodeKey(key);
 			IntegerNodeValue treeValue = new IntegerNodeValue(key);
 			// insert generated item to RB tree
-			tree.insert(new RBNode(treeKey, treeValue));
+			tree.insert(new RBNodeItemByEan(treeValue));
 		}
 
-		boolean checked = RBTreeCheckProperties.checkProperties(tree.getRoot());
+		RBTreeCheckProperties<Integer> checker = new RBTreeCheckProperties<>();
+		boolean checked = checker.checkProperties(tree);
 
 		assertTrue(checked);
 	}
-	
+
 	@Test
 	public void testNodes() {
-		
-		
 
 		assertTrue(false);
 	}
-	
-	class RBNodeItemByEan extends rb.abst.RBNode implements Comparable<RBNodeItemByEan>{
-		private int ean; 
-		
-		public RBNodeItemByEan(NodeKey key, NodeValue value) {
-			super(key, value);
-			// TODO Auto-generated constructor stub
-		}
-		
-		public RBNodeItemByEan(int ean){
-			super(null, null);
-			this.ean = ean;
+
+	class RBNodeItemByEan extends rb.RBNode<Integer>{
+
+		public RBNodeItemByEan(NodeValue value) {
+			super(value);
 		}
 
+		private int ean;
+
 		@Override
-		public int compareTo(RBNodeItemByEan arg0) {
-			// TODO Auto-generated method stub
-			return 0;
-		}		
+		public Integer getKey() {
+			return ean;
+		}
+
 	}
 }

@@ -1,10 +1,12 @@
 package rb;
 
-import core.NodeKey;
 
 /**
  * Class represents Red-Black tree structure. Works only with Red-Black nodes
  * {@link RBNode<T>}.
+ * <br>
+ * T is key type
+ * 
  * 
  * @author Banik
  */
@@ -147,7 +149,7 @@ public class RBTree<T extends Comparable<T>> {
 						rightRotation(ppZ);
 					}
 				} else if (pZ.equals(ppZ.getRightChild())) {
-					RBNode y = ppZ.getLeftChild();
+					RBNode<T> y = ppZ.getLeftChild();
 					if (y != null && y.getColor() == RBNode.COLOR_NODE_RED) {
 						pZ.setColor(RBNode.COLOR_NODE_BLACK);
 						y.setColor(RBNode.COLOR_NODE_BLACK);
@@ -503,7 +505,7 @@ public class RBTree<T extends Comparable<T>> {
 //		}
 	}
 
-	public void find(T key) {
+	public RBNode<T> find(T key) {
 		RBNode<T> x = root;
 
 		while (x != null && x.compareTo(key) != 0) {

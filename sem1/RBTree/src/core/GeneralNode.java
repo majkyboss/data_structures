@@ -36,7 +36,6 @@ public class GeneralNode implements Node {
 		return parent;
 	}
 
-	@Override
 	public Object getKey() {
 		return key;
 	}

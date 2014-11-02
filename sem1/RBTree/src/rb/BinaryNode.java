@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import core.Node;
-import core.NodeKey;
 import core.NodeValue;
 
 public class BinaryNode implements Node {

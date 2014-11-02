@@ -1,14 +1,12 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
 
 import rb.RBNode;
 import rb.RBTree;
 import rb.RBTreeCheckProperties;
-import core.IntegerNodeKey;
 import core.IntegerNodeValue;
-import core.NodeKey;
+import core.NodeValue;
 
 public class Main {
 
@@ -18,7 +16,7 @@ public class Main {
 		app.start();
 	}
 
-	private RBTree tree = new RBTree();
+	private RBTree<Integer> tree = new RBTree<Integer>();
 	private boolean started = false;
 
 	public void start() {
@@ -51,7 +49,7 @@ public class Main {
 
 		switch (args[0]) {
 		case "create":
-			tree = new RBTree();
+			tree = new RBTree<Integer>();
 			System.out.println("created");
 			break;
 		case "add":
@@ -61,7 +59,7 @@ public class Main {
 			}
 			int key = Integer.parseInt(args[1]);
 			int value = Integer.parseInt(args[1]);
-			RBNode node = new RBNode(new IntegerNodeKey(key), new IntegerNodeValue(value));
+			RBNode<Integer> node = new IntegerNode(key, new IntegerNodeValue(value));
 			if (tree != null) {
 				tree.insert(node);
 				System.out.println("added");
@@ -74,12 +72,12 @@ public class Main {
 			}
 			key = Integer.parseInt(args[1]);
 			value = Integer.parseInt(args[1]);
-			RBNode nodeToDel = tree.find(new IntegerNodeKey(key));
+			RBNode<Integer> nodeToDel = tree.find(key);
 			tree.delete(nodeToDel);
 			System.out.println(nodeToDel.toString() + " deleted");
 			break;
 		case "reset":
-			tree = new RBTree();
+			tree = new RBTree<Integer>();
 			System.out.println("tree reset");
 			break;
 		case "print":
@@ -87,7 +85,8 @@ public class Main {
 			tree.printBetter();
 			break;
 		case "check":
-			boolean test = RBTreeCheckProperties.checkProperties(tree.getRoot());
+			RBTreeCheckProperties<Integer> checker = new RBTreeCheckProperties<>();
+			boolean test = checker.checkProperties(tree);
 			if (test)
 				System.out.println("All right!");
 			else
@@ -114,5 +113,20 @@ public class Main {
 		parse("add 100");
 		parse("add 110");
 		parse("add 120");
+	}
+	
+	public class IntegerNode extends RBNode<Integer>{
+		private int key;
+		
+		public IntegerNode(Integer key, NodeValue value) {
+			super(value);
+			this.key = key;
+		}
+
+		@Override
+		public Integer getKey() {
+			return key;
+		}
+		
 	}
 }
