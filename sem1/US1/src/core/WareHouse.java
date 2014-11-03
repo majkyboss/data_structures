@@ -1,32 +1,42 @@
 package core;
 
+import java.util.Date;
+
+import rb.RBNode;
 import rb.RBTree;
 
-public class WareHouse implements NodeKey {
+public class WareHouse{
 	private String name;
 	private int id;
 	private Address address;
-	private RBTree stored;
-	private RBTree dispatched;
+	private RBTree<String> stored;
+	private RBTree<ProductNumberKey> dispatched;
+	
+	public WareHouse() {
+		super();
+		this.name = "";
+		this.id = IdCounter.getNextId();
+		this.address = new Address();
+		this.stored = new RBTree<>();
+		this.dispatched = new RBTree<>();
+	}
 
 	public int getId() {
 		return id;
 	}
 
-	@Override
-	public int compareTo(NodeKey arg0) {
-		if (arg0 instanceof WareHouse) {
-			if (this.id < ((WareHouse) arg0).getId()) {
-				return -1;
-			} else if (this.id > ((WareHouse) arg0).getId()) {
-				return 1;
+	public void addItem(Product product){
+		//add product to exist ean group - add one lie in db
+		RBNode<String> foundNode = stored.find(product.getEan());
+		
+		//or if the ean is not in db insert it
+		stored.insert(new RBNode<String>(product) {
+			private RBTree<Date> items = new RBTree<>();
+			
+			@Override
+			public String getKey() {
+				return ((Product)value).getEan();
 			}
-		}
-		return 0;
-	}
-
-	@Override
-	public Object getKeyValue() {
-		return id;
+		});
 	}
 }

@@ -8,7 +8,7 @@ public abstract class RBNode<T extends Comparable<T>> implements NodeCompare<T>{
 	public static final int COLOR_NODE_DOUBLE_BLACK = 3;
 	private int color;
 	private RBNode<T> parent;
-	private NodeValue value;
+	protected NodeValue value;
 	private RBNode<T> leftChild;
 	private RBNode<T> rightChild;
 
@@ -41,7 +41,6 @@ public abstract class RBNode<T extends Comparable<T>> implements NodeCompare<T>{
 	}
 
 	public RBNode<T> getRightChild() {
-		// TODO Auto-generated method stub
 		return rightChild;
 	}
 	
@@ -55,13 +54,15 @@ public abstract class RBNode<T extends Comparable<T>> implements NodeCompare<T>{
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return //"RBNode" +
 				//getKey() +
 				//super.toString().substring(super.toString().indexOf(" ")) +
 				//BinaryNode k:"+ key.getKeyValue() +" v:"+ value.getNodeValue()
-				"k:"+ getKey() +" v:"+ value.getNodeValue()+
-				" c:" + (color == RBNode.COLOR_NODE_BLACK ? "B" : "R");
+				//"k:"+ 
+				getKey() +
+				//" v:"+ value.getNodeValue()+
+				//" c:" + (color == RBNode.COLOR_NODE_BLACK ? "B" : "R")
+				"";
 	}
 
 	@Override

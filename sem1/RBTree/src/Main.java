@@ -61,8 +61,11 @@ public class Main {
 			int value = Integer.parseInt(args[1]);
 			RBNode<Integer> node = new IntegerNode(key, new IntegerNodeValue(value));
 			if (tree != null) {
-				tree.insert(node);
-				System.out.println("added");
+				if(tree.insert(node)){
+					System.out.println("added " + key);
+				} else {
+					System.out.println("item with this key is already inserted");
+				}
 			}
 			break;
 		case "del":
@@ -73,8 +76,12 @@ public class Main {
 			key = Integer.parseInt(args[1]);
 			value = Integer.parseInt(args[1]);
 			RBNode<Integer> nodeToDel = tree.find(key);
-			tree.delete(nodeToDel);
-			System.out.println(nodeToDel.toString() + " deleted");
+			if (nodeToDel!=null) {
+				tree.delete(nodeToDel);
+				System.out.println(nodeToDel.toString() + " deleted");
+			} else {
+				System.out.println("node is not in the tree, key: " + key);
+			}
 			break;
 		case "reset":
 			tree = new RBTree<Integer>();
@@ -91,6 +98,9 @@ public class Main {
 				System.out.println("All right!");
 			else
 				System.out.println("Something bad with tree");
+			break;
+		case "size":
+			System.out.println("Tree size: " + tree.size());
 			break;
 		case "exit":
 			started = false;

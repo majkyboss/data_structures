@@ -1,58 +1,120 @@
 package test;
 
-import static org.junit.Assert.assertTrue;
+
+import junit.framework.Assert;
 
 import org.junit.Test;
 
+import rb.RBNode;
 import rb.RBTree;
 import rb.RBTreeCheckProperties;
 import core.IntegerNodeValue;
 import core.NodeValue;
 
 public class RBTreeTest {
+	private static int maxNum = (int) Math.pow(10, 10);
+	private RBTree<Integer> tree = new RBTree<Integer>();
+	
 
 	@Test
-	public void test() {
+	public void testAdd() {
 		int itemsCount = (int) Math.pow(10, 5);
 		// !!! 10^7 - out of memory, time: ~1600s
 		// 10^6.5 - time: ~12s
 
-		// fail("Not yet implemented");
-		RBTree<Integer> tree = new RBTree<Integer>();
+		tree = new RBTree<Integer>();
 
-		for (int i = 0; i < itemsCount; i++) {
+		int i = 0;
+		for (; i < itemsCount;) {
 			// generate one item
-			int key = (int) (Math.random() * itemsCount);
-			//IntegerNodeKey treeKey = new IntegerNodeKey(key);
+			int key = (int) (Math.random() * maxNum);
+			// IntegerNodeKey treeKey = new IntegerNodeKey(key);
 			IntegerNodeValue treeValue = new IntegerNodeValue(key);
 			// insert generated item to RB tree
-			tree.insert(new RBNodeItemByEan(treeValue));
+			boolean iserted = tree.insert(new RBNode<Integer>(treeValue) {
+
+				@Override
+				public Integer getKey() {
+					return (Integer) value.getNodeValue();
+				}
+			});
+			if (iserted) {
+				i++;
+			}
+		}
+
+		RBTreeCheckProperties<Integer> checker = new RBTreeCheckProperties<>();
+		boolean checked = checker.checkProperties(tree);
+		
+		Assert.assertTrue(checked);
+		Assert.assertEquals(i, tree.size());
+	}
+
+	@Test
+	public void testDel() {
+		this.testAdd();
+
+		int itemsCount = (int) Math.pow(10, 3);
+		// !!! 10^7 - out of memory, time: ~1600s
+		// 10^6.5 - time: ~12s
+
+		for (int i = 0; i < itemsCount;) {
+			// generate one item key
+			int key = (int) (Math.random() * maxNum);
+			// try to find the item
+			RBNode<Integer> item = tree.find(key);
+			// try to delete item
+			if (item != null) {
+				tree.delete(item);
+				i++;
+				System.out.println("deleted item with key " + item.getKey());
+				System.out.println("i is: " + i);
+				RBTreeCheckProperties<Integer> checker = new RBTreeCheckProperties<>();
+				boolean c = checker.checkProperties(tree);
+				Assert.assertTrue(c);
+				System.out.println(c);
+			}
 		}
 
 		RBTreeCheckProperties<Integer> checker = new RBTreeCheckProperties<>();
 		boolean checked = checker.checkProperties(tree);
 
-		assertTrue(checked);
+		Assert.assertTrue(checked);
 	}
 
-	@Test
-	public void testNodes() {
+	private class RBNodeItemByEan extends rb.RBNode<Integer> {
+		protected Product value;
 
-		assertTrue(false);
-	}
-
-	class RBNodeItemByEan extends rb.RBNode<Integer>{
-
-		public RBNodeItemByEan(NodeValue value) {
+		public RBNodeItemByEan(Product value) {
 			super(value);
 		}
 
-		private int ean;
-
 		@Override
 		public Integer getKey() {
+			return value.getNodeValue();
+		}
+	}
+
+	private class Product implements NodeValue {
+		private int ean;
+
+		public Product(int ean) {
+			super();
+			this.ean = ean;
+		}
+
+		@Override
+		public Integer getNodeValue() {
 			return ean;
 		}
 
+	}
+	
+	@Test
+	public void testOther(){
+		String a = "aaba";
+		String b = "aaab";
+		
+		System.out.println(a.compareTo(b));
 	}
 }

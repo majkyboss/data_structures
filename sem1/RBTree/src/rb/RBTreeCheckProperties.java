@@ -81,7 +81,8 @@ public class RBTreeCheckProperties<T extends Comparable<T>> {
 		Iterator<RBNode<T>> iterator = bhsTable.keySet().iterator();
 		bh = bhsTable.get(iterator.next());
 		for (; iterator.hasNext();) {
-			if (bhsTable.get(iterator.next()) != bh) {
+			RBNode<T> node = iterator.next();
+			if (bhsTable.get(node) != bh) {
 				return false;
 			}
 		}

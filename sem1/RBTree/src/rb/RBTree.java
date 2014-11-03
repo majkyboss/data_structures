@@ -1,12 +1,9 @@
 package rb;
 
-
 /**
  * Class represents Red-Black tree structure. Works only with Red-Black nodes
- * {@link RBNode<T>}.
- * <br>
+ * {@link RBNode<T>}. <br>
  * T is key type
- * 
  * 
  * @author Banik
  */
@@ -14,25 +11,26 @@ public class RBTree<T extends Comparable<T>> {
 	protected static final int INDENT_STEP = 6;
 
 	private static void printHelper(RBNode n, int indent) {
-	    if (n == null) {
-	        System.out.print("<empty tree>");
-	        return;
-	    }
-	    if (n.getRightChild() != null) {
-	        printHelper(n.getRightChild(), indent + INDENT_STEP);
-	    }
-	    for (int i = 0; i < indent; i++)
-	        System.out.print(" ");
-	    if (n.getColor() == RBNode.COLOR_NODE_BLACK)
-	        System.out.println(n);
-	    else
-	        System.out.println("<" + n + ">");
-	    if (n.getLeftChild() != null) {
-	        printHelper(n.getLeftChild(), indent + INDENT_STEP);
-	    }
+		if (n == null) {
+			System.out.print("<empty tree>");
+			return;
+		}
+		if (n.getRightChild() != null) {
+			printHelper(n.getRightChild(), indent + INDENT_STEP);
+		}
+		for (int i = 0; i < indent; i++)
+			System.out.print(" ");
+		if (n.getColor() == RBNode.COLOR_NODE_BLACK)
+			System.out.println(n);
+		else
+			System.out.println("<" + n + ">");
+		if (n.getLeftChild() != null) {
+			printHelper(n.getLeftChild(), indent + INDENT_STEP);
+		}
 	}
-	
+
 	protected RBNode<T> root = null;
+	//TODO repair delete - fix up cycle do not stop
 
 	private void rightRotation(RBNode<T> topOfRotation) {
 		RBNode<T> centerOfRotaion = topOfRotation.getLeftChild();
@@ -59,7 +57,8 @@ public class RBTree<T extends Comparable<T>> {
 		centerOfRotaion.setParent(topOfRotation.getParent());
 		if (topOfRotation.getParent() != null) {
 			RBNode<T> yParent = ((RBNode<T>) topOfRotation.getParent());
-			if (yParent != null && topOfRotation.equals(yParent.getRightChild())) {
+			if (yParent != null
+					&& topOfRotation.equals(yParent.getRightChild())) {
 				yParent.setRightChild(centerOfRotaion);
 			} else {
 				yParent.setLeftChild(centerOfRotaion);
@@ -75,7 +74,13 @@ public class RBTree<T extends Comparable<T>> {
 		centerOfRotaion.setLeftChild(topOfRotation);
 	}
 
-	public void insert(RBNode<T> newNode) {
+	public boolean insert(RBNode<T> newNode) {
+		// if item with same key is already inserted then do not insert the item
+		RBNode<T> foundItem = find(newNode.getKey());
+		if (foundItem != null) {
+			return false;
+		}
+
 		RBNode<T> x = root;
 		RBNode<T> parent = null;
 		while (x != null) {
@@ -98,7 +103,8 @@ public class RBTree<T extends Comparable<T>> {
 		newNode.setRightChild(null);
 		newNode.setColor(RBNode.COLOR_NODE_RED);
 		insertFixUp(newNode);
-		System.out.print("");
+		// System.out.print("");
+		return true;
 	}
 
 	private void insertFixUp(RBNode<T> z) {
@@ -121,6 +127,7 @@ public class RBTree<T extends Comparable<T>> {
 //                                     with “right” and “left” exchanged)
 //      color[root[T ]] <- BLACK
 		//@f:on
+		// @f:on
 
 		RBNode<T> pZ = (RBNode<T>) z.getParent();
 		while (pZ != null && pZ.getColor() == RBNode.COLOR_NODE_RED) {
@@ -229,7 +236,7 @@ public class RBTree<T extends Comparable<T>> {
 			root = x;
 		else {
 			// otherwise do following
-			
+
 			xP = yP;
 			if (x != null)
 				// xP is reseting if x is not null
@@ -239,13 +246,13 @@ public class RBTree<T extends Comparable<T>> {
 				// if y is left child of its parent set the x as a new left
 				// child of y's parent
 				yP.setLeftChild(x);
-				
+
 				xIsLeftChild = true;
 				xIsRightChild = false;
 			} else {
 				// otherwise set the x as a right child
 				yP.setRightChild(x);
-				
+
 				xIsLeftChild = false;
 				xIsRightChild = true;
 			}
@@ -267,21 +274,22 @@ public class RBTree<T extends Comparable<T>> {
 			y.setRightChild(z.getRightChild());
 			y.setParent(z.getParent());
 			// do not copy color
-//			y.setColor(z.getColor());
-			if (z.getLeftChild()!=null)
+			// y.setColor(z.getColor());
+			if (z.getLeftChild() != null)
 				z.getLeftChild().setParent(y);
-			if (z.getRightChild()!=null)
+			if (z.getRightChild() != null)
 				z.getRightChild().setParent(y);
 			RBNode<T> zP = (RBNode<T>) z.getParent();
-			//set new references for parent of z item (entered item)
-			if(zP != null){
+			// set new references for parent of z item (entered item)
+			if (zP != null) {
 				if (z.equals(zP.getLeftChild())) {
 					zP.setLeftChild(y);
 				} else {
 					zP.setRightChild(y);
 				}
 			} else {
-				//if parent of z was null z was root, so set root to new moved item
+				// if parent of z was null z was root, so set root to new moved
+				// item
 				root = y;
 			}
 		}
@@ -324,15 +332,17 @@ public class RBTree<T extends Comparable<T>> {
 		return succ;
 	}
 
-	private void deleteFixUp(RBNode<T> x, RBNode<T> xP, boolean isLeftChild, boolean isRightChild) {
+	private void deleteFixUp(RBNode<T> x, RBNode<T> xP, boolean isLeftChild,
+			boolean isRightChild) {
+		RBNode<T> xp_backup = xP;
 		int xColor = RBNode.COLOR_NODE_BLACK;
 
-		//kym xP nieje null a teda do kym x nieje root (root nema parenta)
+		// kym xP nieje null a teda do kym x nieje root (root nema parenta)
 		while (xP != null && xColor == RBNode.COLOR_NODE_BLACK) {
-			if (x!=null && x.equals(root)) {
+			if (x != null && x.equals(root)) {
 				break;
 			}
-			
+
 			// set which child the x is (if the x is not null)
 			if (x != null && xP != null) {
 				xP = (RBNode<T>) x.getParent();
@@ -344,8 +354,9 @@ public class RBTree<T extends Comparable<T>> {
 					isLeftChild = false;
 				}
 			}
-			
-//			RBNode<T> w = (isLeftChild ? xP.getRightChild() : (isRightChild ? xP.getLeftChild() : null));
+
+			// RBNode<T> w = (isLeftChild ? xP.getRightChild() : (isRightChild ?
+			// xP.getLeftChild() : null));
 			RBNode<T> w = null;
 			if (isLeftChild) {
 				w = xP.getRightChild();
@@ -354,8 +365,8 @@ public class RBTree<T extends Comparable<T>> {
 						RBNode<T> wLc = w.getLeftChild();
 						RBNode<T> wRc = w.getRightChild();
 
-						if (((wLc != null && wLc.getColor() == RBNode.COLOR_NODE_BLACK) || wLc == null) &&
-								((wRc != null && wRc.getColor() == RBNode.COLOR_NODE_BLACK) || wRc == null)) {
+						if (((wLc != null && wLc.getColor() == RBNode.COLOR_NODE_BLACK) || wLc == null)
+								&& ((wRc != null && wRc.getColor() == RBNode.COLOR_NODE_BLACK) || wRc == null)) {
 							// case 1
 							// if left and right child of black brother of x
 							// is BLACK
@@ -371,16 +382,19 @@ public class RBTree<T extends Comparable<T>> {
 							xColor = xP.getColor();
 							continue;
 						}
-						
-						if (wRc != null && wRc.getColor() == RBNode.COLOR_NODE_BLACK &&
-								wLc != null && wLc.getColor() == RBNode.COLOR_NODE_RED) {
+
+						if (wRc != null
+								&& wRc.getColor() == RBNode.COLOR_NODE_BLACK
+								&& wLc != null
+								&& wLc.getColor() == RBNode.COLOR_NODE_RED) {
 							// case 3 -> case 2
 							w.setColor(RBNode.COLOR_NODE_RED);
 							wLc.setColor(RBNode.COLOR_NODE_BLACK);
 							rightRotation(w);
 						}
-						
-						if (wRc != null && wRc.getColor() == RBNode.COLOR_NODE_RED) {
+
+						if (wRc != null
+								&& wRc.getColor() == RBNode.COLOR_NODE_RED) {
 							// case 2
 							wRc.setColor(RBNode.COLOR_NODE_BLACK);
 							w.setColor(xP.getColor());
@@ -390,22 +404,24 @@ public class RBTree<T extends Comparable<T>> {
 						}
 					} else if (w.getColor() == RBNode.COLOR_NODE_RED) {
 						// case 4
-						assert xP.getColor()==RBNode.COLOR_NODE_BLACK; // testovanie predpokladanych hodnot
+						assert xP.getColor() == RBNode.COLOR_NODE_BLACK; // testovanie
+																			// predpokladanych
+																			// hodnot
 						xP.setColor(RBNode.COLOR_NODE_RED);
 						leftRotation(xP);
-						
+
 					}
 
 				}
-			} else if (isRightChild){
+			} else if (isRightChild) {
 				w = xP.getLeftChild();
 				if (w != null) {
 					if (w.getColor() == RBNode.COLOR_NODE_BLACK) {
 						RBNode<T> wLc = w.getLeftChild();
 						RBNode<T> wRc = w.getRightChild();
 
-						if (((wLc != null && wLc.getColor() == RBNode.COLOR_NODE_BLACK) || wLc == null) &&
-								((wRc != null && wRc.getColor() == RBNode.COLOR_NODE_BLACK) || wRc == null)) {
+						if (((wLc != null && wLc.getColor() == RBNode.COLOR_NODE_BLACK) || wLc == null)
+								&& ((wRc != null && wRc.getColor() == RBNode.COLOR_NODE_BLACK) || wRc == null)) {
 							// case 1
 							// if left and right child of black brother of x
 							// is BLACK
@@ -421,16 +437,19 @@ public class RBTree<T extends Comparable<T>> {
 							xColor = xP.getColor();
 							continue;
 						}
-						
-						if (wLc != null && wLc.getColor() == RBNode.COLOR_NODE_BLACK &&
-								wRc != null && wRc.getColor() == RBNode.COLOR_NODE_RED) {
+
+						if (wLc != null
+								&& wLc.getColor() == RBNode.COLOR_NODE_BLACK
+								&& wRc != null
+								&& wRc.getColor() == RBNode.COLOR_NODE_RED) {
 							// case 3 -> case 2
 							w.setColor(RBNode.COLOR_NODE_RED);
 							wRc.setColor(RBNode.COLOR_NODE_BLACK);
 							leftRotation(w);
 						}
-						
-						if (wLc != null && wLc.getColor() == RBNode.COLOR_NODE_RED) {
+
+						if (wLc != null
+								&& wLc.getColor() == RBNode.COLOR_NODE_RED) {
 							// case 2
 							wLc.setColor(RBNode.COLOR_NODE_BLACK);
 							w.setColor(xP.getColor());
@@ -440,75 +459,77 @@ public class RBTree<T extends Comparable<T>> {
 						}
 					} else if (w.getColor() == RBNode.COLOR_NODE_RED) {
 						// case 4
-						assert xP.getColor()==RBNode.COLOR_NODE_BLACK; // testovanie predpokladanych hodnot
+						assert xP.getColor() == RBNode.COLOR_NODE_BLACK; // testovanie
+																			// predpokladanych
+																			// hodnot
 						xP.setColor(RBNode.COLOR_NODE_RED);
 						rightRotation(xP);
-						
+
 					}
 
 				}
 			}
 		}
-		
+
 		// we are out of while cycle if the x is root
-		
-//		System.out.println("fixed up");
-		
-		
-		
-		
-//		while (x!=null && !x.equals(root) && x.getColor() == RBNode.COLOR_NODE_BLACK) {
-//			RBNode xP = (RBNode) x.getParent();
-//			if (x.equals(xP.getLeftChild())) {
-//				RBNode w = xP.getRightChild();
-//				if (w.getColor() == RBNode.COLOR_NODE_BLACK) { // case 4
-//					xP.setColor(RBNode.COLOR_NODE_RED); // case 4
-//					leftRotation(xP); // case 4
-//					w = xP.getRightChild(); // case 4
-//				}
-//				if (w.getLeftChild().getColor() == RBNode.COLOR_NODE_BLACK && w.getRightChild().getColor() == RBNode.COLOR_NODE_BLACK) {
-//					w.setColor(RBNode.COLOR_NODE_RED); // case 1
-//					x = xP; // case 1
-//				} else {
-//					if (w.getRightChild().getColor() == RBNode.COLOR_NODE_BLACK) {
-//						w.getLeftChild().setColor(RBNode.COLOR_NODE_BLACK); // case
-//																			// 3
-//						w.setColor(RBNode.COLOR_NODE_RED); // case 3
-//						rightRotation(w); // case 3
-//						w = xP.getRightChild(); // case 3
-//					}
-//					w.setColor(xP.getColor()); // case 2
-//					xP.setColor(RBNode.COLOR_NODE_BLACK); // case 2
-//					w.getRightChild().setColor(RBNode.COLOR_NODE_BLACK); // case
-//																			// 2
-//					leftRotation(xP); // case 2
-//					x = root; // case 2
-//				}
-//			} else {
-//				RBNode w = xP.getLeftChild();
-//				if (w.getColor() == RBNode.COLOR_NODE_BLACK) {
-//					xP.setColor(RBNode.COLOR_NODE_RED);
-//					rightRotation(xP);
-//					w = xP.getLeftChild();
-//				}
-//				if (w.getLeftChild().getColor() == RBNode.COLOR_NODE_BLACK && w.getRightChild().getColor() == RBNode.COLOR_NODE_BLACK) {
-//					w.setColor(RBNode.COLOR_NODE_RED);
-//					x = xP;
-//				} else {
-//					if (w.getLeftChild().getColor() == RBNode.COLOR_NODE_BLACK) {
-//						w.getRightChild().setColor(RBNode.COLOR_NODE_BLACK);
-//						w.setColor(RBNode.COLOR_NODE_RED);
-//						leftRotation(w);
-//						w = xP.getLeftChild();
-//					}
-//					w.setColor(xP.getColor());
-//					xP.setColor(RBNode.COLOR_NODE_BLACK);
-//					w.getLeftChild().setColor(RBNode.COLOR_NODE_BLACK);
-//					rightRotation(xP);
-//					x = root;
-//				}
-//			}
-//		}
+
+		// System.out.println("fixed up");
+
+		// while (x!=null && !x.equals(root) && x.getColor() ==
+		// RBNode.COLOR_NODE_BLACK) {
+		// RBNode xP = (RBNode) x.getParent();
+		// if (x.equals(xP.getLeftChild())) {
+		// RBNode w = xP.getRightChild();
+		// if (w.getColor() == RBNode.COLOR_NODE_BLACK) { // case 4
+		// xP.setColor(RBNode.COLOR_NODE_RED); // case 4
+		// leftRotation(xP); // case 4
+		// w = xP.getRightChild(); // case 4
+		// }
+		// if (w.getLeftChild().getColor() == RBNode.COLOR_NODE_BLACK &&
+		// w.getRightChild().getColor() == RBNode.COLOR_NODE_BLACK) {
+		// w.setColor(RBNode.COLOR_NODE_RED); // case 1
+		// x = xP; // case 1
+		// } else {
+		// if (w.getRightChild().getColor() == RBNode.COLOR_NODE_BLACK) {
+		// w.getLeftChild().setColor(RBNode.COLOR_NODE_BLACK); // case
+		// // 3
+		// w.setColor(RBNode.COLOR_NODE_RED); // case 3
+		// rightRotation(w); // case 3
+		// w = xP.getRightChild(); // case 3
+		// }
+		// w.setColor(xP.getColor()); // case 2
+		// xP.setColor(RBNode.COLOR_NODE_BLACK); // case 2
+		// w.getRightChild().setColor(RBNode.COLOR_NODE_BLACK); // case
+		// // 2
+		// leftRotation(xP); // case 2
+		// x = root; // case 2
+		// }
+		// } else {
+		// RBNode w = xP.getLeftChild();
+		// if (w.getColor() == RBNode.COLOR_NODE_BLACK) {
+		// xP.setColor(RBNode.COLOR_NODE_RED);
+		// rightRotation(xP);
+		// w = xP.getLeftChild();
+		// }
+		// if (w.getLeftChild().getColor() == RBNode.COLOR_NODE_BLACK &&
+		// w.getRightChild().getColor() == RBNode.COLOR_NODE_BLACK) {
+		// w.setColor(RBNode.COLOR_NODE_RED);
+		// x = xP;
+		// } else {
+		// if (w.getLeftChild().getColor() == RBNode.COLOR_NODE_BLACK) {
+		// w.getRightChild().setColor(RBNode.COLOR_NODE_BLACK);
+		// w.setColor(RBNode.COLOR_NODE_RED);
+		// leftRotation(w);
+		// w = xP.getLeftChild();
+		// }
+		// w.setColor(xP.getColor());
+		// xP.setColor(RBNode.COLOR_NODE_BLACK);
+		// w.getLeftChild().setColor(RBNode.COLOR_NODE_BLACK);
+		// rightRotation(xP);
+		// x = root;
+		// }
+		// }
+		// }
 	}
 
 	public RBNode<T> find(T key) {
@@ -525,6 +546,20 @@ public class RBTree<T extends Comparable<T>> {
 		return x;
 	}
 
+	public int size() {
+		return size(root);
+	}
+
+	private int size(RBNode<T> node) {
+		int size = 0;
+		if (node != null) {
+			size++;
+			size += size(node.getLeftChild());
+			size += size(node.getRightChild());
+		}
+		return size;
+	}
+
 	public void print() {
 		inOrderTraverse(root);
 	}
@@ -532,19 +567,22 @@ public class RBTree<T extends Comparable<T>> {
 	public void inOrderTraverse(RBNode<T> root) {
 		if (root != null) {
 			inOrderTraverse(root.getLeftChild());
-			System.out.println("  " + root + " " +
-					(root.getColor() == RBNode.COLOR_NODE_BLACK ? "Black" :
-							root.getColor() == RBNode.COLOR_NODE_RED ? "Red" : "") +
-					(root.equals(this.root) ? " (root)" : ""));
+			System.out.println("  "
+					+ root
+					+ " "
+					+ (root.getColor() == RBNode.COLOR_NODE_BLACK ? "Black"
+							: root.getColor() == RBNode.COLOR_NODE_RED ? "Red"
+									: "")
+					+ (root.equals(this.root) ? " (root)" : ""));
 			inOrderTraverse(root.getRightChild());
 		}
 	}
 
 	public void printBetter() {
-	    printHelper(root, 0);
+		printHelper(root, 0);
 	}
 
-	public RBNode<T> getRoot(){
+	public RBNode<T> getRoot() {
 		return root;
 	}
 }
