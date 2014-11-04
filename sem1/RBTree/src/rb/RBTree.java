@@ -379,7 +379,7 @@ public class RBTree<T extends Comparable<T>> {
 							}
 							xP.setColor(RBNode.COLOR_NODE_BLACK);
 							// set color mark
-							xColor = xP.getColor();// //test commit
+							xColor = xP.getColor();
 							continue;
 						}
 
