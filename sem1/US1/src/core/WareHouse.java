@@ -5,7 +5,7 @@ import java.util.Date;
 import rb.RBNode;
 import rb.RBTree;
 
-public class WareHouse{
+public class WareHouse implements NodeValue{
 	private String name;
 	private int id;
 	private Address address;
@@ -25,7 +25,7 @@ public class WareHouse{
 		return id;
 	}
 
-	public void addItem(Product product){
+	public void addProduct(Product product){
 		//add product to exist ean group - add one lie in db
 		RBNode<String> foundNode = stored.find(product.getEan());
 		
@@ -38,5 +38,10 @@ public class WareHouse{
 				return ((Product)value).getEan();
 			}
 		});
+	}
+
+	@Override
+	public Object getNodeValue() {
+		return this;
 	}
 }
