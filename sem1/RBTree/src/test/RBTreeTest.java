@@ -38,6 +38,11 @@ public class RBTreeTest {
 				public Integer getKey() {
 					return (Integer) value.getNodeValue();
 				}
+
+				@Override
+				public void setKey(Integer key) {
+					new IntegerNodeValue(key);
+				}
 			});
 			if (iserted) {
 				i++;
@@ -72,6 +77,11 @@ public class RBTreeTest {
 				public Integer getKey() {
 					return (Integer) value.getNodeValue();
 				}
+
+				@Override
+				public void setKey(Integer key) {
+					new IntegerNodeValue(key);
+				}
 			};
 			boolean iserted = tree.insert(item);
 			if (iserted) {
@@ -92,7 +102,7 @@ public class RBTreeTest {
 	public void testDel() {
 		this.testAdd();
 
-		int itemsCount = (int) Math.pow(10, 3);
+		int itemsCount = (int) Math.pow(10, 1);
 		// !!! 10^7 - out of memory, time: ~1600s
 		// 10^6.5 - time: ~12s
 
@@ -132,6 +142,11 @@ public class RBTreeTest {
 		@Override
 		public Integer getKey() {
 			return value.getNodeValue();
+		}
+
+		@Override
+		public void setKey(Integer key) {
+			value.ean = key;
 		}
 	}
 

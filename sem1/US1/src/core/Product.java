@@ -15,8 +15,7 @@ public class Product implements NodeValue{
 
 	@Override
 	public Object getNodeValue() {
-		// TODO Auto-generated method stub
-		return null;
+		return this;
 	}
 	
 	public String getEan() {

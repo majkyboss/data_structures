@@ -8,11 +8,17 @@ public class RBTreeCheckProperties<T extends Comparable<T>> {
 		super();
 	}
 
-	public boolean checkProperties(RBTree<T> tree/*RBNode treeRoot*/) {
+	public boolean checkProperties(RBTree<T> tree/* RBNode treeRoot */) {
 		RBNode<T> treeRoot = tree.root;
 		boolean rootProp = checkRoot(treeRoot);
+		if (!rootProp)
+			System.out.println("");
 		boolean redsChildren = checkRedNodesChildren(treeRoot);
+		if (!redsChildren)
+			System.out.println("");
 		boolean blackHeight = checkBH(treeRoot);
+		if (!blackHeight)
+			System.out.println("");
 
 		return rootProp && redsChildren && blackHeight;
 	}
@@ -56,7 +62,8 @@ public class RBTreeCheckProperties<T extends Comparable<T>> {
 		}
 	}
 
-	private HashMap<RBNode<T>, Integer> calcBH(RBNode<T> node, int counter, HashMap<RBNode<T>, Integer> bh) {
+	private HashMap<RBNode<T>, Integer> calcBH(RBNode<T> node, int counter,
+			HashMap<RBNode<T>, Integer> bh) {
 		if (node != null) {
 			if (node.getColor() == RBNode.COLOR_NODE_BLACK) {
 				counter++;

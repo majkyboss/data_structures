@@ -1,8 +1,9 @@
 package rb;
 
+import core.NodeValue;
+
 /**
- * Class represents Red-Black tree structure. Works only with Red-Black nodes
- * {@link RBNode<T>}. <br>
+ * Class represents Red-Black tree structure. Works only with Red-Black nodes {@link RBNode<T>}. <br>
  * T is key type
  * 
  * @author Banik
@@ -30,8 +31,28 @@ public class RBTree<T extends Comparable<T>> {
 	}
 
 	protected RBNode<T> root = null;
-	//TODO repair delete - fix up cycle do not stop
 
+	/**
+	 * 
+	 * <pre>
+	 *       6
+	 *     4___7
+	 *   2___5
+	 * 1___3
+	 * topOfRotation - 6
+	 * centerOfRotation - 4
+	 *       4
+	 *   2_______6
+	 * 1___3   5___7
+	 * 
+	 * In literature the same operation is RR(6) but
+	 * they call it rotate around node 6
+	 * <a href="http://forrestyu.net/art/red-black-tree-tutorial/#rotation">http://forrestyu.net/art/red-black-tree-tutorial/#rotation</a>
+	 * 
+	 * <pre>
+	 * 
+	 * @param topOfRotation
+	 */
 	private void rightRotation(RBNode<T> topOfRotation) {
 		RBNode<T> centerOfRotaion = topOfRotation.getLeftChild();
 		centerOfRotaion.setParent(topOfRotation.getParent());
@@ -52,6 +73,27 @@ public class RBTree<T extends Comparable<T>> {
 		centerOfRotaion.setRightChild(topOfRotation);
 	}
 
+	/**
+	 * 
+	 * <pre>
+	 *   2
+	 * 1___4
+	 *   3___6
+	 *     5___7
+	 * topOfRotation - 2
+	 * centerOfRotation - 4
+	 *       4
+	 *   2_______6
+	 * 1___3   5___7
+	 * 
+	 * In literature the same operation is RR(6) but
+	 * they call it rotate around node 6
+	 * <a href="http://forrestyu.net/art/red-black-tree-tutorial/#rotation">http://forrestyu.net/art/red-black-tree-tutorial/#rotation</a>
+	 * 
+	 * <pre>
+	 * 
+	 * @param topOfRotation
+	 */
 	private void leftRotation(RBNode<T> topOfRotation/* topOfRotation */) {
 		RBNode<T> centerOfRotaion = topOfRotation.getRightChild();
 		centerOfRotaion.setParent(topOfRotation.getParent());
@@ -180,9 +222,91 @@ public class RBTree<T extends Comparable<T>> {
 		root.setColor(RBNode.COLOR_NODE_BLACK);
 	}
 
-	public void delete(RBNode<T> z) {
-		
+	public RBNode<T> delete(RBNode<T> z) {
+		RBNode<T> leftChild = z.getLeftChild();
+		RBNode<T> rightChild = z.getRightChild();
+		RBNode<T> zParent = z.getParent();
 
+		if (leftChild == null && rightChild == null) { // 1. if node is leaf
+			// if zParent is null then z was root node
+			if (zParent == null) {
+				root = null;
+				z.setParent(null);
+			} else {
+				boolean zWasLeft = z.equals(zParent.getLeftChild());
+
+				zParent.deleteChild(z);
+				z.setParent(null);
+				if (z.getColor() == RBNode.COLOR_NODE_BLACK) { // 1.1 if leaf was black fix up the tree
+
+					deleteFixUp(z, zParent, zWasLeft);
+				}
+			}
+			return z;
+
+		} else if (leftChild != null && rightChild != null) { // 3. if the z node has two children
+			RBNode<T> successor = treeSuccessor(z);
+
+			// replaceNode(z, successor);
+			// replace z node by successor
+			NodeValue zValue = z.getValue();
+			T zKey = z.getKey();
+			z.setValue(successor.getValue());
+			z.setKey(successor.getKey());
+			successor.setValue(zValue);
+			successor.setKey(zKey);
+
+			RBNode<T> successorRightChild = successor.getRightChild();
+
+			// set color of successor child
+			int oldSuccessorColor = successor.getColor();
+			if (successorRightChild != null) {
+				successorRightChild.setColor(successor.getColor());
+				successor.setColor(z.getColor());
+			}
+			RBNode<T> returnObject = delete(successor);
+
+			// maybe we do not need this
+			// because we changed the color of successor child to successor color
+			if (oldSuccessorColor == RBNode.COLOR_NODE_BLACK) {
+				boolean zWasLeft = (zParent == null) ? false : z.equals(zParent
+						.getLeftChild());
+
+				deleteFixUp(z, zParent, zWasLeft);
+			}
+			return returnObject;
+
+		} else {/* if (leftChild != null || rightChild != null) */// 2. if node has only one child
+			RBNode<T> child = null;
+			if (leftChild != null) { // if node has only left child
+				child = leftChild;
+				z.setLeftChild(null);
+			} else { // if node has only right child
+				child = rightChild;
+				z.setRightChild(null);
+			}
+
+			replaceNode(z, child);
+
+			child.setParent(zParent);
+			z.setParent(null);
+
+			child.setColor(z.getColor());
+
+			return z;
+		}
+	}
+
+	private void replaceNode(RBNode<T> node, RBNode<T> newNode) {
+		RBNode<T> zParent = node.getParent();
+
+		if (zParent == null) {
+			root = newNode;
+		} else if (zParent.getLeftChild().equals(node)) { // if z was left child
+			zParent.setLeftChild(newNode);
+		} else { /* if (zParent.getRightChild().equals(z)) */// if z was right child
+			zParent.setRightChild(newNode);
+		}
 	}
 
 	private RBNode<T> treeSuccessor(RBNode<T> node) {
@@ -216,204 +340,147 @@ public class RBTree<T extends Comparable<T>> {
 		return succ;
 	}
 
-	private void deleteFixUp(RBNode<T> x, RBNode<T> xP, boolean isLeftChild,
-			boolean isRightChild) {
-		RBNode<T> xp_backup = xP;
-		int xColor = RBNode.COLOR_NODE_BLACK;
+	private void deleteFixUp(RBNode<T> z, RBNode<T> zParent, boolean zWasLeft) {
+		//TODO fix the code
+		// works bad when deleting node 60R from main
+		
+		while (zParent != null) { // repeat until the checking will grow up to the root of tree
 
-		// kym xP nieje null a teda do kym x nieje root (root nema parenta)
-		while (xP != null && xColor == RBNode.COLOR_NODE_BLACK) {
-			if (x != null && x.equals(root)) {
-				break;
-			}
+			if (zWasLeft) { // if z was left child of its parent
+				RBNode<T> zBrother = zParent.getRightChild();
+				RBNode<T> broLeftChild = zBrother.getLeftChild();
+				RBNode<T> broRightChild = zBrother.getRightChild();
 
-			// set which child the x is (if the x is not null)
-			if (x != null && xP != null) {
-				xP = (RBNode<T>) x.getParent();
-				if (x.equals(xP.getLeftChild())) {
-					isLeftChild = true;
-					isRightChild = false;
-				} else if (x.equals(xP.getRightChild())) {
-					isRightChild = true;
-					isLeftChild = false;
-				}
-			}
+				if (zBrother.getColor() == RBNode.COLOR_NODE_BLACK) { // if brother of z node has black color
+					if ((broLeftChild == null || broLeftChild.getColor() == RBNode.COLOR_NODE_BLACK)
+							&& (broRightChild == null || broRightChild
+									.getColor() == RBNode.COLOR_NODE_BLACK)) { // case 1 // and if broher's children is black too
+						zBrother.setColor(RBNode.COLOR_NODE_RED);
+						int zParentOldColor = zParent.getColor();
+						zParent.setColor(RBNode.COLOR_NODE_BLACK);
 
-			// RBNode<T> w = (isLeftChild ? xP.getRightChild() : (isRightChild ?
-			// xP.getLeftChild() : null));
-			RBNode<T> w = null;
-			if (isLeftChild) {
-				w = xP.getRightChild();
-				if (w != null) {
-					if (w.getColor() == RBNode.COLOR_NODE_BLACK) {
-						RBNode<T> wLc = w.getLeftChild();
-						RBNode<T> wRc = w.getRightChild();
-
-						if (((wLc != null && wLc.getColor() == RBNode.COLOR_NODE_BLACK) || wLc == null)
-								&& ((wRc != null && wRc.getColor() == RBNode.COLOR_NODE_BLACK) || wRc == null)) {
-							// case 1
-							// if left and right child of black brother of x
-							// is BLACK
-							w.setColor(RBNode.COLOR_NODE_RED);
-							if (xP.getColor() == RBNode.COLOR_NODE_RED) {
-								x = root;
+						if (zParentOldColor == RBNode.COLOR_NODE_BLACK) { // if color of parent was already black
+							// continue to higher level of tree
+							z = zParent;
+							zParent = zParent.getParent();
+							if (z.equals(zParent.getLeftChild())) {
+								zBrother = zParent.getRightChild();
+								zWasLeft = true;
 							} else {
-								// if parent had a black color, go up
-								x = xP;
+								zBrother = zParent.getLeftChild();
+								zWasLeft = false;
 							}
-							xP.setColor(RBNode.COLOR_NODE_BLACK);
-							// set color mark
-							xColor = xP.getColor();
+							continue;
+						} else {
+							break;
+						}
+					} else { // if both brother's children are not black
+						if (broRightChild != null
+								&& broRightChild.getColor() == RBNode.COLOR_NODE_RED) { // case 2 // and if brother's right child is red
+							broRightChild.setColor(RBNode.COLOR_NODE_BLACK);
+							zBrother.setColor(zParent.getColor());
+							zParent.setColor(RBNode.COLOR_NODE_BLACK);
+							leftRotation(zParent);
+							break;
+						} else if ((broRightChild == null || broRightChild
+								.getColor() == RBNode.COLOR_NODE_BLACK)
+								&& (broLeftChild.getColor() == RBNode.COLOR_NODE_RED)) { // case 3 // and if brother's right child is black and left child is
+																							// red
+							// broRightChild may be null because null nodes of RB tree are black "nil"
+							zBrother.setColor(RBNode.COLOR_NODE_RED);
+							broLeftChild.setColor(RBNode.COLOR_NODE_BLACK);
+							rightRotation(zBrother);
+							// go to case 2
+							// TODO modify this - create consequence
+							zParent = zBrother.getParent().getParent();
 							continue;
 						}
-
-						if (wRc != null
-								&& wRc.getColor() == RBNode.COLOR_NODE_BLACK
-								&& wLc != null
-								&& wLc.getColor() == RBNode.COLOR_NODE_RED) {
-							// case 3 -> case 2
-							w.setColor(RBNode.COLOR_NODE_RED);
-							wLc.setColor(RBNode.COLOR_NODE_BLACK);
-							rightRotation(w);
-						}
-
-						if (wRc != null
-								&& wRc.getColor() == RBNode.COLOR_NODE_RED) {
-							// case 2
-							wRc.setColor(RBNode.COLOR_NODE_BLACK);
-							w.setColor(xP.getColor());
-							xP.setColor(RBNode.COLOR_NODE_BLACK);
-							leftRotation(xP);
-							x = root;
-						}
-					} else if (w.getColor() == RBNode.COLOR_NODE_RED) {
-						// case 4
-						assert xP.getColor() == RBNode.COLOR_NODE_BLACK; // testovanie
-																			// predpokladanych
-																			// hodnot
-						xP.setColor(RBNode.COLOR_NODE_RED);
-						leftRotation(xP);
-
 					}
-
+				} else if (zBrother.getColor() == RBNode.COLOR_NODE_RED) { // case 4 // if brother of z node is red
+					boolean shouldBeTrue = zParent.getColor() == RBNode.COLOR_NODE_BLACK;
+					zParent.setColor(RBNode.COLOR_NODE_RED);
+					leftRotation(zParent);
+					// continue to higher level of tree
+					z = zParent;
+					zParent = zParent.getParent();
+					if (z.equals(zParent.getLeftChild())) {
+						zBrother = zParent.getRightChild();
+						zWasLeft = true;
+					} else {
+						zBrother = zParent.getLeftChild();
+						zWasLeft = false;
+					}
+					continue;
 				}
-			} else if (isRightChild) {
-				w = xP.getLeftChild();
-				if (w != null) {
-					if (w.getColor() == RBNode.COLOR_NODE_BLACK) {
-						RBNode<T> wLc = w.getLeftChild();
-						RBNode<T> wRc = w.getRightChild();
 
-						if (((wLc != null && wLc.getColor() == RBNode.COLOR_NODE_BLACK) || wLc == null)
-								&& ((wRc != null && wRc.getColor() == RBNode.COLOR_NODE_BLACK) || wRc == null)) {
-							// case 1
-							// if left and right child of black brother of x
-							// is BLACK
-							w.setColor(RBNode.COLOR_NODE_RED);
-							if (xP.getColor() == RBNode.COLOR_NODE_RED) {
-								x = root;
+			} else if (!zWasLeft) {
+				RBNode<T> zBrother = zParent.getLeftChild();
+				RBNode<T> broLeftChild = zBrother.getLeftChild();
+				RBNode<T> broRightChild = zBrother.getRightChild();
+
+				if (zBrother.getColor() == RBNode.COLOR_NODE_BLACK) { // if brother of z node has black color
+					if ((broLeftChild == null || broLeftChild.getColor() == RBNode.COLOR_NODE_BLACK)
+							&& (broRightChild == null || broRightChild
+									.getColor() == RBNode.COLOR_NODE_BLACK)) { // case 1 // and if broher's children is black too
+						zBrother.setColor(RBNode.COLOR_NODE_RED);
+						int zParentOldColor = zParent.getColor();
+						zParent.setColor(RBNode.COLOR_NODE_BLACK);
+
+						if (zParentOldColor == RBNode.COLOR_NODE_BLACK) { // if color of parent was already black
+							// continue to higher level of tree
+							z = zParent;
+							zParent = zParent.getParent();
+							if (z.equals(zParent.getLeftChild())) {
+								zBrother = zParent.getRightChild();
+								zWasLeft = true;
 							} else {
-								// if parent had a black color, go up
-								x = xP;
+								zBrother = zParent.getLeftChild();
+								zWasLeft = false;
 							}
-							xP.setColor(RBNode.COLOR_NODE_BLACK);
-							// set color mark
-							xColor = xP.getColor();
+							continue;
+						} else {
+							break;
+						}
+					} else { // if both brother's children are not black
+						if (broLeftChild != null
+								&& broLeftChild.getColor() == RBNode.COLOR_NODE_RED) { // case 2 // and if brother's left child is red
+							broLeftChild.setColor(RBNode.COLOR_NODE_BLACK);
+							zBrother.setColor(zParent.getColor());
+							zParent.setColor(RBNode.COLOR_NODE_BLACK);
+							rightRotation(zParent);
+							break;
+						} else if ((broLeftChild == null || broLeftChild
+								.getColor() == RBNode.COLOR_NODE_BLACK)
+								&& broRightChild.getColor() == RBNode.COLOR_NODE_RED) { // case 3 // and if brother's left child is black and right child is red
+							// broRightChild may be null because null nodes of RB tree are black "nil"
+							zBrother.setColor(RBNode.COLOR_NODE_RED);
+							broRightChild.setColor(RBNode.COLOR_NODE_BLACK);
+							leftRotation(zBrother);
+							// go to case 2
+							// modify this - create consequence
+							zParent = zBrother.getParent().getParent();
 							continue;
 						}
-
-						if (wLc != null
-								&& wLc.getColor() == RBNode.COLOR_NODE_BLACK
-								&& wRc != null
-								&& wRc.getColor() == RBNode.COLOR_NODE_RED) {
-							// case 3 -> case 2
-							w.setColor(RBNode.COLOR_NODE_RED);
-							wRc.setColor(RBNode.COLOR_NODE_BLACK);
-							leftRotation(w);
-						}
-
-						if (wLc != null
-								&& wLc.getColor() == RBNode.COLOR_NODE_RED) {
-							// case 2
-							wLc.setColor(RBNode.COLOR_NODE_BLACK);
-							w.setColor(xP.getColor());
-							xP.setColor(RBNode.COLOR_NODE_BLACK);
-							rightRotation(xP);
-							x = root;
-						}
-					} else if (w.getColor() == RBNode.COLOR_NODE_RED) {
-						// case 4
-						assert xP.getColor() == RBNode.COLOR_NODE_BLACK; // testovanie
-																			// predpokladanych
-																			// hodnot
-						xP.setColor(RBNode.COLOR_NODE_RED);
-						rightRotation(xP);
-
 					}
-
+				} else if (zBrother.getColor() == RBNode.COLOR_NODE_RED) { // case 4 // if brother of z node is red
+					boolean shouldBeTrue = zParent.getColor() == RBNode.COLOR_NODE_BLACK;
+					zParent.setColor(RBNode.COLOR_NODE_RED);
+					rightRotation(zParent);
+					// continue to higher level of tree
+					z = zParent;
+					zParent = zParent.getParent();
+					if (z.equals(zParent.getLeftChild())) {
+						zBrother = zParent.getRightChild();
+						zWasLeft = true;
+					} else {
+						zBrother = zParent.getLeftChild();
+						zWasLeft = false;
+					}
+					continue;
 				}
 			}
 		}
 
-		// we are out of while cycle if the x is root
-
-		// System.out.println("fixed up");
-
-		// while (x!=null && !x.equals(root) && x.getColor() ==
-		// RBNode.COLOR_NODE_BLACK) {
-		// RBNode xP = (RBNode) x.getParent();
-		// if (x.equals(xP.getLeftChild())) {
-		// RBNode w = xP.getRightChild();
-		// if (w.getColor() == RBNode.COLOR_NODE_BLACK) { // case 4
-		// xP.setColor(RBNode.COLOR_NODE_RED); // case 4
-		// leftRotation(xP); // case 4
-		// w = xP.getRightChild(); // case 4
-		// }
-		// if (w.getLeftChild().getColor() == RBNode.COLOR_NODE_BLACK &&
-		// w.getRightChild().getColor() == RBNode.COLOR_NODE_BLACK) {
-		// w.setColor(RBNode.COLOR_NODE_RED); // case 1
-		// x = xP; // case 1
-		// } else {
-		// if (w.getRightChild().getColor() == RBNode.COLOR_NODE_BLACK) {
-		// w.getLeftChild().setColor(RBNode.COLOR_NODE_BLACK); // case
-		// // 3
-		// w.setColor(RBNode.COLOR_NODE_RED); // case 3
-		// rightRotation(w); // case 3
-		// w = xP.getRightChild(); // case 3
-		// }
-		// w.setColor(xP.getColor()); // case 2
-		// xP.setColor(RBNode.COLOR_NODE_BLACK); // case 2
-		// w.getRightChild().setColor(RBNode.COLOR_NODE_BLACK); // case
-		// // 2
-		// leftRotation(xP); // case 2
-		// x = root; // case 2
-		// }
-		// } else {
-		// RBNode w = xP.getLeftChild();
-		// if (w.getColor() == RBNode.COLOR_NODE_BLACK) {
-		// xP.setColor(RBNode.COLOR_NODE_RED);
-		// rightRotation(xP);
-		// w = xP.getLeftChild();
-		// }
-		// if (w.getLeftChild().getColor() == RBNode.COLOR_NODE_BLACK &&
-		// w.getRightChild().getColor() == RBNode.COLOR_NODE_BLACK) {
-		// w.setColor(RBNode.COLOR_NODE_RED);
-		// x = xP;
-		// } else {
-		// if (w.getLeftChild().getColor() == RBNode.COLOR_NODE_BLACK) {
-		// w.getRightChild().setColor(RBNode.COLOR_NODE_BLACK);
-		// w.setColor(RBNode.COLOR_NODE_RED);
-		// leftRotation(w);
-		// w = xP.getLeftChild();
-		// }
-		// w.setColor(xP.getColor());
-		// xP.setColor(RBNode.COLOR_NODE_BLACK);
-		// w.getLeftChild().setColor(RBNode.COLOR_NODE_BLACK);
-		// rightRotation(xP);
-		// x = root;
-		// }
-		// }
-		// }
 	}
 
 	public RBNode<T> find(T key) {

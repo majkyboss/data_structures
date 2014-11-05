@@ -77,8 +77,8 @@ public class Main {
 			value = Integer.parseInt(args[1]);
 			RBNode<Integer> nodeToDel = tree.find(key);
 			if (nodeToDel!=null) {
-				tree.delete(nodeToDel);
-				System.out.println(nodeToDel.toString() + " deleted");
+				RBNode<Integer> deletedNode = tree.delete(nodeToDel);
+				System.out.println(deletedNode.toString() + " deleted");
 			} else {
 				System.out.println("node is not in the tree, key: " + key);
 			}
@@ -136,6 +136,11 @@ public class Main {
 		@Override
 		public Integer getKey() {
 			return key;
+		}
+
+		@Override
+		public void setKey(Integer key) {
+			this.key = key;
 		}
 		
 	}
