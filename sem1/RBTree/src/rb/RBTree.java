@@ -286,7 +286,13 @@ public class RBTree<T extends Comparable<T>> {
 				z.setRightChild(null);
 			}
 
-			replaceNode(z, child);
+			if (zParent == null) {
+				root = child;
+			} else if (zParent.getLeftChild().equals(z)) { // if z was left child
+				zParent.setLeftChild(child);
+			} else { /* if (zParent.getRightChild().equals(z)) */// if z was right child
+				zParent.setRightChild(child);
+			}
 
 			child.setParent(zParent);
 			z.setParent(null);
@@ -294,18 +300,6 @@ public class RBTree<T extends Comparable<T>> {
 			child.setColor(z.getColor());
 
 			return z;
-		}
-	}
-
-	private void replaceNode(RBNode<T> node, RBNode<T> newNode) {
-		RBNode<T> zParent = node.getParent();
-
-		if (zParent == null) {
-			root = newNode;
-		} else if (zParent.getLeftChild().equals(node)) { // if z was left child
-			zParent.setLeftChild(newNode);
-		} else { /* if (zParent.getRightChild().equals(z)) */// if z was right child
-			zParent.setRightChild(newNode);
 		}
 	}
 
@@ -424,7 +418,7 @@ public class RBTree<T extends Comparable<T>> {
 									.getColor() == RBNode.COLOR_NODE_BLACK)) { // case 1 // and if broher's children is black too
 						zBrother.setColor(RBNode.COLOR_NODE_RED);
 						int zParentOldColor = zParent.getColor();
-						zParent.setColor(RBNode.COLOR_NODE_BLACK);
+						zParent.setColor(RBNode.COLOR_NODE_BLACK); //TODO most probably somewhere here will be problem
 
 						if (zParentOldColor == RBNode.COLOR_NODE_BLACK) { // if color of parent was already black
 							// continue to higher level of tree
