@@ -1,5 +1,9 @@
 package core;
 
+import java.util.Date;
+
+import javax.swing.table.TableModel;
+
 import rb.RBNode;
 import rb.RBTree;
 
@@ -27,5 +31,11 @@ public class Db {
 				return ((WareHouse) value).getId();
 			}
 		});
+	}
+	
+	public void searchProducts(String Ean, Date dateFrom, Date dateTo, int count, int wareHouseId){
+		// maybe could return TableModel (https://docs.oracle.com/javase/8/docs/api/javax/swing/table/TableModel.html)
+		TableModel m;
+		
 	}
 }
