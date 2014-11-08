@@ -58,8 +58,8 @@ public class Main {
 				break;
 			}
 			int key = Integer.parseInt(args[1]);
-			int value = Integer.parseInt(args[1]);
-			RBNode<Integer> node = new IntegerNode(key, new IntegerNodeValue(value));
+			int value = key;
+			RBNode<Integer> node = new IntegerNode(new IntegerNodeValue(value));
 			if (tree != null) {
 				if(tree.insert(node)){
 					System.out.println("added " + key);
@@ -73,15 +73,21 @@ public class Main {
 				System.out.println("Error");
 				break;
 			}
-			key = Integer.parseInt(args[1]);
-			value = Integer.parseInt(args[1]);
-			RBNode<Integer> nodeToDel = tree.find(key);
+			RBNode<Integer> nodeToDel = null;
+			try {
+				key = Integer.parseInt(args[1]);
+				value = Integer.parseInt(args[1]);
+				nodeToDel = tree.find(key);
+			} catch (NumberFormatException e) {
+				key = 0;
+			}
 			if (nodeToDel!=null) {
 				RBNode<Integer> deletedNode = tree.delete(nodeToDel);
 				System.out.println(deletedNode.toString() + " deleted");
 			} else {
 				System.out.println("node is not in the tree, key: " + key);
 			}
+			parse("check");
 			break;
 		case "reset":
 			tree = new RBTree<Integer>();
@@ -111,36 +117,57 @@ public class Main {
 	}
 
 	private void init() {
-		parse("add 10");
-		parse("add 20");
-		parse("add 30");
-		parse("add 40");
-		parse("add 50");
-		parse("add 60");
-		parse("add 70");
-		parse("add 80");
-		parse("add 90");
-		parse("add 100");
-		parse("add 110");
-		parse("add 120");
+//		parse("add 10");
+//		parse("add 20");
+//		parse("add 30");
+//		parse("add 40");
+//		parse("add 50");
+//		parse("add 60");
+//		parse("add 70");
+//		parse("add 80");
+//		parse("add 90");
+//		parse("add 100");
+//		parse("add 110");
+//		parse("add 120");
+		
+		int maxNum = (int) Math.pow(10, 10);
+		int itemsCount = (int) Math.pow(10, 3);
+		int i = 0;
+		for (; i < itemsCount;) {
+			// generate one item
+			int key = (int) (Math.random() * maxNum);
+			// IntegerNodeKey treeKey = new IntegerNodeKey(key);
+			IntegerNodeValue treeValue = new IntegerNodeValue(key);
+			// insert generated item to RB tree
+			boolean iserted = tree.insert(new RBNode<Integer>(treeValue) {
+
+				@Override
+				public Integer getKey() {
+					return (Integer) value.getNodeValue();
+				}
+//
+//				@Override
+//				public void setKey(Integer key) {
+//					new IntegerNodeValue(key);
+//				}
+			});
+			if (iserted) {
+				i++;
+			}
+		}
 	}
 	
 	public class IntegerNode extends RBNode<Integer>{
-		private int key;
+//		private int key;
 		
-		public IntegerNode(Integer key, NodeValue value) {
+		public IntegerNode(IntegerNodeValue value) {
 			super(value);
-			this.key = key;
+//			this.key = key;
 		}
 
 		@Override
 		public Integer getKey() {
-			return key;
-		}
-
-		@Override
-		public void setKey(Integer key) {
-			this.key = key;
+			return (Integer) value.getNodeValue();
 		}
 		
 	}

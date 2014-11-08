@@ -11,14 +11,14 @@ public class RBTreeCheckProperties<T extends Comparable<T>> {
 	public boolean checkProperties(RBTree<T> tree/* RBNode treeRoot */) {
 		RBNode<T> treeRoot = tree.root;
 		boolean rootProp = checkRoot(treeRoot);
-		if (!rootProp)
-			System.out.println("");
+//		if (!rootProp)
+//			System.out.println("");
 		boolean redsChildren = checkRedNodesChildren(treeRoot);
-		if (!redsChildren)
-			System.out.println("");
+//		if (!redsChildren)
+//			System.out.println("");
 		boolean blackHeight = checkBH(treeRoot);
-		if (!blackHeight)
-			System.out.println("");
+//		if (!blackHeight)
+//			System.out.println("");
 
 		return rootProp && redsChildren && blackHeight;
 	}
