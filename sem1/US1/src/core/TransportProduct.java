@@ -2,13 +2,14 @@ package core;
 
 import java.util.Date;
 
-public class ProductTransport {
+public class TransportProduct {
 	private int productId;
 	private ProductPlace departure;
 	private ProductPlace destination;
 	private Date dispatchedDate;
 	private Date expectedDate;
 	private String carEcv;
+	private Date arrivedDate;
 
 	public int getProductId() {
 		return productId;
@@ -56,6 +57,14 @@ public class ProductTransport {
 
 	public void setCarEcv(String carEcv) {
 		this.carEcv = carEcv;
+	}
+
+	public Date getArrivedDate() {
+		return arrivedDate;
+	}
+
+	public void setArrivedDate(Date arrivedDate) {
+		this.arrivedDate = arrivedDate;
 	}
 
 }

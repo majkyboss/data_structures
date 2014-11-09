@@ -5,25 +5,25 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import core.Product;
-import core.ProductTransport;
+import core.TransportProduct;
 
 public class TransportsModel extends AbstractTableModel {
-	List<ProductTransport> items;
-	
-	public TransportsModel(List<ProductTransport> items) {
+	List<TransportProduct> items;
+	String[] columns = new String[] { "product id", "from", "to", "date dispatched", "date expected", "car ecv", "date arrived" };
+
+	public TransportsModel(List<TransportProduct> items) {
 		super();
 		this.items = items;
 	}
 
 	@Override
+	public String getColumnName(int arg0) {
+		return columns[arg0];
+	}
+
+	@Override
 	public int getColumnCount() {
-		//product id
-		//from
-		//to
-		//date dispatched
-		//date expected
-		//car ecv
-		return 6;
+		return columns.length;
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class TransportsModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int row, int col) {
-		ProductTransport p = items.get(row);
+		TransportProduct p = items.get(row);
 		Object ret = null;
 		switch (col) {
 		case 0:
@@ -53,6 +53,9 @@ public class TransportsModel extends AbstractTableModel {
 			break;
 		case 5:
 			ret = p.getCarEcv();
+			break;
+		case 6:
+			ret = p.getArrivedDate();
 			break;
 		default:
 			break;

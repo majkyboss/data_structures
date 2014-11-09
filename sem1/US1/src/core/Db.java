@@ -88,7 +88,19 @@ public class Db implements StorageDatabase {
 	}
 
 	@Override
-	public List<ProductTransport> getLiveTransport(int wareHouseId) {
+	public List<TransportProduct> getLiveTransport(int wareHouseId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<TransportProduct> showArrivedProductsInWareHouse(int wareHouseFromId, int wareHouseToId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<TransportProduct> showArrivedProductsInClinet(int wareHouseFromId, String clientId) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -58,6 +58,8 @@ public class MainWin extends JFrame {
 		final JPanel function5 = new OneClient(storage);
 		final JPanel function9 = new Clients(storage);
 		final JPanel function10 = new TransportsLive(storage);
+		final JPanel function11 = new ArrivedProducts(storage, true);
+		final JPanel function12 = new ArrivedProducts(storage, false);
 		// end data init
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -142,12 +144,14 @@ public class MainWin extends JFrame {
 		menuItem = new JMenuItem("11");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				showContent(function11);
 			}
 		});
 		mnAll.add(menuItem);
 		menuItem = new JMenuItem("12");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				showContent(function12);
 			}
 		});
 		mnAll.add(menuItem);

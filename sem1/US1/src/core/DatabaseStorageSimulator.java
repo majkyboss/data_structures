@@ -123,9 +123,9 @@ public class DatabaseStorageSimulator implements StorageDatabase {
 	}
 
 	@Override
-	public List<ProductTransport> getLiveTransport(int wareHouseId) {
-		LinkedList<ProductTransport> l = new LinkedList<>();
-		ProductTransport pt = new ProductTransport();
+	public List<TransportProduct> getLiveTransport(int wareHouseId) {
+		LinkedList<TransportProduct> l = new LinkedList<>();
+		TransportProduct pt = new TransportProduct();
 		pt.setProductId(1);
 		pt.setDeparture(new WareHouse());
 		pt.setDestination(new WareHouse());
@@ -133,13 +133,61 @@ public class DatabaseStorageSimulator implements StorageDatabase {
 		pt.setExpectedDate(new Date());
 		pt.setCarEcv("ZA555ZA");
 		l.add(pt);
-		pt = new ProductTransport();
+		pt = new TransportProduct();
 		pt.setProductId(2);
 		pt.setDeparture(new WareHouse());
 		pt.setDestination(new WareHouse());
 		pt.setDispatchedDate(new Date());
 		pt.setExpectedDate(new Date());
 		pt.setCarEcv("ZA444ZA");
+		l.add(pt);
+
+		return l;
+	}
+
+	@Override
+	public List<TransportProduct> showArrivedProductsInWareHouse(int wareHouseFromId, int wareHouseToId) {
+		LinkedList<TransportProduct> l = new LinkedList<>();
+		TransportProduct pt = new TransportProduct();
+		pt.setProductId(1);
+		pt.setDeparture(new WareHouse());
+		pt.setDestination(new WareHouse());
+		pt.setDispatchedDate(new Date());
+		pt.setExpectedDate(new Date());
+		pt.setCarEcv("ZA555ZA");
+		l.add(pt);
+		pt = new TransportProduct();
+		pt.setProductId(2);
+		pt.setDeparture(new WareHouse());
+		pt.setDestination(new WareHouse());
+		pt.setDispatchedDate(new Date());
+		pt.setExpectedDate(new Date());
+		pt.setCarEcv("ZA444ZA");
+		l.add(pt);
+
+		return l;
+	}
+
+	@Override
+	public List<TransportProduct> showArrivedProductsInClinet(int wareHouseFromId, String clientId) {
+		LinkedList<TransportProduct> l = new LinkedList<>();
+		TransportProduct pt = new TransportProduct();
+		pt.setProductId(1);
+		pt.setDeparture(new WareHouse());
+		pt.setDestination(new Client());
+		pt.setDispatchedDate(new Date());
+		pt.setExpectedDate(new Date());
+		pt.setCarEcv("ZA555ZA");
+		pt.setArrivedDate(new Date());
+		l.add(pt);
+		pt = new TransportProduct();
+		pt.setProductId(2);
+		pt.setDeparture(new WareHouse());
+		pt.setDestination(new Client());
+		pt.setDispatchedDate(new Date());
+		pt.setExpectedDate(new Date());
+		pt.setCarEcv("ZA444ZA");
+		pt.setArrivedDate(new Date());
 		l.add(pt);
 
 		return l;

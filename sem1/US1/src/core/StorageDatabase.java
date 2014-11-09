@@ -24,5 +24,9 @@ public interface StorageDatabase {
 
 	List<Client> searchClients(int wareHouseId);
 
-	List<ProductTransport> getLiveTransport(int wareHouseId);
+	List<TransportProduct> getLiveTransport(int wareHouseId);
+
+	List<TransportProduct> showArrivedProductsInWareHouse(int wareHouseFromId, int wareHouseToId);
+
+	List<TransportProduct> showArrivedProductsInClinet(int wareHouseFromId, String clientId);
 }

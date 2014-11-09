@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import core.Product;
-import core.ProductTransport;
+import core.TransportProduct;
 import core.StorageDatabase;
 
 public class TransportsLive extends JPanel {
@@ -39,7 +39,7 @@ public class TransportsLive extends JPanel {
 				try {
 					int wareHouseId = Integer.parseInt(fieldWH.getText());
 
-					List<ProductTransport> foundTransports = database.getLiveTransport(wareHouseId);
+					List<TransportProduct> foundTransports = database.getLiveTransport(wareHouseId);
 					if (foundTransports.isEmpty()) {
 						// show warning dialog: no items found
 						JOptionPane.showMessageDialog(getParent(), "No item was found.", "No items", JOptionPane.WARNING_MESSAGE);
@@ -66,7 +66,7 @@ public class TransportsLive extends JPanel {
 		add(fieldWH);
 	}
 
-	private void openFoundItems(List<ProductTransport> foundTransports) {
+	private void openFoundItems(List<TransportProduct> foundTransports) {
 		TableView tableView = new TableView(this);
 		tableView.updateTable(new TransportsModel(foundTransports));
 
