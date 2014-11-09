@@ -1,8 +1,5 @@
 package test;
 
-
-
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -15,7 +12,6 @@ import core.NodeValue;
 public class RBTreeTest {
 	private static int maxNum = (int) Math.pow(10, 10);
 	private RBTree<Integer> tree = new RBTree<Integer>();
-	
 
 	@Test
 	public void testAdd() {
@@ -38,11 +34,11 @@ public class RBTreeTest {
 				public Integer getKey() {
 					return (Integer) value.getNodeValue();
 				}
-//
-//				@Override
-//				public void setKey(Integer key) {
-//					new IntegerNodeValue(key);
-//				}
+				//
+				// @Override
+				// public void setKey(Integer key) {
+				// new IntegerNodeValue(key);
+				// }
 			});
 			if (iserted) {
 				i++;
@@ -51,11 +47,11 @@ public class RBTreeTest {
 
 		RBTreeCheckProperties<Integer> checker = new RBTreeCheckProperties<>();
 		boolean checked = checker.checkProperties(tree);
-		
+
 		Assert.assertTrue(checked);
 		Assert.assertEquals(i, tree.size());
 	}
-	
+
 	@Test
 	public void testAddAndFind() {
 		int itemsCount = (int) Math.pow(10, 5);
@@ -77,11 +73,11 @@ public class RBTreeTest {
 				public Integer getKey() {
 					return (Integer) value.getNodeValue();
 				}
-//
-//				@Override
-//				public void setKey(Integer key) {
-//					new IntegerNodeValue(key);
-//				}
+				//
+				// @Override
+				// public void setKey(Integer key) {
+				// new IntegerNodeValue(key);
+				// }
 			};
 			boolean iserted = tree.insert(item);
 			if (iserted) {
@@ -93,7 +89,7 @@ public class RBTreeTest {
 
 		RBTreeCheckProperties<Integer> checker = new RBTreeCheckProperties<>();
 		boolean checked = checker.checkProperties(tree);
-		
+
 		Assert.assertTrue(checked);
 		Assert.assertEquals(i, tree.size());
 	}
@@ -102,28 +98,31 @@ public class RBTreeTest {
 	public void testDel() {
 		this.testAdd();
 
-		int itemsCount = (int) Math.pow(10, 3);
-		// !!! 10^7 - out of memory, time: ~1600s
-		// 10^6.5 - time: ~12s
+		int itemsCount = (int) Math.pow(10, 4);
+		// !!! 10^7 - out of memory
+		// 10^3 - time: ~19s
 
 		for (int i = 0; i < itemsCount;) {
 			// generate one item key
 			int key = (int) (Math.random() * maxNum);
 			// try to find the item
 			RBNode<Integer> item = tree.find(key);
-			//RBNode<Integer> parent = item.getParent();
+			// RBNode<Integer> parent = item.getParent();
 			// try to delete item
 			if (item != null) {
 				tree.delete(item);
 				i++;
-				//System.out.print("deleted item with key " + item.getKey());
-				//System.out.println("i is: " + i);
+				if (i % 100 == 0) {
+					System.out.print("deleted item with key " + item.getKey());
+					System.out.println("i is: " + i);
+				}
+
 				RBTreeCheckProperties<Integer> checker = new RBTreeCheckProperties<>();
 				boolean c = checker.checkProperties(tree);
-				//System.out.println(c);
-//				if (!c) {
-//					System.out.println();
-//				}
+				// System.out.println(c);
+				// if (!c) {
+				// System.out.println();
+				// }
 				Assert.assertTrue(c);
 			}
 		}
@@ -146,10 +145,10 @@ public class RBTreeTest {
 			return value.getNodeValue();
 		}
 
-//		@Override
-//		public void setKey(Integer key) {
-//			value.ean = key;
-//		}
+		// @Override
+		// public void setKey(Integer key) {
+		// value.ean = key;
+		// }
 	}
 
 	private class Product implements NodeValue {
@@ -166,12 +165,12 @@ public class RBTreeTest {
 		}
 
 	}
-	
+
 	@Test
-	public void testOther(){
+	public void testOther() {
 		String a = "aaba";
 		String b = "aaab";
-		
+
 		System.out.println(a.compareTo(b));
 	}
 }
