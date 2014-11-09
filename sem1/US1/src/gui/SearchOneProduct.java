@@ -1,5 +1,7 @@
 package gui;
 
+import gui.tables.ProductsModel;
+
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -61,10 +63,11 @@ public class SearchOneProduct extends JPanel {
 	}
 
 	private void openFoundItem(Product product) {
-		// TODO create separate window for product info
+		// TODO !!! required create separate window for product info
 		LinkedList<Product> items = new LinkedList<>();
 		items.add(product);
-		TableView tableView = new TableView(this, items);
+		TableView tableView = new TableView(this);
+		tableView.updateTable(new ProductsModel(items));
 
 		Container c = getParent();
 		c.removeAll();

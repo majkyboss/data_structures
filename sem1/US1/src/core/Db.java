@@ -57,4 +57,34 @@ public class Db implements StorageDatabase {
 		return null;
 	}
 
+	@Override
+	public Client searchClient(String clientId, int wareHouseId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean makeTransportToWareHouse(int productNumber, int wareHouseId, Date expectedDate) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean makeTransportToClient(int productNumber, String clientId, Date expectedDate) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean endTransport(int productNum, Date arrivalDate) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public List<Client> searchClients(int wareHouseId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

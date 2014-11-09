@@ -81,4 +81,44 @@ public class DatabaseStorageSimulator implements StorageDatabase {
 		p.setCost(25.5);
 		return p;
 	}
+
+	@Override
+	public Client searchClient(String clientId, int wareHouseId) {
+		Client c = new Client();
+
+		return c;
+	}
+
+	@Override
+	public boolean makeTransportToWareHouse(int productNumber, int wareHouseId, Date expectedDate) {
+		return true;
+	}
+
+	@Override
+	public boolean makeTransportToClient(int productNumber, String clientId, Date expectedDate) {
+		return true;
+	}
+
+	@Override
+	public boolean endTransport(int productNum, Date arrivalDate) {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public List<Client> searchClients(int wareHouseId) {
+		LinkedList<Client> l = new LinkedList<>();
+		Client c = new Client();
+		c.setName("first client");
+		c.setId(1);
+		c.setAddress("address 1");
+		l.add(c);
+		c = new Client();
+		c.setName("second client");
+		c.setId(1);
+		c.setAddress("address 1");
+		l.add(c);
+
+		return l;
+	}
 }

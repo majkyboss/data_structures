@@ -5,7 +5,7 @@ import java.util.Date;
 import rb.RBNode;
 import rb.RBTree;
 
-public class WareHouse implements NodeValue{
+public class WareHouse extends ProductPlace implements NodeValue{
 	private String name;
 	private int id;
 	private Address address;

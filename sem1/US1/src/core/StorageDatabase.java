@@ -13,4 +13,14 @@ public interface StorageDatabase {
 	int searchCount(String ean, int wareHouseId);
 
 	Product searchProduct(int productNum);
+
+	Client searchClient(String clientId, int wareHouseId);
+
+	boolean makeTransportToWareHouse(int productNumber, int wareHouseId, Date expectedDate);
+
+	boolean makeTransportToClient(int productNumber, String clientId, Date expectedDate);
+
+	boolean endTransport(int productNum, Date arrivalDate);
+
+	List<Client> searchClients(int wareHouseId);
 }

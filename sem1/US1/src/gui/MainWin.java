@@ -55,6 +55,8 @@ public class MainWin extends JFrame {
 		final JPanel function2 = new SearchCount(storage);
 		final JPanel function3 = new SearchOneProduct(storage);
 		final JPanel function4 = new AddProduct(storage);
+		final JPanel function5 = new SearchClient(storage);
+		final JPanel function9 = new SearchClients(storage);
 		// end data init
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -97,30 +99,35 @@ public class MainWin extends JFrame {
 		menuItem = new JMenuItem("5");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				showContent(function5);
 			}
 		});
 		mnAll.add(menuItem);
 		menuItem = new JMenuItem("6");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				showContent(new TransportStart(storage, false));
 			}
 		});
 		mnAll.add(menuItem);
 		menuItem = new JMenuItem("7");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				showContent(new TransportStart(storage, true));
 			}
 		});
 		mnAll.add(menuItem);
 		menuItem = new JMenuItem("8");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				showContent(new TransportEnd(storage));
 			}
 		});
 		mnAll.add(menuItem);
 		menuItem = new JMenuItem("9");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				showContent(function9);
 			}
 		});
 		mnAll.add(menuItem);

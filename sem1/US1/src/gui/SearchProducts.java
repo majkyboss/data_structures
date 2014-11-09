@@ -1,5 +1,7 @@
 package gui;
 
+import gui.tables.ProductsModel;
+
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -119,7 +121,8 @@ public class SearchProducts extends JPanel {
 	}
 
 	private void openFoundItems(List<Product> items) {
-		TableView tableView = new TableView(this, items);
+		TableView tableView = new TableView(this);
+		tableView.updateTable(new ProductsModel(items));
 
 		Container c = getParent();
 		c.removeAll();
