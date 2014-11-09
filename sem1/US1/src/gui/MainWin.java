@@ -16,12 +16,14 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import core.Db;
+import core.DatabaseStorageSimulator;
+import core.StorageDatabase;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class MainWin extends JFrame {
-	
+
 	/**
 	 * Launch the application.
 	 */
@@ -37,16 +39,24 @@ public class MainWin extends JFrame {
 			}
 		});
 	}
-	
+
 	private JPanel contentPane;
-	private Db storage = new Db();
-	private JPanel function1 = new SearchProducts(storage);
-	private JPanel function2 = new SearchCount(storage);
+	private StorageDatabase storage;
 
 	/**
 	 * Create the frame.
 	 */
 	public MainWin() {
+		// data init
+		storage = new Db();
+		// TODO delete simulation state
+		this.storage = DatabaseStorageSimulator.getInstance();
+		final JPanel function1 = new SearchProducts(storage);
+		final JPanel function2 = new SearchCount(storage);
+		final JPanel function3 = new SearchOneProduct(storage);
+		final JPanel function4 = new AddProduct(storage);
+		// end data init
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 743, 429);
 
@@ -73,12 +83,14 @@ public class MainWin extends JFrame {
 		menuItem = new JMenuItem("3");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				showContent(function3);
 			}
 		});
 		mnAll.add(menuItem);
 		menuItem = new JMenuItem("4");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				showContent(function4);
 			}
 		});
 		mnAll.add(menuItem);
@@ -183,10 +195,10 @@ public class MainWin extends JFrame {
 
 	}
 
-	private void showContent(JPanel component){
+	private void showContent(JPanel component) {
 		contentPane.removeAll();
 		contentPane.add(component);
 		contentPane.revalidate();
-		this.repaint();
+		contentPane.repaint();
 	}
 }

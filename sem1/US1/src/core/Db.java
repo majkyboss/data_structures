@@ -1,13 +1,13 @@
 package core;
 
 import java.util.Date;
-
-import javax.swing.table.TableModel;
+import java.util.LinkedList;
+import java.util.List;
 
 import rb.RBNode;
 import rb.RBTree;
 
-public class Db {
+public class Db implements StorageDatabase {
 	private int id;
 	private RBTree<Integer> warehouses;
 	private RBTree<Integer> itemsByProductNumber;
@@ -18,12 +18,15 @@ public class Db {
 		this.itemsByProductNumber = new RBTree<Integer>();
 	}
 
-	public void addItem(int whId, Product product) {
+	@Override
+	public boolean addItem(int whId, Product product) {
 		RBNode<Integer> whNode = warehouses.find(whId);
 
+		return true;
 	}
 
-	public void addWareHouse(WareHouse warehouse) {
+	@Override
+	public boolean addWareHouse(WareHouse warehouse) {
 		boolean inserted = warehouses.insert(new RBNode<Integer>(warehouse) {
 
 			@Override
@@ -31,11 +34,27 @@ public class Db {
 				return ((WareHouse) value).getId();
 			}
 		});
+
+		return true;
 	}
-	
-	public void searchProducts(String Ean, Date dateFrom, Date dateTo, int count, int wareHouseId){
-		// maybe could return TableModel (https://docs.oracle.com/javase/8/docs/api/javax/swing/table/TableModel.html)
-		TableModel m;
-		
+
+	@Override
+	public List<Product> searchProducts(String ean, Date dateFrom, Date dateTo, int count, int wareHouseId) {
+		// TODO method to find data in DB
+
+		return new LinkedList<>();
 	}
+
+	@Override
+	public int searchCount(String ean, int wareHouseId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Product searchProduct(int productNum) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

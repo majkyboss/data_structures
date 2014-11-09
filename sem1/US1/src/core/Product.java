@@ -21,4 +21,56 @@ public class Product implements NodeValue{
 	public String getEan() {
 		return ean;
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Date getProductionDate() {
+		return productionDate;
+	}
+
+	public void setProductionDate(Date productionDate) {
+		this.productionDate = productionDate;
+	}
+
+	public Date getMinDate() {
+		return minDate;
+	}
+
+	public void setMinDate(Date minDate) {
+		this.minDate = minDate;
+	}
+
+	public int getProductNumber() {
+		return productNumber;
+	}
+
+	public void setProductNumber(int productNumber) {
+		this.productNumber = productNumber;
+	}
+
+	public double getCost() {
+		return cost;
+	}
+
+	public void setCost(double cost) {
+		this.cost = cost;
+	}
+
+	public WareHouse getCurrentPlace() {
+		return currentPlace;
+	}
+
+	public void setCurrentPlace(WareHouse currentPlace) {
+		this.currentPlace = currentPlace;
+	}
+
+	public void setEan(String ean) {
+		this.ean = ean;
+	}
 }
