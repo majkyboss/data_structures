@@ -121,4 +121,27 @@ public class DatabaseStorageSimulator implements StorageDatabase {
 
 		return l;
 	}
+
+	@Override
+	public List<ProductTransport> getLiveTransport(int wareHouseId) {
+		LinkedList<ProductTransport> l = new LinkedList<>();
+		ProductTransport pt = new ProductTransport();
+		pt.setProductId(1);
+		pt.setDeparture(new WareHouse());
+		pt.setDestination(new WareHouse());
+		pt.setDispatchedDate(new Date());
+		pt.setExpectedDate(new Date());
+		pt.setCarEcv("ZA555ZA");
+		l.add(pt);
+		pt = new ProductTransport();
+		pt.setProductId(2);
+		pt.setDeparture(new WareHouse());
+		pt.setDestination(new WareHouse());
+		pt.setDispatchedDate(new Date());
+		pt.setExpectedDate(new Date());
+		pt.setCarEcv("ZA444ZA");
+		l.add(pt);
+
+		return l;
+	}
 }

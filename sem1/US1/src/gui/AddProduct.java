@@ -96,20 +96,20 @@ public class AddProduct extends JPanel {
 		add(fieldWH);
 
 		JLabel lblDateFrom = new JLabel("Production date:");
-		lblDateFrom.setBounds(10, 67, 90, 14);
+		lblDateFrom.setBounds(10, 67, 107, 14);
 		add(lblDateFrom);
 
 		fieldProductionDate = new JTextField(shortDateFormat.format(new Date()));
-		fieldProductionDate.setBounds(140, 64, 86, 20);
+		fieldProductionDate.setBounds(164, 64, 86, 20);
 		add(fieldProductionDate);
 		fieldProductionDate.setColumns(10);
 
 		JLabel lblDateTo = new JLabel("Minimum durability date:");
-		lblDateTo.setBounds(10, 95, 120, 14);
+		lblDateTo.setBounds(10, 95, 142, 14);
 		add(lblDateTo);
 
 		fieldMinDate = new JTextField(shortDateFormat.format(new Date()));
-		fieldMinDate.setBounds(140, 92, 86, 20);
+		fieldMinDate.setBounds(164, 92, 86, 20);
 		add(fieldMinDate);
 		fieldMinDate.setColumns(10);
 
@@ -127,12 +127,12 @@ public class AddProduct extends JPanel {
 		fieldName.setColumns(10);
 
 		JLabel lblProductionNumber = new JLabel("Production number:");
-		lblProductionNumber.setBounds(10, 123, 107, 14);
+		lblProductionNumber.setBounds(10, 123, 120, 14);
 		add(lblProductionNumber);
 
 		fieldProductionNumber = new JTextField();
 		fieldProductionNumber.setText("1");
-		fieldProductionNumber.setBounds(140, 120, 151, 20);
+		fieldProductionNumber.setBounds(163, 120, 151, 20);
 		add(fieldProductionNumber);
 		fieldProductionNumber.setColumns(10);
 

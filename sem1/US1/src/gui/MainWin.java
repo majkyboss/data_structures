@@ -51,12 +51,13 @@ public class MainWin extends JFrame {
 		storage = new Db();
 		// TODO delete simulation state
 		this.storage = DatabaseStorageSimulator.getInstance();
-		final JPanel function1 = new SearchProducts(storage);
-		final JPanel function2 = new SearchCount(storage);
-		final JPanel function3 = new SearchOneProduct(storage);
+		final JPanel function1 = new Products(storage);
+		final JPanel function2 = new ProductsCount(storage);
+		final JPanel function3 = new OneProduct(storage);
 		final JPanel function4 = new AddProduct(storage);
-		final JPanel function5 = new SearchClient(storage);
-		final JPanel function9 = new SearchClients(storage);
+		final JPanel function5 = new OneClient(storage);
+		final JPanel function9 = new Clients(storage);
+		final JPanel function10 = new TransportsLive(storage);
 		// end data init
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -134,6 +135,7 @@ public class MainWin extends JFrame {
 		menuItem = new JMenuItem("10");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				showContent(function10);
 			}
 		});
 		mnAll.add(menuItem);

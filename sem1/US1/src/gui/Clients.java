@@ -1,5 +1,6 @@
 package gui;
 
+import gui.tables.ClientsModel;
 import gui.tables.ProductsModel;
 
 import java.awt.Container;
@@ -8,49 +9,43 @@ import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import core.Client;
 import core.Product;
 import core.StorageDatabase;
 
-public class SearchOneProduct extends JPanel {
-	private JTextField fieldProductNum;
+public class Clients extends JPanel {
+	private JTextField fieldWH;
 	private StorageDatabase database;
 	private DateFormat shortDateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
 
 	/**
 	 * Create the panel.
 	 */
-	public SearchOneProduct(StorageDatabase db) {
+	public Clients(StorageDatabase db) {
 		this.database = db;
 		setLayout(null);
-
-		JLabel lblEanCode = new JLabel("Product Number:");
-		lblEanCode.setBounds(10, 14, 90, 14);
-		add(lblEanCode);
-
-		fieldProductNum = new JTextField();
-		fieldProductNum.setBounds(118, 11, 173, 20);
-		add(fieldProductNum);
-		fieldProductNum.setColumns(10);
 
 		JButton btnSearch = new JButton("Search");
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				String ean = fieldProductNum.getText();
-
 				try {
-					int productNum = Integer.parseInt(fieldProductNum.getText());
+					int wareHouseId = Integer.parseInt(fieldWH.getText());
 
-					Product product = database.searchProduct(productNum);
-					openFoundItem(product);
+					List<Client> foundClients = database.searchClients(wareHouseId);
+					if (foundClients.isEmpty()) {
+						// show warning dialog: no items found
+						JOptionPane.showMessageDialog(getParent(), "No item was found.", "No items", JOptionPane.WARNING_MESSAGE);
+					}
+					openFoundItems(foundClients);
 
 				} catch (NumberFormatException e) {
 					System.err.println(e.getMessage());
@@ -60,14 +55,21 @@ public class SearchOneProduct extends JPanel {
 		});
 		btnSearch.setBounds(354, 66, 89, 23);
 		add(btnSearch);
+
+		JLabel lblWH = new JLabel("Warehouse:");
+		lblWH.setBounds(10, 13, 86, 14);
+		add(lblWH);
+
+		fieldWH = new JTextField();
+		fieldWH.setText("1");
+		fieldWH.setColumns(10);
+		fieldWH.setBounds(93, 11, 120, 20);
+		add(fieldWH);
 	}
 
-	private void openFoundItem(Product product) {
-		// TODO !!! required create separate window for product info
-		LinkedList<Product> items = new LinkedList<>();
-		items.add(product);
+	private void openFoundItems(List<Client> items) {
 		TableView tableView = new TableView(this);
-		tableView.updateTable(new ProductsModel(items));
+		tableView.updateTable(new ClientsModel(items));
 
 		Container c = getParent();
 		c.removeAll();
@@ -75,5 +77,4 @@ public class SearchOneProduct extends JPanel {
 		c.revalidate();
 		c.repaint();
 	}
-
 }

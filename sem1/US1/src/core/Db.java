@@ -87,4 +87,10 @@ public class Db implements StorageDatabase {
 		return null;
 	}
 
+	@Override
+	public List<ProductTransport> getLiveTransport(int wareHouseId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

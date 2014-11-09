@@ -28,12 +28,12 @@ public class TransportStart extends JPanel {
 		setLayout(null);
 
 		JLabel lblEanCode = new JLabel("Product Number:");
-		lblEanCode.setBounds(10, 14, 90, 14);
+		lblEanCode.setBounds(10, 14, 104, 14);
 		add(lblEanCode);
 
 		fieldProductNum = new JTextField();
 		fieldProductNum.setText("1");
-		fieldProductNum.setBounds(118, 11, 173, 20);
+		fieldProductNum.setBounds(132, 11, 173, 20);
 		add(fieldProductNum);
 		fieldProductNum.setColumns(10);
 
@@ -75,7 +75,7 @@ public class TransportStart extends JPanel {
 		add(btnSearch);
 
 		fieldExpectedDate = new JTextField(shortDateFormat.format(new Date()));
-		fieldExpectedDate.setBounds(118, 73, 86, 20);
+		fieldExpectedDate.setBounds(132, 73, 86, 20);
 		add(fieldExpectedDate);
 		fieldExpectedDate.setColumns(10);
 
@@ -85,7 +85,7 @@ public class TransportStart extends JPanel {
 
 		fieldPlaceTo = new JTextField();
 		fieldPlaceTo.setText("1");
-		fieldPlaceTo.setBounds(205, 42, 86, 20);
+		fieldPlaceTo.setBounds(219, 43, 86, 20);
 		add(fieldPlaceTo);
 		fieldPlaceTo.setColumns(10);
 

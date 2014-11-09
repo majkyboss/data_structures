@@ -19,7 +19,7 @@ import javax.swing.JTextField;
 import core.Product;
 import core.StorageDatabase;
 
-public class SearchProducts extends JPanel {
+public class Products extends JPanel {
 	private JTextField fieldEan;
 	private JTextField fieldWH;
 	private JTextField fieldCount;
@@ -31,7 +31,7 @@ public class SearchProducts extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public SearchProducts(StorageDatabase db) {
+	public Products(StorageDatabase db) {
 		this.database = db;
 		setLayout(null);
 

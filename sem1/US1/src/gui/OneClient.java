@@ -1,7 +1,5 @@
 package gui;
 
-import java.awt.Container;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
@@ -16,11 +14,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import core.Client;
 import core.Product;
 import core.StorageDatabase;
 
-public class SearchCount extends JPanel {
-	private JTextField fieldEan;
+public class OneClient extends JPanel {
+	private JTextField fieldClientId;
 	private JTextField fieldWH;
 	private StorageDatabase database;
 	private DateFormat shortDateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
@@ -28,31 +27,35 @@ public class SearchCount extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public SearchCount(StorageDatabase db) {
+	public OneClient(StorageDatabase db) {
 		this.database = db;
 		setLayout(null);
 
-		JLabel lblEanCode = new JLabel("Enter EAN code:");
+		JLabel lblEanCode = new JLabel("Client ID:");
 		lblEanCode.setBounds(10, 14, 90, 14);
 		add(lblEanCode);
 
-		fieldEan = new JTextField();
-		fieldEan.setBounds(118, 11, 173, 20);
-		add(fieldEan);
-		fieldEan.setColumns(10);
+		fieldClientId = new JTextField();
+		fieldClientId.setBounds(93, 11, 120, 20);
+		add(fieldClientId);
+		fieldClientId.setColumns(10);
 
 		JButton btnSearch = new JButton("Search");
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				String ean = fieldEan.getText();
+				String clientId = fieldClientId.getText();
 
 				try {
 
 					int wareHouseId = Integer.parseInt(fieldWH.getText());
 
-					int count = database.searchCount(ean, wareHouseId);
-					showCountInfo(count);
+					Client client = database.searchClient(clientId, wareHouseId);
+					if (client == null) {
+						// show warning dialog: no items found
+						JOptionPane.showMessageDialog(getParent(), "No item was found.", "No items", JOptionPane.WARNING_MESSAGE);
+					}
+					showClient(client);
 
 				} catch (NumberFormatException e) {
 					System.err.println(e.getMessage());
@@ -74,8 +77,10 @@ public class SearchCount extends JPanel {
 		add(fieldWH);
 	}
 
-	private void showCountInfo(int count) {
-		JOptionPane.showMessageDialog(this.getTopLevelAncestor(), "Number of found items: " + count, "Found items", JOptionPane.PLAIN_MESSAGE);
+	private void showClient(Client client) {
+		// show window with clinet info
+		JDialog clientInfo = new PlaceInfo(client, false);
+		clientInfo.setModal(true);
+		clientInfo.setVisible(true);
 	}
-
 }

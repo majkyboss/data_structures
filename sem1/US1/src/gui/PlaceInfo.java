@@ -84,7 +84,7 @@ public class PlaceInfo extends JDialog {
 		}
 		{
 			JLabel lblAddress = new JLabel("Address:");
-			lblAddress.setBounds(10, 73, 46, 14);
+			lblAddress.setBounds(10, 73, 66, 14);
 			contentPanel.add(lblAddress);
 		}
 		{

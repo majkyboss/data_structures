@@ -3,6 +3,8 @@ package test;
 
 
 
+import java.util.LinkedList;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -100,15 +102,48 @@ public class RBTreeTest {
 
 	@Test
 	public void testDel() {
-		this.testAdd();
-
-		int itemsCount = (int) Math.pow(10, 3);
-		// !!! 10^7 - out of memory, time: ~1600s
-		// 10^6.5 - time: ~12s
-
-		for (int i = 0; i < itemsCount;) {
-			// generate one item key
+//		this.testAdd();
+		
+		int itemsCount = (int) Math.pow(10, 5);
+		//10^4 3,9s
+		
+		
+		
+		LinkedList<Integer> addedItems = new LinkedList<>();
+		
+		int i = 0;
+		for (; i < itemsCount;) {
+			// generate one item
 			int key = (int) (Math.random() * maxNum);
+			// IntegerNodeKey treeKey = new IntegerNodeKey(key);
+			IntegerNodeValue treeValue = new IntegerNodeValue(key);
+			// insert generated item to RB tree
+			boolean iserted = tree.insert(new RBNode<Integer>(treeValue) {
+
+				@Override
+				public Integer getKey() {
+					return (Integer) value.getNodeValue();
+				}
+//
+//				@Override
+//				public void setKey(Integer key) {
+//					new IntegerNodeValue(key);
+//				}
+			});
+			if (iserted) {
+				i++;
+				addedItems.add(key);
+			}
+		}
+
+		
+
+		for (i = 0; i < itemsCount;) {
+			// generate one item key
+			int index = (int) (Math.random() * addedItems.size());
+			int key = addedItems.get(index);
+			addedItems.remove(index);
+//			int key = (int) (Math.random() * maxNum);
 			// try to find the item
 			RBNode<Integer> item = tree.find(key);
 			//RBNode<Integer> parent = item.getParent();
@@ -116,15 +151,17 @@ public class RBTreeTest {
 			if (item != null) {
 				tree.delete(item);
 				i++;
-				//System.out.print("deleted item with key " + item.getKey());
-				//System.out.println("i is: " + i);
+//				System.out.print("deleted item with key " + item.getKey());
+//				System.out.println("i is: " + i);
 				RBTreeCheckProperties<Integer> checker = new RBTreeCheckProperties<>();
-				boolean c = checker.checkProperties(tree);
-				//System.out.println(c);
+				if (i%1000==0) {
+					boolean c = checker.checkProperties(tree);
+					System.out.println(c);
+				}
 //				if (!c) {
 //					System.out.println();
 //				}
-				Assert.assertTrue(c);
+//				Assert.assertTrue(c);
 			}
 		}
 

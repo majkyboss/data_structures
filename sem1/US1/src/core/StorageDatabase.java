@@ -23,4 +23,6 @@ public interface StorageDatabase {
 	boolean endTransport(int productNum, Date arrivalDate);
 
 	List<Client> searchClients(int wareHouseId);
+
+	List<ProductTransport> getLiveTransport(int wareHouseId);
 }
