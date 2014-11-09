@@ -358,6 +358,12 @@ public class RBTree<T extends Comparable<T>> {
 							// continue to higher level of tree
 							z = zParent;
 							zParent = zParent.getParent();
+							if (z.equals(root)) {
+								continue;
+							}
+							if (zParent==null|| z==null|| zParent.getLeftChild()==null || zParent.getRightChild()==null) {
+								System.out.println("");
+							}
 							if (z.equals(zParent.getLeftChild())) {
 								zBrother = zParent.getRightChild();
 								zWasLeft = true;
@@ -394,17 +400,18 @@ public class RBTree<T extends Comparable<T>> {
 				} else if (zBrother.getColor() == RBNode.COLOR_NODE_RED) { // case 4 // if brother of z node is red
 					boolean shouldBeTrue = zParent.getColor() == RBNode.COLOR_NODE_BLACK;
 					zParent.setColor(RBNode.COLOR_NODE_RED);
+					zBrother.setColor(RBNode.COLOR_NODE_BLACK);
 					leftRotation(zParent);
 					// continue to higher level of tree
-					z = zParent;
-					zParent = zParent.getParent();
-					if (z.equals(zParent.getLeftChild())) {
-						zBrother = zParent.getRightChild();
-						zWasLeft = true;
-					} else {
-						zBrother = zParent.getLeftChild();
-						zWasLeft = false;
-					}
+//					z = zParent;
+//					zParent = zParent.getParent();
+//					if (z.equals(zParent.getLeftChild())) {
+//						zBrother = zParent.getRightChild();
+//						zWasLeft = true;
+//					} else {
+//						zBrother = zParent.getLeftChild();
+//						zWasLeft = false;
+//					}
 					continue;
 				}
 
@@ -425,6 +432,12 @@ public class RBTree<T extends Comparable<T>> {
 							// continue to higher level of tree
 							z = zParent;
 							zParent = zParent.getParent();
+							if (z.equals(root)) {
+								continue;
+							}
+							if (zParent==null|| z==null|| zParent.getLeftChild()==null || zParent.getRightChild()==null) {
+								System.out.println("");
+							}
 							if (z.equals(zParent.getLeftChild())) {
 								zBrother = zParent.getRightChild();
 								zWasLeft = true;
@@ -459,17 +472,18 @@ public class RBTree<T extends Comparable<T>> {
 				} else if (zBrother.getColor() == RBNode.COLOR_NODE_RED) { // case 4 // if brother of z node is red
 					boolean shouldBeTrue = zParent.getColor() == RBNode.COLOR_NODE_BLACK;
 					zParent.setColor(RBNode.COLOR_NODE_RED);
+					zBrother.setColor(RBNode.COLOR_NODE_BLACK);
 					rightRotation(zParent);
 					// continue to higher level of tree
-					z = zParent;
-					zParent = zParent.getParent();
-					if (z.equals(zParent.getLeftChild())) {
-						zBrother = zParent.getRightChild();
-						zWasLeft = true;
-					} else {
-						zBrother = zParent.getLeftChild();
-						zWasLeft = false;
-					}
+//					z = zParent;
+//					zParent = zParent.getParent();
+//					if (z.equals(zParent.getLeftChild())) {
+//						zBrother = zParent.getRightChild();
+//						zWasLeft = true;
+//					} else {
+//						zBrother = zParent.getLeftChild();
+//						zWasLeft = false;
+//					}
 					continue;
 				}
 			}
