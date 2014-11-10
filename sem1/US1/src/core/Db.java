@@ -11,25 +11,25 @@ import rb.RBTree;
 
 public class Db implements StorageDatabase {
 	private int id;
-	private RBTree<Integer> warehouses;
+	private RBTree<Integer> warehousesById;
 	private RBTree<Integer> itemsByProductNumber;
 
 	public Db() {
 		this.id = IdCounter.getNextId();
-		this.warehouses = new RBTree<>();
-		this.itemsByProductNumber = new RBTree<Integer>();
+		this.warehousesById = new RBTree<>();
+		this.itemsByProductNumber = new RBTree<>();
 	}
 
 	@Override
 	public boolean addItem(int whId, Product product) {
-		RBNode<Integer> whNode = warehouses.find(whId);
+		RBNode<Integer> whNode = warehousesById.find(whId);
 
 		return true;
 	}
 
 	@Override
 	public boolean addWareHouse(WareHouse warehouse) {
-		boolean inserted = warehouses.insert(new RBNode<Integer>(warehouse) {
+		boolean inserted = warehousesById.insert(new RBNode<Integer>(warehouse) {
 
 			@Override
 			public Integer getKey() {

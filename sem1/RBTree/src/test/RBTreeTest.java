@@ -103,7 +103,7 @@ public class RBTreeTest {
 		int itemsCount = (int) Math.pow(10, 6);
 		// !!! 10^7 - out of memory
 		// 10^5 - time: ~16s
-		// 10^6 - time:  
+		// 10^6 - time: ~4853s
 		
 		
 		LinkedList<Integer> addedItems = new LinkedList<>();
