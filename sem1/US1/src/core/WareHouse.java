@@ -25,6 +25,10 @@ public class WareHouse extends ProductPlace implements NodeValue{
 		return id;
 	}
 
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public void addProduct(Product product){
 		//add product to exist ean group - add one lie in db
 		RBNode<String> foundNode = stored.find(product.getEan());

@@ -4,7 +4,6 @@ import java.util.List;
 
 public class ProductPlace {
 	protected String name;
-	protected int id;
 	protected String address;
 	protected List<Product> arrivedItems;
 
@@ -14,14 +13,6 @@ public class ProductPlace {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getAddress() {

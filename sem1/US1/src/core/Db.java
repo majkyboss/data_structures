@@ -105,4 +105,28 @@ public class Db implements StorageDatabase {
 		return null;
 	}
 
+	@Override
+	public List<Product> searchProducts(Date dateFrom, int daysUntilDate, int wareHouseId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean addClient(Client c, int whId) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean addWarehouse(WareHouse wh) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean deleteProduct(int productNum) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

@@ -6,20 +6,18 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
-import java.text.ParseException;
-import java.util.Date;
 import java.util.LinkedList;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import core.Product;
 import core.StorageDatabase;
 
-public class OneProduct extends JPanel {
+public class DeleteProduct extends JPanel {
 	private JTextField fieldProductNum;
 	private StorageDatabase database;
 	private DateFormat shortDateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
@@ -27,7 +25,7 @@ public class OneProduct extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public OneProduct(StorageDatabase db) {
+	public DeleteProduct(StorageDatabase db) {
 		this.database = db;
 		setLayout(null);
 
@@ -40,38 +38,27 @@ public class OneProduct extends JPanel {
 		add(fieldProductNum);
 		fieldProductNum.setColumns(10);
 
-		JButton btnSearch = new JButton("Search");
-		btnSearch.addActionListener(new ActionListener() {
+		JButton btnDelete = new JButton("Delete");
+		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
 				try {
 					int productNum = Integer.parseInt(fieldProductNum.getText());
 
-					Product product = database.searchProduct(productNum);
-					openFoundItem(product);
-
+					boolean deleted = database.deleteProduct(productNum);
+					if (deleted) {
+						JOptionPane.showMessageDialog(getParent(), "item (product number:" + productNum + ") was deleted");
+					} else {
+						JOptionPane.showMessageDialog(getParent(), "item was not added", "Insert error", JOptionPane.ERROR_MESSAGE);
+					}
 				} catch (NumberFormatException e) {
 					System.err.println(e.getMessage());
 				}
 
 			}
 		});
-		btnSearch.setBounds(354, 66, 89, 23);
-		add(btnSearch);
-	}
-
-	private void openFoundItem(Product product) {
-		// TODO !!! required create separate window for product info
-		LinkedList<Product> items = new LinkedList<>();
-		items.add(product);
-		TableView tableView = new TableView(this);
-		tableView.updateTable(new ProductsModel(items));
-
-		Container c = getParent();
-		c.removeAll();
-		c.add(tableView);
-		c.revalidate();
-		c.repaint();
+		btnDelete.setBounds(354, 66, 89, 23);
+		add(btnDelete);
 	}
 
 }

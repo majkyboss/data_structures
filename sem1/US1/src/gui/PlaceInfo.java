@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 
 import core.Client;
 import core.ProductPlace;
+import core.WareHouse;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -49,7 +50,12 @@ public class PlaceInfo extends JDialog {
 			fieldName.setColumns(10);
 		}
 		{
-			fieldID = new JTextField(place.getId() + "");
+			fieldID = new JTextField();
+			if (place instanceof Client) {
+				fieldID.setText(((Client) place).getId());
+			} else if (place instanceof WareHouse) {
+				fieldID.setText(((WareHouse) place).getId() + "");
+			}
 			fieldID.setEditable(editable);
 			fieldID.setBounds(88, 39, 86, 20);
 			contentPanel.add(fieldID);

@@ -29,4 +29,12 @@ public interface StorageDatabase {
 	List<TransportProduct> showArrivedProductsInWareHouse(int wareHouseFromId, int wareHouseToId);
 
 	List<TransportProduct> showArrivedProductsInClinet(int wareHouseFromId, String clientId);
+
+	List<Product> searchProducts(Date dateFrom, int daysUntilDate, int wareHouseId);
+
+	boolean addClient(Client c, int whId);
+
+	boolean addWarehouse(WareHouse wh);
+
+	boolean deleteProduct(int productNum);
 }
