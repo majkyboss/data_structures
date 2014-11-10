@@ -1,5 +1,7 @@
 package core;
 
+import gui.tables.ProductValueItem;
+
 import java.util.Date;
 import java.util.List;
 
@@ -37,4 +39,10 @@ public interface StorageDatabase {
 	boolean addWarehouse(WareHouse wh);
 
 	boolean deleteProduct(int productNum);
+
+	boolean removeClient(String clientId, int warehouseId);
+
+	boolean removeWarehouse(int wareHouseForDelId, int warehouseToMoveId);
+
+	List<ProductValueItem> getProductsValue(int wareHouseId);
 }

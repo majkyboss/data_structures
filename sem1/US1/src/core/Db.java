@@ -1,5 +1,7 @@
 package core;
 
+import gui.tables.ProductValueItem;
+
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -127,6 +129,24 @@ public class Db implements StorageDatabase {
 	public boolean deleteProduct(int productNum) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public boolean removeClient(String clientId, int warehouseId) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean removeWarehouse(int wareHouseForDelId, int warehouseToMoveId) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public List<ProductValueItem> getProductsValue(int wareHouseId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

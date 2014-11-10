@@ -1,5 +1,7 @@
 package core;
 
+import gui.tables.ProductValueItem;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
@@ -226,5 +228,132 @@ public class DatabaseStorageSimulator implements StorageDatabase {
 	@Override
 	public boolean deleteProduct(int productNum) {
 		return true;
+	}
+
+	@Override
+	public boolean removeClient(String clientId, int warehouseId) {
+		return true;
+	}
+
+	@Override
+	public boolean removeWarehouse(int wareHouseForDelId, int warehouseToMoveId) {
+		return true;
+	}
+
+	@Override
+	public List<ProductValueItem> getProductsValue(int wareHouseId) {
+		LinkedList<ProductValueItem> list = new LinkedList<>();
+		ProductValueItem item = new ProductValueItem();
+		item.setEan("00000001");
+		item.setCount(2);
+		item.setValue(32.8);
+		list.add(item);
+		item = new ProductValueItem();
+		item.setEan("00000002");
+		item.setCount(5);
+		item.setValue(65.5);
+		list.add(item);
+		item = new ProductValueItem();
+		item.setEan("00000002");
+		item.setCount(5);
+		item.setValue(65.5);
+		list.add(item);
+		item = new ProductValueItem();
+		item.setEan("00000002");
+		item.setCount(5);
+		item.setValue(65.5);
+		list.add(item);
+		item = new ProductValueItem();
+		item.setEan("00000002");
+		item.setCount(5);
+		item.setValue(65.5);
+		list.add(item);
+		item = new ProductValueItem();
+		item.setEan("00000002");
+		item.setCount(5);
+		item.setValue(65.5);
+		list.add(item);
+		item = new ProductValueItem();
+		item.setEan("00000002");
+		item.setCount(5);
+		item.setValue(65.5);
+		list.add(item);
+		item = new ProductValueItem();
+		item.setEan("00000002");
+		item.setCount(5);
+		item.setValue(65.5);
+		list.add(item);
+		item = new ProductValueItem();
+		item.setEan("00000002");
+		item.setCount(5);
+		item.setValue(65.5);
+		list.add(item);
+		item = new ProductValueItem();
+		item.setEan("00000002");
+		item.setCount(5);
+		item.setValue(65.5);
+		list.add(item);
+		item = new ProductValueItem();
+		item.setEan("00000002");
+		item.setCount(5);
+		item.setValue(65.5);
+		list.add(item);
+		item = new ProductValueItem();
+		item.setEan("00000002");
+		item.setCount(5);
+		item.setValue(65.5);
+		list.add(item);
+		item = new ProductValueItem();
+		item.setEan("00000002");
+		item.setCount(5);
+		item.setValue(65.5);
+		list.add(item);
+		item = new ProductValueItem();
+		item.setEan("00000002");
+		item.setCount(5);
+		item.setValue(65.5);
+		list.add(item);
+		item = new ProductValueItem();
+		item.setEan("00000002");
+		item.setCount(5);
+		item.setValue(65.5);
+		list.add(item);
+		item = new ProductValueItem();
+		item.setEan("00000002");
+		item.setCount(5);
+		item.setValue(65.5);
+		list.add(item);
+		item = new ProductValueItem();
+		item.setEan("00000002");
+		item.setCount(5);
+		item.setValue(65.5);
+		list.add(item);
+		item = new ProductValueItem();
+		item.setEan("00000002");
+		item.setCount(5);
+		item.setValue(65.5);
+		list.add(item);
+		item = new ProductValueItem();
+		item.setEan("00000002");
+		item.setCount(5);
+		item.setValue(65.5);
+		list.add(item);
+		item = new ProductValueItem();
+		item.setEan("00000002");
+		item.setCount(5);
+		item.setValue(65.5);
+		list.add(item);
+		item = new ProductValueItem();
+		item.setEan("00000002");
+		item.setCount(5);
+		item.setValue(65.5);
+		list.add(item);
+		item = new ProductValueItem();
+		item.setEan("00000002");
+		item.setCount(5);
+		item.setValue(65.5);
+		list.add(item);
+
+		return list;
 	}
 }

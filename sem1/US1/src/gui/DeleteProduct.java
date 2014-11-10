@@ -29,9 +29,9 @@ public class DeleteProduct extends JPanel {
 		this.database = db;
 		setLayout(null);
 
-		JLabel lblEanCode = new JLabel("Product Number:");
-		lblEanCode.setBounds(10, 14, 109, 14);
-		add(lblEanCode);
+		JLabel lblProductNum = new JLabel("Product Number:");
+		lblProductNum.setBounds(10, 14, 109, 14);
+		add(lblProductNum);
 
 		fieldProductNum = new JTextField();
 		fieldProductNum.setBounds(131, 11, 173, 20);
@@ -49,7 +49,7 @@ public class DeleteProduct extends JPanel {
 					if (deleted) {
 						JOptionPane.showMessageDialog(getParent(), "item (product number:" + productNum + ") was deleted");
 					} else {
-						JOptionPane.showMessageDialog(getParent(), "item was not added", "Insert error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(getParent(), "item was not deleted", "Delete error", JOptionPane.ERROR_MESSAGE);
 					}
 				} catch (NumberFormatException e) {
 					System.err.println(e.getMessage());
@@ -57,7 +57,7 @@ public class DeleteProduct extends JPanel {
 
 			}
 		});
-		btnDelete.setBounds(354, 66, 89, 23);
+		btnDelete.setBounds(349, 43, 89, 23);
 		add(btnDelete);
 	}
 
