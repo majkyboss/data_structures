@@ -3,13 +3,13 @@ package rb;
 import java.util.HashMap;
 import java.util.Iterator;
 
-public class RBTreeCheckProperties<T extends Comparable<T>> {
+public class RBTreeCheckProperties<T extends Comparable<T>, V> {
 	public RBTreeCheckProperties() {
 		super();
 	}
 
-	public boolean checkProperties(RBTree<T> tree/* RBNode treeRoot */) {
-		RBNode<T> treeRoot = tree.root;
+	public boolean checkProperties(RBTree<T,V> tree/* RBNode treeRoot */) {
+		RBNode<T,V> treeRoot = tree.root;
 		boolean rootProp = checkRoot(treeRoot);
 		// if (!rootProp)
 		// System.out.println("");
@@ -23,25 +23,25 @@ public class RBTreeCheckProperties<T extends Comparable<T>> {
 		return rootProp && redsChildren && blackHeight;
 	}
 
-	private boolean checkRoot(RBNode<T> root) {
+	private boolean checkRoot(RBNode<T,V> root) {
 		if (root != null && root.getColor() != RBNode.COLOR_NODE_BLACK) {
 			return false;
 		}
 		return true;
 	}
 
-	private boolean checkRedNodesChildren(RBNode<T> node) {
+	private boolean checkRedNodesChildren(RBNode<T,V> node) {
 		@SuppressWarnings("unused")
-		RBNode<T> problemNode = null;
+		RBNode<T,V> problemNode = null;
 		boolean ret = true;
 		if (node != null) {
 			if (node.getColor() == RBNode.COLOR_NODE_RED) {
-				RBNode<T> lc = node.getLeftChild();
+				RBNode<T,V> lc = node.getLeftChild();
 				if (lc != null && lc.getColor() != RBNode.COLOR_NODE_BLACK) {
 					ret = false;
 					problemNode = lc;
 				}
-				RBNode<T> rc = node.getRightChild();
+				RBNode<T,V> rc = node.getRightChild();
 				if (rc != null && rc.getColor() != RBNode.COLOR_NODE_BLACK) {
 					ret = false;
 					problemNode = rc;
@@ -55,7 +55,7 @@ public class RBTreeCheckProperties<T extends Comparable<T>> {
 		return ret;
 	}
 
-	// private void inOrderTraverse(RBNode<T> root) {
+	// private void inOrderTraverse(RBNode<T,V> root) {
 	// if (root != null) {
 	// inOrderTraverse(root.getLeftChild());
 	//
@@ -63,13 +63,13 @@ public class RBTreeCheckProperties<T extends Comparable<T>> {
 	// }
 	// }
 
-	private HashMap<RBNode<T>, Integer> calcBH(RBNode<T> node, int counter, HashMap<RBNode<T>, Integer> bh) {
+	private HashMap<RBNode<T,V>, Integer> calcBH(RBNode<T,V> node, int counter, HashMap<RBNode<T,V>, Integer> bh) {
 		if (node != null) {
 			if (node.getColor() == RBNode.COLOR_NODE_BLACK) {
 				counter++;
 			}
-			RBNode<T> left = node.getLeftChild();
-			RBNode<T> right = node.getRightChild();
+			RBNode<T,V> left = node.getLeftChild();
+			RBNode<T,V> right = node.getRightChild();
 			if (left == null && right == null) {
 				bh.put(node, counter);
 			} else {
@@ -80,8 +80,8 @@ public class RBTreeCheckProperties<T extends Comparable<T>> {
 		return bh;
 	}
 
-	private boolean checkBH(RBNode<T> treeRoot) {
-		HashMap<RBNode<T>, Integer> bhsTable = new HashMap<>();
+	private boolean checkBH(RBNode<T,V> treeRoot) {
+		HashMap<RBNode<T,V>, Integer> bhsTable = new HashMap<>();
 		bhsTable = calcBH(treeRoot, 0, bhsTable);
 
 		if (bhsTable.isEmpty()) {
@@ -89,10 +89,10 @@ public class RBTreeCheckProperties<T extends Comparable<T>> {
 		}
 
 		int bh = 0;
-		Iterator<RBNode<T>> iterator = bhsTable.keySet().iterator();
+		Iterator<RBNode<T,V>> iterator = bhsTable.keySet().iterator();
 		bh = bhsTable.get(iterator.next());
 		for (; iterator.hasNext();) {
-			RBNode<T> node = iterator.next();
+			RBNode<T,V> node = iterator.next();
 			if (bhsTable.get(node) != bh) {
 				return false;
 			}

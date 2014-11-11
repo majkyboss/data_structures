@@ -1,5 +1,5 @@
 package core;
 
-public interface NodeValue {
-	Object getNodeValue();
+public interface NodeValue<T> {
+	T getNodeValue();
 }

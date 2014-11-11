@@ -1,6 +1,6 @@
 package core;
 
-public class IntegerNodeValue implements NodeValue {
+public class IntegerNodeValue implements NodeValue<Integer> {
 	private Integer value;
 
 	public IntegerNodeValue(Integer value) {
@@ -9,7 +9,7 @@ public class IntegerNodeValue implements NodeValue {
 	}
 
 	@Override
-	public Object getNodeValue() {
+	public Integer getNodeValue() {
 		return value;
 	}
 

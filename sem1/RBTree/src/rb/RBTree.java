@@ -3,12 +3,12 @@ package rb;
 import core.NodeValue;
 
 /**
- * Class represents Red-Black tree structure. Works only with Red-Black nodes {@link RBNode<T>}. <br>
+ * Class represents Red-Black tree structure. Works only with Red-Black nodes {@link RBNode<T, V>}. <br>
  * T is key type
  * 
  * @author Banik
  */
-public class RBTree<T extends Comparable<T>> {
+public class RBTree<T extends Comparable<T>, V> {
 	protected static final int INDENT_STEP = 6;
 
 	@SuppressWarnings("rawtypes")
@@ -31,7 +31,7 @@ public class RBTree<T extends Comparable<T>> {
 		}
 	}
 
-	protected RBNode<T> root = null;
+	protected RBNode<T, V> root = null;
 
 	/**
 	 * 
@@ -54,11 +54,11 @@ public class RBTree<T extends Comparable<T>> {
 	 * 
 	 * @param topOfRotation
 	 */
-	private void rightRotation(RBNode<T> topOfRotation) {
-		RBNode<T> centerOfRotaion = topOfRotation.getLeftChild();
+	private void rightRotation(RBNode<T, V> topOfRotation) {
+		RBNode<T, V> centerOfRotaion = topOfRotation.getLeftChild();
 		centerOfRotaion.setParent(topOfRotation.getParent());
 		if (topOfRotation.getParent() != null) {
-			RBNode<T> yParent = ((RBNode<T>) topOfRotation.getParent());
+			RBNode<T, V> yParent = ((RBNode<T, V>) topOfRotation.getParent());
 			if (yParent != null && topOfRotation.equals(yParent.getLeftChild())) {
 				yParent.setLeftChild(centerOfRotaion);
 			} else {
@@ -95,11 +95,11 @@ public class RBTree<T extends Comparable<T>> {
 	 * 
 	 * @param topOfRotation
 	 */
-	private void leftRotation(RBNode<T> topOfRotation/* topOfRotation */) {
-		RBNode<T> centerOfRotaion = topOfRotation.getRightChild();
+	private void leftRotation(RBNode<T, V> topOfRotation/* topOfRotation */) {
+		RBNode<T, V> centerOfRotaion = topOfRotation.getRightChild();
 		centerOfRotaion.setParent(topOfRotation.getParent());
 		if (topOfRotation.getParent() != null) {
-			RBNode<T> yParent = ((RBNode<T>) topOfRotation.getParent());
+			RBNode<T, V> yParent = ((RBNode<T, V>) topOfRotation.getParent());
 			if (yParent != null && topOfRotation.equals(yParent.getRightChild())) {
 				yParent.setRightChild(centerOfRotaion);
 			} else {
@@ -116,21 +116,21 @@ public class RBTree<T extends Comparable<T>> {
 		centerOfRotaion.setLeftChild(topOfRotation);
 	}
 
-	public boolean insert(RBNode<T> newNode) {
+	public boolean insert(RBNode<T, V> newNode) {
 		// if item with same key is already inserted then do not insert the item
-		RBNode<T> foundItem = find(newNode.getKey());
+		RBNode<T, V> foundItem = find(newNode.getKey());
 		if (foundItem != null) {
 			return false;
 		}
 
-		RBNode<T> x = root;
-		RBNode<T> parent = null;
+		RBNode<T, V> x = root;
+		RBNode<T, V> parent = null;
 		while (x != null) {
 			parent = x;
 			if (newNode.compareTo(x) < 0) {
-				x = (RBNode<T>) x.getLeftChild();
+				x = (RBNode<T, V>) x.getLeftChild();
 			} else {
-				x = (RBNode<T>) x.getRightChild();
+				x = (RBNode<T, V>) x.getRightChild();
 			}
 		}
 		newNode.setParent(parent);
@@ -149,7 +149,7 @@ public class RBTree<T extends Comparable<T>> {
 		return true;
 	}
 
-	private void insertFixUp(RBNode<T> z) {
+	private void insertFixUp(RBNode<T, V> z) {
 		//@f:off
 //		while color[p[z]] = RED
 //			    do if p[z] = left[p[p[z]]]
@@ -171,17 +171,17 @@ public class RBTree<T extends Comparable<T>> {
 		//@f:on
 		// @f:on
 
-		RBNode<T> pZ = (RBNode<T>) z.getParent();
+		RBNode<T, V> pZ = (RBNode<T, V>) z.getParent();
 		while (pZ != null && pZ.getColor() == RBNode.COLOR_NODE_RED) {
 			if (pZ.equals(root)) {
 				pZ.setColor(RBNode.COLOR_NODE_BLACK);
 			}
 
-			RBNode<T> ppZ = (RBNode<T>) z.getParent().getParent();
+			RBNode<T, V> ppZ = (RBNode<T, V>) z.getParent().getParent();
 			if (ppZ != null) { // added for null object checking. both branches
 								// had same condition
 				if (pZ.equals(ppZ.getLeftChild())) {
-					RBNode<T> y = ppZ.getRightChild();
+					RBNode<T, V> y = ppZ.getRightChild();
 					if (y != null && y.getColor() == RBNode.COLOR_NODE_RED) {
 						pZ.setColor(RBNode.COLOR_NODE_BLACK);
 						y.setColor(RBNode.COLOR_NODE_BLACK);
@@ -191,14 +191,14 @@ public class RBTree<T extends Comparable<T>> {
 						if (z.equals(pZ.getRightChild())) {
 							z = pZ;
 							leftRotation(z);
-							pZ = (RBNode<T>) z.getParent();
+							pZ = (RBNode<T, V>) z.getParent();
 						}
 						pZ.setColor(RBNode.COLOR_NODE_BLACK);
 						ppZ.setColor(RBNode.COLOR_NODE_RED);
 						rightRotation(ppZ);
 					}
 				} else if (pZ.equals(ppZ.getRightChild())) {
-					RBNode<T> y = ppZ.getLeftChild();
+					RBNode<T, V> y = ppZ.getLeftChild();
 					if (y != null && y.getColor() == RBNode.COLOR_NODE_RED) {
 						pZ.setColor(RBNode.COLOR_NODE_BLACK);
 						y.setColor(RBNode.COLOR_NODE_BLACK);
@@ -208,7 +208,7 @@ public class RBTree<T extends Comparable<T>> {
 						if (z.equals(pZ.getLeftChild())) {
 							z = pZ;
 							rightRotation(z);
-							pZ = (RBNode<T>) z.getParent();
+							pZ = (RBNode<T, V>) z.getParent();
 						}
 						pZ.setColor(RBNode.COLOR_NODE_BLACK);
 						ppZ.setColor(RBNode.COLOR_NODE_RED);
@@ -216,16 +216,16 @@ public class RBTree<T extends Comparable<T>> {
 					}
 				}
 			}
-			pZ = (RBNode<T>) z.getParent();
+			pZ = (RBNode<T, V>) z.getParent();
 
 		}
 		root.setColor(RBNode.COLOR_NODE_BLACK);
 	}
 
-	public RBNode<T> delete(RBNode<T> z) {
-		RBNode<T> leftChild = z.getLeftChild();
-		RBNode<T> rightChild = z.getRightChild();
-		RBNode<T> zParent = z.getParent();
+	public RBNode<T, V> delete(RBNode<T, V> z) {
+		RBNode<T, V> leftChild = z.getLeftChild();
+		RBNode<T, V> rightChild = z.getRightChild();
+		RBNode<T, V> zParent = z.getParent();
 
 		if (leftChild == null && rightChild == null) { // 1. if node is leaf
 			// if zParent is null then z was root node
@@ -245,11 +245,11 @@ public class RBTree<T extends Comparable<T>> {
 			return z;
 
 		} else if (leftChild != null && rightChild != null) { // 3. if the z node has two children
-			RBNode<T> successor = treeSuccessor(z);
+			RBNode<T, V> successor = treeSuccessor(z);
 
 			// replaceNode(z, successor);
 			// replace z node by successor
-			NodeValue zValue = z.getValue();
+			NodeValue<V> zValue = z.getValue();
 			// T zKey = z.getKey();
 			// int zColor = z.getColor();
 			z.setValue(successor.getValue());
@@ -257,9 +257,9 @@ public class RBTree<T extends Comparable<T>> {
 			successor.setValue(zValue);
 			// successor.setColor(zColor);
 
-			// RBNode<T> successorRightChild = successor.getRightChild();
+			// RBNode<T, V> successorRightChild = successor.getRightChild();
 
-			RBNode<T> returnObject = delete(successor);
+			RBNode<T, V> returnObject = delete(successor);
 
 			// set color of successor child
 			// int oldSuccessorColor = successor.getColor();
@@ -278,7 +278,7 @@ public class RBTree<T extends Comparable<T>> {
 			return returnObject;
 
 		} else {/* if (leftChild != null || rightChild != null) */// 2. if node has only one child
-			RBNode<T> child = null;
+			RBNode<T, V> child = null;
 			if (leftChild != null) { // if node has only left child
 				child = leftChild;
 				z.setLeftChild(null);
@@ -304,9 +304,9 @@ public class RBTree<T extends Comparable<T>> {
 		}
 	}
 
-	private RBNode<T> treeSuccessor(RBNode<T> node) {
+	private RBNode<T, V> treeSuccessor(RBNode<T, V> node) {
 
-		RBNode<T> succ;
+		RBNode<T, V> succ;
 		if ((succ = node.getRightChild()) != null) {
 			// ak ma vrchol pravy podstrom tak najdeme minimum v tomto podstrome
 			while (succ.getLeftChild() != null) {
@@ -317,16 +317,16 @@ public class RBTree<T extends Comparable<T>> {
 			// (najblizsieho podla hodnoty kluca)
 			// prechadzame rodicov az do kym nejaky rodic vrcholu "node" je lavy
 			// syn
-			RBNode<T> x = node;
-			succ = (RBNode<T>) x.getParent();
+			RBNode<T, V> x = node;
+			succ = (RBNode<T, V>) x.getParent();
 			while (succ != null && x.equals(succ.getRightChild())) {
 				x = succ;
-				succ = (RBNode<T>) x.getParent();
+				succ = (RBNode<T, V>) x.getParent();
 			}
 
 			// // for version
-			// for (succ = (RBNode<T>) node.getParent();
-			// node.equals(succ.getRightChild()); succ = (RBNode<T>)
+			// for (succ = (RBNode<T, V>) node.getParent();
+			// node.equals(succ.getRightChild()); succ = (RBNode<T, V>)
 			// succ.getParent()) {
 			// node = succ;
 			// }
@@ -335,16 +335,16 @@ public class RBTree<T extends Comparable<T>> {
 		return succ;
 	}
 
-	private void deleteFixUp(RBNode<T> z, RBNode<T> zParent, boolean zWasLeft) {
+	private void deleteFixUp(RBNode<T, V> z, RBNode<T, V> zParent, boolean zWasLeft) {
 		// TODO fix the code
 		// works bad when deleting node 60R from main
 
 		while (zParent != null) { // repeat until the checking will grow up to the root of tree
 
 			if (zWasLeft) { // if z was left child of its parent
-				RBNode<T> zBrother = zParent.getRightChild();
-				RBNode<T> broLeftChild = zBrother.getLeftChild();
-				RBNode<T> broRightChild = zBrother.getRightChild();
+				RBNode<T, V> zBrother = zParent.getRightChild();
+				RBNode<T, V> broLeftChild = zBrother.getLeftChild();
+				RBNode<T, V> broRightChild = zBrother.getRightChild();
 
 				if (zBrother.getColor() == RBNode.COLOR_NODE_BLACK) { // if brother of z node has black color
 					if ((broLeftChild == null || broLeftChild.getColor() == RBNode.COLOR_NODE_BLACK) && (broRightChild == null || broRightChild.getColor() == RBNode.COLOR_NODE_BLACK)) {
@@ -413,9 +413,9 @@ public class RBTree<T extends Comparable<T>> {
 				}
 
 			} else if (!zWasLeft) {
-				RBNode<T> zBrother = zParent.getLeftChild();
-				RBNode<T> broLeftChild = zBrother.getLeftChild();
-				RBNode<T> broRightChild = zBrother.getRightChild();
+				RBNode<T, V> zBrother = zParent.getLeftChild();
+				RBNode<T, V> broLeftChild = zBrother.getLeftChild();
+				RBNode<T, V> broRightChild = zBrother.getRightChild();
 
 				if (zBrother.getColor() == RBNode.COLOR_NODE_BLACK) { // if brother of z node has black color
 					if ((broLeftChild == null || broLeftChild.getColor() == RBNode.COLOR_NODE_BLACK) && (broRightChild == null || broRightChild.getColor() == RBNode.COLOR_NODE_BLACK)) {
@@ -486,8 +486,8 @@ public class RBTree<T extends Comparable<T>> {
 
 	}
 
-	public RBNode<T> find(T key) {
-		RBNode<T> x = root;
+	public RBNode<T, V> find(T key) {
+		RBNode<T, V> x = root;
 
 		while (x != null && x.compareTo(key) != 0) {
 			if (x.compareTo(key) > 0) {
@@ -504,7 +504,7 @@ public class RBTree<T extends Comparable<T>> {
 		return size(root);
 	}
 
-	private int size(RBNode<T> node) {
+	private int size(RBNode<T, V> node) {
 		int size = 0;
 		if (node != null) {
 			size++;
@@ -518,7 +518,7 @@ public class RBTree<T extends Comparable<T>> {
 		inOrderTraverse(root);
 	}
 
-	public void inOrderTraverse(RBNode<T> root) {
+	public void inOrderTraverse(RBNode<T, V> root) {
 		if (root != null) {
 			inOrderTraverse(root.getLeftChild());
 			System.out.println("  " + root + " " + (root.getColor() == RBNode.COLOR_NODE_BLACK ? "Black" : root.getColor() == RBNode.COLOR_NODE_RED ? "Red" : "") + (root.equals(this.root) ? " (root)" : ""));
@@ -530,7 +530,7 @@ public class RBTree<T extends Comparable<T>> {
 		printHelper(root, 0);
 	}
 
-	public RBNode<T> getRoot() {
+	public RBNode<T, V> getRoot() {
 		return root;
 	}
 }

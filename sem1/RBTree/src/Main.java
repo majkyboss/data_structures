@@ -15,7 +15,7 @@ public class Main {
 		app.start();
 	}
 
-	private RBTree<Integer> tree = new RBTree<Integer>();
+	private RBTree<Integer, Integer> tree = new RBTree<>();
 	private boolean started = false;
 
 	public void start() {
@@ -48,7 +48,7 @@ public class Main {
 
 		switch (args[0]) {
 		case "create":
-			tree = new RBTree<Integer>();
+			tree = new RBTree<Integer, Integer>();
 			System.out.println("created");
 			break;
 		case "add":
@@ -58,7 +58,7 @@ public class Main {
 			}
 			int key = Integer.parseInt(args[1]);
 			int value = key;
-			RBNode<Integer> node = new IntegerNode(new IntegerNodeValue(value));
+			RBNode<Integer, Integer> node = new IntegerNode(new IntegerNodeValue(value));
 			if (tree != null) {
 				if (tree.insert(node)) {
 					System.out.println("added " + key);
@@ -72,7 +72,7 @@ public class Main {
 				System.out.println("Error");
 				break;
 			}
-			RBNode<Integer> nodeToDel = null;
+			RBNode<Integer, Integer> nodeToDel = null;
 			try {
 				key = Integer.parseInt(args[1]);
 				value = Integer.parseInt(args[1]);
@@ -81,7 +81,7 @@ public class Main {
 				key = 0;
 			}
 			if (nodeToDel != null) {
-				RBNode<Integer> deletedNode = tree.delete(nodeToDel);
+				RBNode<Integer, Integer> deletedNode = tree.delete(nodeToDel);
 				System.out.println(deletedNode.toString() + " deleted");
 			} else {
 				System.out.println("node is not in the tree, key: " + key);
@@ -89,7 +89,7 @@ public class Main {
 			parse("check");
 			break;
 		case "reset":
-			tree = new RBTree<Integer>();
+			tree = new RBTree<>();
 			System.out.println("tree reset");
 			break;
 		case "print":
@@ -97,7 +97,7 @@ public class Main {
 			tree.printBetter();
 			break;
 		case "check":
-			RBTreeCheckProperties<Integer> checker = new RBTreeCheckProperties<>();
+			RBTreeCheckProperties<Integer, Integer> checker = new RBTreeCheckProperties<>();
 			boolean test = checker.checkProperties(tree);
 			if (test)
 				System.out.println("All right!");
@@ -166,7 +166,7 @@ public class Main {
 		parse("del 1");
 	}
 
-	public class IntegerNode extends RBNode<Integer> {
+	public class IntegerNode extends RBNode<Integer, Integer> {
 		// private int key;
 
 		public IntegerNode(IntegerNodeValue value) {
