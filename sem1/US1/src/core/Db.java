@@ -6,21 +6,18 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import rb.RBNode;
+import rb.RBTree;
 import core.data.Client;
-import core.data.IdCounter;
 import core.data.Product;
 import core.data.TransportProduct;
 import core.data.WareHouseValue;
-import rb.RBNode;
-import rb.RBTree;
 
 public class Db implements StorageDatabase {
-	private int id;
 	private RBTree<Integer> warehousesById;
 	private RBTree<Integer> itemsByProductNumber;
 
 	public Db() {
-		this.id = IdCounter.getNextId();
 		this.warehousesById = new RBTree<>();
 		this.itemsByProductNumber = new RBTree<>();
 	}

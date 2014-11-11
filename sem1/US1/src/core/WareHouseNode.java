@@ -1,15 +1,13 @@
 package core;
 
-import java.util.Date;
-
-import core.data.Product;
-import core.data.WareHouseValue;
 import rb.RBNode;
 import rb.RBTree;
+import core.data.Product;
+import core.data.WareHouseValue;
 
 public class WareHouseNode extends RBNode<Integer> {
 	private RBTree<String> storedByEan;
-	private RBTree<ProductNumberKey> dispatchedByPN;
+	private RBTree<Integer> dispatchedByPN;
 
 	public WareHouseNode(WareHouseValue value) {
 		super(value);
@@ -25,17 +23,16 @@ public class WareHouseNode extends RBNode<Integer> {
 	public void addProduct(Product product) {
 		// add product to exist ean group - add one lie in db
 		RBNode<String> foundNode = storedByEan.find(product.getEan());
-		if (foundNode == null) {
-			// or if the ean is not in db insert it
-			storedByEan.insert(new RBNode<String>(product) {
-				private RBTree<Date> itemsByDate = new RBTree<>();
+		if (foundNode != null) {
+			//if the ean is in db
+			// insert product do ean node -------------------------
+				// find if the ean node has 
+		} else {
+			// or if the ean is not in db insert the product to db
+			//
+			EanNode nodeToAdd = new EanNode(product);
 
-				@Override
-				public String getKey() {
-					return ((Product) value).getEan();
-				}
-			});
-
+			storedByEan.insert(nodeToAdd);
 		}
 	}
 
