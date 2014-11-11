@@ -202,10 +202,59 @@ public class RBTreeTest {
 	// }
 
 	@Test
-	public void testOther() {
-		String a = "aaba";
-		String b = "aaab";
+	public void testGradually() {
+		int itemsCount = (int) Math.pow(10, 5);
 
-		System.out.println(a.compareTo(b));
+		LinkedList<Integer> addedItems = new LinkedList<>();
+
+		int i = 0;
+		for (; i < itemsCount;) {
+			// generate one item
+			int key = i;
+			IntegerNodeValue treeValue = new IntegerNodeValue(key);
+			// insert generated item to RB tree
+			boolean iserted = tree.insert(new RBNode<Integer>(treeValue) {
+
+				@Override
+				public Integer getKey() {
+					return (Integer) value.getNodeValue();
+				}
+			});
+			if (iserted) {
+				i++;
+				addedItems.add(key);
+			}
+		}
+
+		for (i = 0; i < itemsCount;) {
+			// generate one item key
+			int index = 0;
+			int key = addedItems.get(index);
+			addedItems.remove(index);
+			// int key = (int) (Math.random() * maxNum);
+			// try to find the item
+			RBNode<Integer> item = tree.find(key);
+			// try to delete item
+			if (item != null) {
+				tree.delete(item);
+				i++;
+				if (i % 100 == 0) {
+					System.out.print("deleted item with key " + item.getKey());
+					System.out.println("i is: " + i);
+				}
+
+				RBTreeCheckProperties<Integer> checker = new RBTreeCheckProperties<>();
+				if (i % 1000 == 0) {
+					boolean c = checker.checkProperties(tree);
+					System.out.println(c);
+					Assert.assertTrue(c);
+				}
+			}
+		}
+
+		RBTreeCheckProperties<Integer> checker = new RBTreeCheckProperties<>();
+		boolean checked = checker.checkProperties(tree);
+
+		Assert.assertTrue(checked);
 	}
 }

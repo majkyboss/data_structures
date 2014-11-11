@@ -1,18 +1,15 @@
-package core.treeItems;
+package core;
 
 import java.util.Date;
 
 import rb.RBNode;
 import rb.RBTree;
-import core.Product;
-import core.ProductNumberKey;
-import core.WareHouseValue;
 
-public class WareHouseTreeItem extends RBNode<Integer> {
+public class WareHouseNode extends RBNode<Integer> {
 	private RBTree<String> storedByEan;
 	private RBTree<ProductNumberKey> dispatchedByPN;
 
-	public WareHouseTreeItem(WareHouseValue value) {
+	public WareHouseNode(WareHouseValue value) {
 		super(value);
 		this.storedByEan = new RBTree<>();
 		this.dispatchedByPN = new RBTree<>();

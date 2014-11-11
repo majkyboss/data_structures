@@ -116,6 +116,12 @@ public class Db implements StorageDatabase {
 
 	@Override
 	public boolean addWarehouse(WareHouseValue wh) {
+		// 1. search if warehouse is not already inserted
+
+		// 2. create WHNode
+		// 3. add WHValue to WHNode
+		// 4. store WHNode with WHValue to DB
+
 		// TODO Auto-generated method stub
 		return false;
 	}
