@@ -21,20 +21,6 @@ public class Db implements StorageDatabase {
 	}
 
 	@Override
-	public boolean addItem(int whId, Product product) {
-		RBNode<Integer> whNode = warehousesById.find(whId);
-
-		return true;
-	}
-
-	@Override
-	public boolean addWareHouse(WareHouseValue warehouse) {
-		// boolean inserted =
-
-		return true;
-	}
-
-	@Override
 	public List<Product> searchProducts(String ean, Date dateFrom, Date dateTo, int count, int wareHouseId) {
 		// TODO method to find data in DB
 
@@ -51,6 +37,21 @@ public class Db implements StorageDatabase {
 	public Product searchProduct(int productNum) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean addProduct(int whId, Product product) {
+		// 1. find if the item with same value is not inserted
+		RBNode<Integer> whNode = warehousesById.find(whId);
+		if (whNode != null) {
+			return false;
+		}
+
+		// 2. create item with entered value
+
+		// 3. add item to warehouse
+
+		return true;
 	}
 
 	@Override

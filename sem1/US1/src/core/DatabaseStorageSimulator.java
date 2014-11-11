@@ -23,16 +23,6 @@ public class DatabaseStorageSimulator implements StorageDatabase {
 	}
 
 	@Override
-	public boolean addItem(int whId, Product product) {
-		return true;
-	}
-
-	@Override
-	public boolean addWareHouse(WareHouseValue warehouse) {
-		return true;
-	}
-
-	@Override
 	public List<Product> searchProducts(String ean, Date dateFrom, Date dateTo, int count, int wareHouseId) {
 		LinkedList<Product> l = new LinkedList<>();
 		Product p = new Product();
@@ -80,6 +70,11 @@ public class DatabaseStorageSimulator implements StorageDatabase {
 		p.setProductNumber(1);
 		p.setCost(25.5);
 		return p;
+	}
+
+	@Override
+	public boolean addProduct(int whId, Product product) {
+		return true;
 	}
 
 	@Override

@@ -65,7 +65,7 @@ public class AddProduct extends JPanel {
 					p.setProductNumber(productionNumber);
 					p.setCost(cost);
 
-					boolean added = database.addItem(wareHouseId, p);
+					boolean added = database.addProduct(wareHouseId, p);
 
 					if (added) {
 						JOptionPane.showMessageDialog(getParent(), "item (product number:" + p.getProductNumber() + ") was added");

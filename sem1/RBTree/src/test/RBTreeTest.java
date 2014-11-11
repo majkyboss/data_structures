@@ -99,7 +99,7 @@ public class RBTreeTest {
 	public void testDel() {
 		// this.testAdd();
 
-		int itemsCount = (int) Math.pow(10, 6);
+		int itemsCount = (int) Math.pow(10, 5);
 		// !!! 10^7 - out of memory
 		// 10^5 - time: ~16s
 		// 10^6 - time: ~4853s
