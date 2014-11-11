@@ -170,7 +170,8 @@ public class Main {
 		// private int key;
 
 		public IntegerNode(IntegerNodeValue value) {
-			super(value);
+			super();
+			setValue(value);
 			// this.key = key;
 		}
 

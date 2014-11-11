@@ -29,7 +29,7 @@ public class RBTreeTest {
 			// IntegerNodeKey treeKey = new IntegerNodeKey(key);
 			IntegerNodeValue treeValue = new IntegerNodeValue(key);
 			// insert generated item to RB tree
-			boolean iserted = tree.insert(new RBNode<Integer>(treeValue) {
+			RBNode<Integer> node = new RBNode<Integer>() {
 
 				@Override
 				public Integer getKey() {
@@ -40,7 +40,9 @@ public class RBTreeTest {
 				// public void setKey(Integer key) {
 				// new IntegerNodeValue(key);
 				// }
-			});
+			};
+			node.setValue(treeValue);
+			boolean iserted = tree.insert(node);
 			if (iserted) {
 				i++;
 			}
@@ -68,7 +70,7 @@ public class RBTreeTest {
 			// IntegerNodeKey treeKey = new IntegerNodeKey(key);
 			IntegerNodeValue treeValue = new IntegerNodeValue(key);
 			// insert generated item to RB tree
-			RBNode<Integer> item = new RBNode<Integer>(treeValue) {
+			RBNode<Integer> item = new RBNode<Integer>() {
 
 				@Override
 				public Integer getKey() {
@@ -80,6 +82,7 @@ public class RBTreeTest {
 				// new IntegerNodeValue(key);
 				// }
 			};
+			item.setValue(treeValue);
 			boolean iserted = tree.insert(item);
 			if (iserted) {
 				i++;
@@ -113,7 +116,7 @@ public class RBTreeTest {
 			// IntegerNodeKey treeKey = new IntegerNodeKey(key);
 			IntegerNodeValue treeValue = new IntegerNodeValue(key);
 			// insert generated item to RB tree
-			boolean iserted = tree.insert(new RBNode<Integer>(treeValue) {
+			RBNode<Integer> node = new RBNode<Integer>() {
 
 				@Override
 				public Integer getKey() {
@@ -124,7 +127,9 @@ public class RBTreeTest {
 				// public void setKey(Integer key) {
 				// new IntegerNodeValue(key);
 				// }
-			});
+			};
+			node.setValue(treeValue);
+			boolean iserted = tree.insert(node);
 			if (iserted) {
 				i++;
 				addedItems.add(key);
@@ -144,15 +149,15 @@ public class RBTreeTest {
 			if (item != null) {
 				tree.delete(item);
 				i++;
-				if (i % 100 == 0) {
-					System.out.print("deleted item with key " + item.getKey());
-					System.out.println("i is: " + i);
-				}
+				// if (i % 100 == 0) {
+				// System.out.print("deleted item with key " + item.getKey());
+				// System.out.println("i is: " + i);
+				// }
 
 				RBTreeCheckProperties<Integer> checker = new RBTreeCheckProperties<>();
 				if (i % 1000 == 0) {
 					boolean c = checker.checkProperties(tree);
-					System.out.println(c);
+					System.out.println(i + " " + c);
 				}
 				// if (!c) {
 				// System.out.println();
@@ -213,13 +218,15 @@ public class RBTreeTest {
 			int key = i;
 			IntegerNodeValue treeValue = new IntegerNodeValue(key);
 			// insert generated item to RB tree
-			boolean iserted = tree.insert(new RBNode<Integer>(treeValue) {
+			RBNode<Integer> node = new RBNode<Integer>() {
 
 				@Override
 				public Integer getKey() {
 					return (Integer) value.getNodeValue();
 				}
-			});
+			};
+			node.setValue(treeValue);
+			boolean iserted = tree.insert(node);
 			if (iserted) {
 				i++;
 				addedItems.add(key);
@@ -238,15 +245,10 @@ public class RBTreeTest {
 			if (item != null) {
 				tree.delete(item);
 				i++;
-				if (i % 100 == 0) {
-					System.out.print("deleted item with key " + item.getKey());
-					System.out.println("i is: " + i);
-				}
 
 				RBTreeCheckProperties<Integer> checker = new RBTreeCheckProperties<>();
 				if (i % 1000 == 0) {
 					boolean c = checker.checkProperties(tree);
-					System.out.println(c);
 					Assert.assertTrue(c);
 				}
 			}

@@ -2,7 +2,8 @@ package rb;
 
 import core.NodeValue;
 
-public abstract class RBNode<T extends Comparable<T>> implements NodeCompare<T> {
+public abstract class RBNode<T extends Comparable<T>> implements
+		NodeCompare<T>, ItemWithKey<T> {
 	public static final int COLOR_NODE_RED = 1;
 	public static final int COLOR_NODE_BLACK = 2;
 	public static final int COLOR_NODE_DOUBLE_BLACK = 3;
@@ -12,8 +13,8 @@ public abstract class RBNode<T extends Comparable<T>> implements NodeCompare<T> 
 	private RBNode<T> leftChild;
 	private RBNode<T> rightChild;
 
-	public RBNode(NodeValue value) {
-		this.value = value;
+	public RBNode() {
+//		this.value = value;
 	}
 
 	public void setColor(int nodeColor) {
@@ -28,11 +29,15 @@ public abstract class RBNode<T extends Comparable<T>> implements NodeCompare<T> 
 		return parent;
 	}
 
+	/**
+	 * Gets value stored in this tree node. The concrete value you can get from method {@link NodeValue#getNodeValue()}
+	 * @return
+	 */
 	public NodeValue getValue() {
 		return value;
 	}
 
-	void setValue(NodeValue value) {
+	public void setValue(NodeValue value) {
 		// if there is no access modifier it will be accessible from this class and this package too, not from subclasses and not from world
 		this.value = value;
 	}

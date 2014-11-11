@@ -6,10 +6,10 @@ package rb;
  * @author Banik
  * @param <T>
  */
-public interface NodeCompare<T extends Comparable<T>> extends Comparable<T> {
+public interface NodeCompare<T extends Comparable<T>> extends ItemWithKey<T> {
 	int compareTo(NodeCompare<T> node);
 
 	// @Override
 	// int compareTo(T key);
-	T getKey();
+//	T getKey();
 }
