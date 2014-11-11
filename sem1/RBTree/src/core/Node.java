@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public interface Node {
 	/**
 	 * Gets all children nodes of this node.
+	 * 
 	 * @return all children nodes.
 	 */
 	ArrayList<Node> getChildren();
@@ -20,8 +21,8 @@ public interface Node {
 	 *                nodes count, or if the entered argument is less then 0
 	 */
 	Node getChild(int nodeNumber) throws IndexOutOfBoundsException;
-	
+
 	Node getParent();
-	
+
 	Object getValue();
 }

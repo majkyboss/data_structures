@@ -36,8 +36,7 @@ public class BinaryNode implements Node {
 	@Override
 	public BinaryNode getChild(int nodeNumber) throws IndexOutOfBoundsException {
 		if (nodeNumber > 2) {
-			throw new IndexOutOfBoundsException(
-					"Entered parameter is out of bounds. Binary tree node has not more than 2 children.");
+			throw new IndexOutOfBoundsException("Entered parameter is out of bounds. Binary tree node has not more than 2 children.");
 		}
 		return (BinaryNode) nodes[nodeNumber];
 	}

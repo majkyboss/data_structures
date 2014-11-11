@@ -1,6 +1,6 @@
 package tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
@@ -15,13 +15,11 @@ public class IdCounterTester {
 		int nextId = IdCounter.getNextId();
 
 		for (int i = 0; i < 5; i++) {
-			System.out
-					.println("------------------------------------------------");
+			System.out.println("------------------------------------------------");
 			System.out.println("iteration " + i);
 			System.out.println("first id: " + firstId);
 			System.out.println("next id: " + nextId);
-			System.out.println("current id counter: "
-					+ IdCounter.getLastId());
+			System.out.println("current id counter: " + IdCounter.getLastId());
 
 			firstId = IdCounter.getLastId();
 

@@ -2,10 +2,6 @@ package gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.util.Date;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -14,9 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import core.Client;
-import core.Product;
 import core.StorageDatabase;
-import core.WareHouse;
+import core.WareHouseValue;
 
 public class AddProductPlace extends JPanel {
 	private StorageDatabase database;
@@ -57,7 +52,7 @@ public class AddProductPlace extends JPanel {
 						}
 					} else {
 						int id = Integer.parseInt(fieldId.getText());
-						WareHouse wh = new WareHouse();
+						WareHouseValue wh = new WareHouseValue();
 						wh.setId(id);
 						wh.setAddress(address);
 						wh.setName(name);

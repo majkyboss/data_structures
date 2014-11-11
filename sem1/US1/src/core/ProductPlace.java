@@ -7,6 +7,12 @@ public class ProductPlace {
 	protected String address;
 	protected List<Product> arrivedItems;
 
+	public ProductPlace() {
+		super();
+		this.name = "";
+		this.address = "";
+	}
+
 	public String getName() {
 		return name;
 	}

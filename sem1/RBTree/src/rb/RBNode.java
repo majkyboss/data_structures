@@ -76,7 +76,7 @@ public abstract class RBNode<T extends Comparable<T>> implements NodeCompare<T> 
 		getKey() +
 		// " v:"+ value.getNodeValue()+
 		// " c:" + (color == RBNode.COLOR_NODE_BLACK ? "B" : "R")
-				"";
+		"";
 	}
 
 	@Override
@@ -93,6 +93,6 @@ public abstract class RBNode<T extends Comparable<T>> implements NodeCompare<T> 
 	@Override
 	public abstract T getKey();
 
-	//public abstract void setKey(T key);
+	// public abstract void setKey(T key);
 
 }

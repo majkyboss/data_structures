@@ -1,11 +1,8 @@
 package gui.tables;
 
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
-
-import core.Product;
 
 public class ProductsValueModel extends AbstractTableModel {
 	private List<ProductValueItem> items;

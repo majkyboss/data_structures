@@ -8,7 +8,7 @@ import java.util.List;
 public interface StorageDatabase {
 	boolean addItem(int whId, Product product);
 
-	boolean addWareHouse(WareHouse warehouse);
+	boolean addWareHouse(WareHouseValue warehouse);
 
 	List<Product> searchProducts(String ean, Date dateFrom, Date dateTo, int count, int wareHouseId);
 
@@ -36,7 +36,7 @@ public interface StorageDatabase {
 
 	boolean addClient(Client c, int whId);
 
-	boolean addWarehouse(WareHouse wh);
+	boolean addWarehouse(WareHouseValue wh);
 
 	boolean deleteProduct(int productNum);
 

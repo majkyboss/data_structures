@@ -7,12 +7,12 @@ public class GeneralNode implements Node {
 	private Node parent;
 	private Object key;
 	private Object value;
-	
+
 	public GeneralNode() {
 		nodes = new ArrayList<>();
 	}
-	
-	public GeneralNode(Object key, Object value){
+
+	public GeneralNode(Object key, Object value) {
 		nodes = new ArrayList<>();
 		this.key = key;
 		this.value = value;

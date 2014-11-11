@@ -1,7 +1,5 @@
 package tests;
 
-import static org.junit.Assert.*;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
@@ -26,7 +24,7 @@ public class TestDateFormat {
 		try {
 			Date date = shortDf.parse("22.12.2014");
 			System.out.println(date);
-			
+
 			date = shortDf.parse("12/12/2006");
 			System.out.println(date);
 		} catch (ParseException e) {

@@ -31,6 +31,7 @@ public class RBTreeCheckProperties<T extends Comparable<T>> {
 	}
 
 	private boolean checkRedNodesChildren(RBNode<T> node) {
+		@SuppressWarnings("unused")
 		RBNode<T> problemNode = null;
 		boolean ret = true;
 		if (node != null) {
@@ -54,13 +55,13 @@ public class RBTreeCheckProperties<T extends Comparable<T>> {
 		return ret;
 	}
 
-	private void inOrderTraverse(RBNode<T> root) {
-		if (root != null) {
-			inOrderTraverse(root.getLeftChild());
-
-			inOrderTraverse(root.getRightChild());
-		}
-	}
+	// private void inOrderTraverse(RBNode<T> root) {
+	// if (root != null) {
+	// inOrderTraverse(root.getLeftChild());
+	//
+	// inOrderTraverse(root.getRightChild());
+	// }
+	// }
 
 	private HashMap<RBNode<T>, Integer> calcBH(RBNode<T> node, int counter, HashMap<RBNode<T>, Integer> bh) {
 		if (node != null) {
@@ -82,7 +83,7 @@ public class RBTreeCheckProperties<T extends Comparable<T>> {
 	private boolean checkBH(RBNode<T> treeRoot) {
 		HashMap<RBNode<T>, Integer> bhsTable = new HashMap<>();
 		bhsTable = calcBH(treeRoot, 0, bhsTable);
-		
+
 		if (bhsTable.isEmpty()) {
 			return true;
 		}

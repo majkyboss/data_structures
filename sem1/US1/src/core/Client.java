@@ -1,14 +1,19 @@
 package core;
 
 public class Client extends ProductPlace {
-	private String id;
-	private WareHouse warehouse;
+	public Client() {
+		super();
+		this.id = IdCounter.getNextId() + "";
+	}
 
-	public WareHouse getWarehouse() {
+	private String id;
+	private WareHouseValue warehouse;
+
+	public WareHouseValue getWarehouse() {
 		return warehouse;
 	}
 
-	public void setWarehouse(WareHouse warehouse) {
+	public void setWarehouse(WareHouseValue warehouse) {
 		this.warehouse = warehouse;
 	}
 

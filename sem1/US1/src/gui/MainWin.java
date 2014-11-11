@@ -1,26 +1,20 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.swing.JTextField;
-import javax.swing.BoxLayout;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 
-import core.Db;
 import core.DatabaseStorageSimulator;
+import core.Db;
 import core.StorageDatabase;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class MainWin extends JFrame {
 
@@ -213,9 +207,9 @@ public class MainWin extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 	}
 
-	private void initMenu(JMenu menu) {
-
-	}
+	// private void initMenu(JMenu menu) {
+	//
+	// }
 
 	private void showContent(JPanel component) {
 		contentPane.removeAll();

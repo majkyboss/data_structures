@@ -11,6 +11,7 @@ import core.NodeValue;
 public class RBTree<T extends Comparable<T>> {
 	protected static final int INDENT_STEP = 6;
 
+	@SuppressWarnings("rawtypes")
 	private static void printHelper(RBNode n, int indent) {
 		if (n == null) {
 			System.out.print("<empty tree>");
@@ -99,8 +100,7 @@ public class RBTree<T extends Comparable<T>> {
 		centerOfRotaion.setParent(topOfRotation.getParent());
 		if (topOfRotation.getParent() != null) {
 			RBNode<T> yParent = ((RBNode<T>) topOfRotation.getParent());
-			if (yParent != null
-					&& topOfRotation.equals(yParent.getRightChild())) {
+			if (yParent != null && topOfRotation.equals(yParent.getRightChild())) {
 				yParent.setRightChild(centerOfRotaion);
 			} else {
 				yParent.setLeftChild(centerOfRotaion);
@@ -250,31 +250,31 @@ public class RBTree<T extends Comparable<T>> {
 			// replaceNode(z, successor);
 			// replace z node by successor
 			NodeValue zValue = z.getValue();
-			T zKey = z.getKey();
-			int zColor = z.getColor();
+			// T zKey = z.getKey();
+			// int zColor = z.getColor();
 			z.setValue(successor.getValue());
-			//z.setColor(successor.getColor());
+			// z.setColor(successor.getColor());
 			successor.setValue(zValue);
-			//successor.setColor(zColor);
+			// successor.setColor(zColor);
 
-			RBNode<T> successorRightChild = successor.getRightChild();
-			
+			// RBNode<T> successorRightChild = successor.getRightChild();
+
 			RBNode<T> returnObject = delete(successor);
-			
+
 			// set color of successor child
-			int oldSuccessorColor = successor.getColor();
-//			if (successorRightChild != null) {
-//				successorRightChild.setColor(successor.getColor());
-//				successor.setColor(z.getColor());
-//			}
-			
+			// int oldSuccessorColor = successor.getColor();
+			// if (successorRightChild != null) {
+			// successorRightChild.setColor(successor.getColor());
+			// successor.setColor(z.getColor());
+			// }
+
 			// maybe we do not need this
 			// because we changed the color of successor child to successor color
-//			if (oldSuccessorColor == RBNode.COLOR_NODE_BLACK) {
-//				boolean zWasLeft = (zParent == null) ? false : z.equals(zParent.getLeftChild());
-//
-//				deleteFixUp(z, zParent, zWasLeft);
-//			}
+			// if (oldSuccessorColor == RBNode.COLOR_NODE_BLACK) {
+			// boolean zWasLeft = (zParent == null) ? false : z.equals(zParent.getLeftChild());
+			//
+			// deleteFixUp(z, zParent, zWasLeft);
+			// }
 			return returnObject;
 
 		} else {/* if (leftChild != null || rightChild != null) */// 2. if node has only one child
@@ -336,9 +336,9 @@ public class RBTree<T extends Comparable<T>> {
 	}
 
 	private void deleteFixUp(RBNode<T> z, RBNode<T> zParent, boolean zWasLeft) {
-		//TODO fix the code
+		// TODO fix the code
 		// works bad when deleting node 60R from main
-		
+
 		while (zParent != null) { // repeat until the checking will grow up to the root of tree
 
 			if (zWasLeft) { // if z was left child of its parent
@@ -347,9 +347,8 @@ public class RBTree<T extends Comparable<T>> {
 				RBNode<T> broRightChild = zBrother.getRightChild();
 
 				if (zBrother.getColor() == RBNode.COLOR_NODE_BLACK) { // if brother of z node has black color
-					if ((broLeftChild == null || broLeftChild.getColor() == RBNode.COLOR_NODE_BLACK)
-							&& (broRightChild == null || broRightChild
-									.getColor() == RBNode.COLOR_NODE_BLACK)) { // case 1 // and if broher's children is black too
+					if ((broLeftChild == null || broLeftChild.getColor() == RBNode.COLOR_NODE_BLACK) && (broRightChild == null || broRightChild.getColor() == RBNode.COLOR_NODE_BLACK)) {
+						// case 1 // and if broher's children is black too
 						zBrother.setColor(RBNode.COLOR_NODE_RED);
 						int zParentOldColor = zParent.getColor();
 						zParent.setColor(RBNode.COLOR_NODE_BLACK);
@@ -361,7 +360,7 @@ public class RBTree<T extends Comparable<T>> {
 							if (z.equals(root)) {
 								continue;
 							}
-							if (zParent==null|| z==null|| zParent.getLeftChild()==null || zParent.getRightChild()==null) {
+							if (zParent == null || z == null || zParent.getLeftChild() == null || zParent.getRightChild() == null) {
 								System.out.println("");
 							}
 							if (z.equals(zParent.getLeftChild())) {
@@ -376,18 +375,15 @@ public class RBTree<T extends Comparable<T>> {
 							break;
 						}
 					} else { // if both brother's children are not black
-						if (broRightChild != null
-								&& broRightChild.getColor() == RBNode.COLOR_NODE_RED) { // case 2 // and if brother's right child is red
+						if (broRightChild != null && broRightChild.getColor() == RBNode.COLOR_NODE_RED) { // case 2 // and if brother's right child is red
 							broRightChild.setColor(RBNode.COLOR_NODE_BLACK);
 							zBrother.setColor(zParent.getColor());
 							zParent.setColor(RBNode.COLOR_NODE_BLACK);
 							leftRotation(zParent);
 							break;
-						} else if ((broRightChild == null || broRightChild
-								.getColor() == RBNode.COLOR_NODE_BLACK)
-								&& (broLeftChild.getColor() == RBNode.COLOR_NODE_RED)) { // case 3 // and if brother's right child is black and left child is
-																							// red
-							// broRightChild may be null because null nodes of RB tree are black "nil"
+						} else if ((broRightChild == null || broRightChild.getColor() == RBNode.COLOR_NODE_BLACK) && (broLeftChild.getColor() == RBNode.COLOR_NODE_RED)) {
+							// case 3 // and if brother's right child is black and left child is red broRightChild may be null because null nodes of RB tree are
+							// black "nil"
 							zBrother.setColor(RBNode.COLOR_NODE_RED);
 							broLeftChild.setColor(RBNode.COLOR_NODE_BLACK);
 							rightRotation(zBrother);
@@ -398,20 +394,21 @@ public class RBTree<T extends Comparable<T>> {
 						}
 					}
 				} else if (zBrother.getColor() == RBNode.COLOR_NODE_RED) { // case 4 // if brother of z node is red
+					@SuppressWarnings("unused")
 					boolean shouldBeTrue = zParent.getColor() == RBNode.COLOR_NODE_BLACK;
 					zParent.setColor(RBNode.COLOR_NODE_RED);
 					zBrother.setColor(RBNode.COLOR_NODE_BLACK);
 					leftRotation(zParent);
 					// continue to higher level of tree
-//					z = zParent;
-//					zParent = zParent.getParent();
-//					if (z.equals(zParent.getLeftChild())) {
-//						zBrother = zParent.getRightChild();
-//						zWasLeft = true;
-//					} else {
-//						zBrother = zParent.getLeftChild();
-//						zWasLeft = false;
-//					}
+					// z = zParent;
+					// zParent = zParent.getParent();
+					// if (z.equals(zParent.getLeftChild())) {
+					// zBrother = zParent.getRightChild();
+					// zWasLeft = true;
+					// } else {
+					// zBrother = zParent.getLeftChild();
+					// zWasLeft = false;
+					// }
 					continue;
 				}
 
@@ -421,9 +418,8 @@ public class RBTree<T extends Comparable<T>> {
 				RBNode<T> broRightChild = zBrother.getRightChild();
 
 				if (zBrother.getColor() == RBNode.COLOR_NODE_BLACK) { // if brother of z node has black color
-					if ((broLeftChild == null || broLeftChild.getColor() == RBNode.COLOR_NODE_BLACK)
-							&& (broRightChild == null || broRightChild
-									.getColor() == RBNode.COLOR_NODE_BLACK)) { // case 1 // and if broher's children is black too
+					if ((broLeftChild == null || broLeftChild.getColor() == RBNode.COLOR_NODE_BLACK) && (broRightChild == null || broRightChild.getColor() == RBNode.COLOR_NODE_BLACK)) {
+						// case 1 // and if broher's children is black too
 						zBrother.setColor(RBNode.COLOR_NODE_RED);
 						int zParentOldColor = zParent.getColor();
 						zParent.setColor(RBNode.COLOR_NODE_BLACK);
@@ -435,7 +431,7 @@ public class RBTree<T extends Comparable<T>> {
 							if (z.equals(root)) {
 								continue;
 							}
-							if (zParent==null|| z==null|| zParent.getLeftChild()==null || zParent.getRightChild()==null) {
+							if (zParent == null || z == null || zParent.getLeftChild() == null || zParent.getRightChild() == null) {
 								System.out.println("");
 							}
 							if (z.equals(zParent.getLeftChild())) {
@@ -449,41 +445,40 @@ public class RBTree<T extends Comparable<T>> {
 						} else {
 							break;
 						}
-					} else  // if both brother's children are not black
-						if (broLeftChild != null
-								&& broLeftChild.getColor() == RBNode.COLOR_NODE_RED) { // case 2 // and if brother's left child is red
-							broLeftChild.setColor(RBNode.COLOR_NODE_BLACK);
-							zBrother.setColor(zParent.getColor());
-							zParent.setColor(RBNode.COLOR_NODE_BLACK);
-							rightRotation(zParent);
-							break;
-					} else if ((broLeftChild == null || broLeftChild
-								.getColor() == RBNode.COLOR_NODE_BLACK)
-								&& broRightChild.getColor() == RBNode.COLOR_NODE_RED) { // case 3 // and if brother's left child is black and right child is red
-							// broRightChild may be null because null nodes of RB tree are black "nil"
-							zBrother.setColor(RBNode.COLOR_NODE_RED);
-							broRightChild.setColor(RBNode.COLOR_NODE_BLACK);
-							leftRotation(zBrother);
-							// go to case 2
-							// modify this - create consequence
-							zParent = zBrother.getParent().getParent();
-							continue;
+					} else // if both brother's children are not black
+					if (broLeftChild != null && broLeftChild.getColor() == RBNode.COLOR_NODE_RED) { // case 2 // and if brother's left child is red
+						broLeftChild.setColor(RBNode.COLOR_NODE_BLACK);
+						zBrother.setColor(zParent.getColor());
+						zParent.setColor(RBNode.COLOR_NODE_BLACK);
+						rightRotation(zParent);
+						break;
+					} else if ((broLeftChild == null || broLeftChild.getColor() == RBNode.COLOR_NODE_BLACK) && broRightChild.getColor() == RBNode.COLOR_NODE_RED) {
+						// case 3 // and if brother's left child is black and right child is red broRightChild may be null because null nodes of RB tree are
+						// black "nil"
+						zBrother.setColor(RBNode.COLOR_NODE_RED);
+						broRightChild.setColor(RBNode.COLOR_NODE_BLACK);
+						leftRotation(zBrother);
+						// go to case 2
+						// modify this - create consequence
+						zParent = zBrother.getParent().getParent();
+						continue;
 					}
 				} else if (zBrother.getColor() == RBNode.COLOR_NODE_RED) { // case 4 // if brother of z node is red
+					@SuppressWarnings("unused")
 					boolean shouldBeTrue = zParent.getColor() == RBNode.COLOR_NODE_BLACK;
 					zParent.setColor(RBNode.COLOR_NODE_RED);
 					zBrother.setColor(RBNode.COLOR_NODE_BLACK);
 					rightRotation(zParent);
 					// continue to higher level of tree
-//					z = zParent;
-//					zParent = zParent.getParent();
-//					if (z.equals(zParent.getLeftChild())) {
-//						zBrother = zParent.getRightChild();
-//						zWasLeft = true;
-//					} else {
-//						zBrother = zParent.getLeftChild();
-//						zWasLeft = false;
-//					}
+					// z = zParent;
+					// zParent = zParent.getParent();
+					// if (z.equals(zParent.getLeftChild())) {
+					// zBrother = zParent.getRightChild();
+					// zWasLeft = true;
+					// } else {
+					// zBrother = zParent.getLeftChild();
+					// zWasLeft = false;
+					// }
 					continue;
 				}
 			}
@@ -526,13 +521,7 @@ public class RBTree<T extends Comparable<T>> {
 	public void inOrderTraverse(RBNode<T> root) {
 		if (root != null) {
 			inOrderTraverse(root.getLeftChild());
-			System.out.println("  "
-					+ root
-					+ " "
-					+ (root.getColor() == RBNode.COLOR_NODE_BLACK ? "Black"
-							: root.getColor() == RBNode.COLOR_NODE_RED ? "Red"
-									: "")
-					+ (root.equals(this.root) ? " (root)" : ""));
+			System.out.println("  " + root + " " + (root.getColor() == RBNode.COLOR_NODE_BLACK ? "Black" : root.getColor() == RBNode.COLOR_NODE_RED ? "Red" : "") + (root.equals(this.root) ? " (root)" : ""));
 			inOrderTraverse(root.getRightChild());
 		}
 	}

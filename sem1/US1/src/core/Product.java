@@ -2,7 +2,7 @@ package core;
 
 import java.util.Date;
 
-public class Product implements NodeValue{
+public class Product implements NodeValue {
 	private String name;
 	private String ean;
 	private Date productionDate;
@@ -11,13 +11,13 @@ public class Product implements NodeValue{
 	private double cost;
 	private ECV ecv;
 
-	private WareHouse currentPlace;
+	private WareHouseValue currentPlace;
 
 	@Override
 	public Object getNodeValue() {
 		return this;
 	}
-	
+
 	public String getEan() {
 		return ean;
 	}
@@ -62,11 +62,11 @@ public class Product implements NodeValue{
 		this.cost = cost;
 	}
 
-	public WareHouse getCurrentPlace() {
+	public WareHouseValue getCurrentPlace() {
 		return currentPlace;
 	}
 
-	public void setCurrentPlace(WareHouse currentPlace) {
+	public void setCurrentPlace(WareHouseValue currentPlace) {
 		this.currentPlace = currentPlace;
 	}
 

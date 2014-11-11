@@ -28,14 +28,8 @@ public class Db implements StorageDatabase {
 	}
 
 	@Override
-	public boolean addWareHouse(WareHouse warehouse) {
-		boolean inserted = warehousesById.insert(new RBNode<Integer>(warehouse) {
-
-			@Override
-			public Integer getKey() {
-				return ((WareHouse) value).getId();
-			}
-		});
+	public boolean addWareHouse(WareHouseValue warehouse) {
+		// boolean inserted =
 
 		return true;
 	}
@@ -120,7 +114,7 @@ public class Db implements StorageDatabase {
 	}
 
 	@Override
-	public boolean addWarehouse(WareHouse wh) {
+	public boolean addWarehouse(WareHouseValue wh) {
 		// TODO Auto-generated method stub
 		return false;
 	}

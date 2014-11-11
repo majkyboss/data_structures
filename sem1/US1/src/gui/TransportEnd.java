@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -13,7 +12,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import core.Product;
 import core.StorageDatabase;
 
 public class TransportEnd extends JPanel {
