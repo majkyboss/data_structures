@@ -12,9 +12,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import core.Client;
-import core.ProductPlace;
-import core.WareHouseValue;
+import core.data.Client;
+import core.data.ProductPlace;
+import core.data.WareHouseValue;
 
 public class PlaceInfo extends JDialog {
 

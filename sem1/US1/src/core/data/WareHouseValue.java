@@ -1,4 +1,6 @@
-package core;
+package core.data;
+
+import core.NodeValue;
 
 public class WareHouseValue extends ProductPlace implements NodeValue {
 	private int id;

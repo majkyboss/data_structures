@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import core.IdCounter;
+import core.data.IdCounter;
 
 public class IdCounterTester {
 

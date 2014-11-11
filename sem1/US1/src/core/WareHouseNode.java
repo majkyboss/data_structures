@@ -2,6 +2,8 @@ package core;
 
 import java.util.Date;
 
+import core.data.Product;
+import core.data.WareHouseValue;
 import rb.RBNode;
 import rb.RBTree;
 

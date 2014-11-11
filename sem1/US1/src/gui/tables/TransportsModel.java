@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import core.TransportProduct;
+import core.data.TransportProduct;
 
 public class TransportsModel extends AbstractTableModel {
 	List<TransportProduct> items;

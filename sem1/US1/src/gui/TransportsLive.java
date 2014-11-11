@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import core.StorageDatabase;
-import core.TransportProduct;
+import core.data.TransportProduct;
 
 public class TransportsLive extends JPanel {
 	private JTextField fieldWH;

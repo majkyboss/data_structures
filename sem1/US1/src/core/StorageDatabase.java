@@ -5,6 +5,11 @@ import gui.tables.ProductValueItem;
 import java.util.Date;
 import java.util.List;
 
+import core.data.Client;
+import core.data.Product;
+import core.data.TransportProduct;
+import core.data.WareHouseValue;
+
 public interface StorageDatabase {
 
 	List<Product> searchProducts(String ean, Date dateFrom, Date dateTo, int count, int wareHouseId);

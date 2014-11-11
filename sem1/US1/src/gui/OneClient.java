@@ -11,8 +11,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import core.Client;
 import core.StorageDatabase;
+import core.data.Client;
 
 public class OneClient extends JPanel {
 	private JTextField fieldClientId;

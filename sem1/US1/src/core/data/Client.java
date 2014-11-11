@@ -1,4 +1,5 @@
-package core;
+package core.data;
+
 
 public class Client extends ProductPlace {
 	public Client() {

@@ -12,8 +12,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import core.Product;
 import core.StorageDatabase;
+import core.data.Product;
 
 public class AddProduct extends JPanel {
 	private JTextField fieldEan;

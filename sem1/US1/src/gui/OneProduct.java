@@ -13,8 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import core.Product;
 import core.StorageDatabase;
+import core.data.Product;
 
 public class OneProduct extends JPanel {
 	private JTextField fieldProductNum;

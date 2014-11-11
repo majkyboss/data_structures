@@ -1,4 +1,4 @@
-package core;
+package core.data;
 
 import java.util.List;
 

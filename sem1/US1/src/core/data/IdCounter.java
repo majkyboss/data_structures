@@ -1,4 +1,4 @@
-package core;
+package core.data;
 
 public class IdCounter {
 	private static int i = -1;

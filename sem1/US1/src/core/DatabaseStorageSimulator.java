@@ -8,6 +8,11 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import core.data.Client;
+import core.data.Product;
+import core.data.TransportProduct;
+import core.data.WareHouseValue;
+
 public class DatabaseStorageSimulator implements StorageDatabase {
 	private static DatabaseStorageSimulator instance;
 

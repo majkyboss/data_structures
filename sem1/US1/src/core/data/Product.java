@@ -1,6 +1,8 @@
-package core;
+package core.data;
 
 import java.util.Date;
+
+import core.NodeValue;
 
 public class Product implements NodeValue {
 	private String name;

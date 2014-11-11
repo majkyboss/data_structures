@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import core.Client;
+import core.data.Client;
 
 public class ClientsModel extends AbstractTableModel {
 	private List<Client> clients;
