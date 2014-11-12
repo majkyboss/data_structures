@@ -32,6 +32,7 @@ public class RBTree<T extends Comparable<T>> {
 	}
 
 	protected RBNode<T> root = null;
+	private int size = 0;
 
 	/**
 	 * 
@@ -146,6 +147,7 @@ public class RBTree<T extends Comparable<T>> {
 		newNode.setColor(RBNode.COLOR_NODE_RED);
 		insertFixUp(newNode);
 		// System.out.print("");
+		size++;
 		return true;
 	}
 
@@ -242,6 +244,7 @@ public class RBTree<T extends Comparable<T>> {
 					deleteFixUp(z, zParent, zWasLeft);
 				}
 			}
+			size--;
 			return z;
 
 		} else if (leftChild != null && rightChild != null) { // 3. if the z node has two children
@@ -275,6 +278,7 @@ public class RBTree<T extends Comparable<T>> {
 			//
 			// deleteFixUp(z, zParent, zWasLeft);
 			// }
+			size--;
 			return returnObject;
 
 		} else {/* if (leftChild != null || rightChild != null) */// 2. if node has only one child
@@ -300,6 +304,7 @@ public class RBTree<T extends Comparable<T>> {
 
 			child.setColor(z.getColor());
 
+			size--;
 			return z;
 		}
 	}
@@ -529,5 +534,9 @@ public class RBTree<T extends Comparable<T>> {
 
 	public RBNode<T> getRoot() {
 		return root;
+	}
+
+	public int getSize() {
+		return size;
 	}
 }
