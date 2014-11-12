@@ -336,9 +336,6 @@ public class RBTree<T extends Comparable<T>> {
 	}
 
 	private void deleteFixUp(RBNode<T> z, RBNode<T> zParent, boolean zWasLeft) {
-		// TODO fix the code
-		// works bad when deleting node 60R from main
-
 		while (zParent != null) { // repeat until the checking will grow up to the root of tree
 
 			if (zWasLeft) { // if z was left child of its parent
