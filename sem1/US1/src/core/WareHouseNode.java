@@ -3,22 +3,23 @@ package core;
 import rb.RBNode;
 import rb.RBTree;
 import core.data.Product;
-import core.data.WareHouseValue;
+import core.data.WareHouse;
 
-public class WareHouse extends RBNode<Integer> {
+public class WareHouseNode extends RBNode<Integer> {
 	private RBTree<String> storedByEan;
 
 	// private RBTree<Integer> dispatchedByPN;
 
-	public WareHouse() {
+	public WareHouseNode(WareHouse wh) {
 		super();
 		this.storedByEan = new RBTree<String>();
 		// this.dispatchedByPN = new RBTree<Integer>();
+		setValue(wh);
 	}
 
 	@Override
 	public Integer getKey() {
-		return ((WareHouseValue) value).getId();
+		return ((WareHouse) value).getId();
 	}
 
 	public boolean addProduct(Product product) {

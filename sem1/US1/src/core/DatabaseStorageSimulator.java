@@ -11,7 +11,7 @@ import java.util.List;
 import core.data.Client;
 import core.data.Product;
 import core.data.TransportProduct;
-import core.data.WareHouseValue;
+import core.data.WareHouse;
 
 public class DatabaseStorageSimulator implements StorageDatabase {
 	private static DatabaseStorageSimulator instance;
@@ -126,16 +126,16 @@ public class DatabaseStorageSimulator implements StorageDatabase {
 		LinkedList<TransportProduct> l = new LinkedList<>();
 		TransportProduct pt = new TransportProduct();
 		pt.setProductId(1);
-		pt.setDeparture(new WareHouseValue());
-		pt.setDestination(new WareHouseValue());
+		pt.setDeparture(new WareHouse());
+		pt.setDestination(new WareHouse());
 		pt.setDispatchedDate(new Date());
 		pt.setExpectedDate(new Date());
 		pt.setCarEcv("ZA555ZA");
 		l.add(pt);
 		pt = new TransportProduct();
 		pt.setProductId(2);
-		pt.setDeparture(new WareHouseValue());
-		pt.setDestination(new WareHouseValue());
+		pt.setDeparture(new WareHouse());
+		pt.setDestination(new WareHouse());
 		pt.setDispatchedDate(new Date());
 		pt.setExpectedDate(new Date());
 		pt.setCarEcv("ZA444ZA");
@@ -149,16 +149,16 @@ public class DatabaseStorageSimulator implements StorageDatabase {
 		LinkedList<TransportProduct> l = new LinkedList<>();
 		TransportProduct pt = new TransportProduct();
 		pt.setProductId(1);
-		pt.setDeparture(new WareHouseValue());
-		pt.setDestination(new WareHouseValue());
+		pt.setDeparture(new WareHouse());
+		pt.setDestination(new WareHouse());
 		pt.setDispatchedDate(new Date());
 		pt.setExpectedDate(new Date());
 		pt.setCarEcv("ZA555ZA");
 		l.add(pt);
 		pt = new TransportProduct();
 		pt.setProductId(2);
-		pt.setDeparture(new WareHouseValue());
-		pt.setDestination(new WareHouseValue());
+		pt.setDeparture(new WareHouse());
+		pt.setDestination(new WareHouse());
 		pt.setDispatchedDate(new Date());
 		pt.setExpectedDate(new Date());
 		pt.setCarEcv("ZA444ZA");
@@ -172,7 +172,7 @@ public class DatabaseStorageSimulator implements StorageDatabase {
 		LinkedList<TransportProduct> l = new LinkedList<>();
 		TransportProduct pt = new TransportProduct();
 		pt.setProductId(1);
-		pt.setDeparture(new WareHouseValue());
+		pt.setDeparture(new WareHouse());
 		pt.setDestination(new Client());
 		pt.setDispatchedDate(new Date());
 		pt.setExpectedDate(new Date());
@@ -181,7 +181,7 @@ public class DatabaseStorageSimulator implements StorageDatabase {
 		l.add(pt);
 		pt = new TransportProduct();
 		pt.setProductId(2);
-		pt.setDeparture(new WareHouseValue());
+		pt.setDeparture(new WareHouse());
 		pt.setDestination(new Client());
 		pt.setDispatchedDate(new Date());
 		pt.setExpectedDate(new Date());
@@ -221,7 +221,7 @@ public class DatabaseStorageSimulator implements StorageDatabase {
 	}
 
 	@Override
-	public boolean addWarehouse(WareHouseValue wh) {
+	public boolean addWarehouse(WareHouse wh) {
 		return true;
 	}
 

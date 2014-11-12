@@ -26,15 +26,19 @@ public class DateNode extends RBNode<Date> implements NodeValue {
 		// 2. if does not exist create new PN node
 		// 3. add product to node
 
+		boolean retVal = false;
+		
 		RBNode<Integer> item = itemsByProductNumber.find(product.getProductNumber());
 		if (item == null) {
 			ProductNumberNode newItem = new ProductNumberNode(product);
 			item = newItem;
 		}
+		
+		retVal = itemsByProductNumber.insert(item);
 
 		// .... product is already added to PNNode in construktor
 
-		return false;
+		return retVal;
 	}
 
 	@Override

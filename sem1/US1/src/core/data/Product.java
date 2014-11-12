@@ -13,7 +13,7 @@ public class Product implements NodeValue {
 	private double cost;
 	private ECV ecv;
 
-	private WareHouseValue currentPlace;
+	private WareHouse currentPlace;
 
 	@Override
 	public Object getNodeValue() {
@@ -64,11 +64,11 @@ public class Product implements NodeValue {
 		this.cost = cost;
 	}
 
-	public WareHouseValue getCurrentPlace() {
+	public WareHouse getCurrentPlace() {
 		return currentPlace;
 	}
 
-	public void setCurrentPlace(WareHouseValue currentPlace) {
+	public void setCurrentPlace(WareHouse currentPlace) {
 		this.currentPlace = currentPlace;
 	}
 

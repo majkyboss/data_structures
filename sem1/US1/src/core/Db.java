@@ -11,11 +11,11 @@ import rb.RBTree;
 import core.data.Client;
 import core.data.Product;
 import core.data.TransportProduct;
-import core.data.WareHouseValue;
+import core.data.WareHouse;
 
 public class Db implements StorageDatabase {
-	private RBTree<Integer> warehousesById;
-	private RBTree<Integer> itemsByProductNumber;
+	private final RBTree<Integer> warehousesById;
+	private final RBTree<Integer> itemsByProductNumber;
 
 	public Db() {
 		this.warehousesById = new RBTree<>();
@@ -24,7 +24,10 @@ public class Db implements StorageDatabase {
 
 	@Override
 	public List<Product> searchProducts(String ean, Date dateFrom, Date dateTo, int count, int wareHouseId) {
-		// TODO method to find data in DB
+		// 1. find the ean node
+		// 2. find date node
+		// 3. load <count> nodes which are on the right side from the found node
+		// TODO make method in tree which gets more then one node
 
 		return new LinkedList<>();
 	}
@@ -37,23 +40,49 @@ public class Db implements StorageDatabase {
 
 	@Override
 	public Product searchProduct(int productNum) {
-		// TODO Auto-generated method stub
+		// 1. try to find in product database the node with product with entered product number
+		NodeValue product = itemsByProductNumber.find(productNum).getValue();
+
+		if (product instanceof Product) {
+			return (Product) product;
+		}
+
 		return null;
 	}
 
 	@Override
 	public boolean addProduct(int whId, Product product) {
-		// 1. find if the item with same value is not inserted
-		RBNode<Integer> whNode = warehousesById.find(whId);
-		if (whNode != null) {
-			return false;
+		// add product to warehouse
+		// 1. find the warehouse with entered id
+		// 2. if warehouse does not exist return false
+		// 3. else add entered product to found warehouse
+		// 4. return value from add method from warehouse
+
+		// set to product the current place
+
+		// add product to product tree
+
+		boolean retVal = false;
+
+		RBNode<Integer> wareHouseNode = warehousesById.find(whId);
+		if (wareHouseNode == null) {
+			retVal = false;
+		} else if (wareHouseNode instanceof WareHouseNode) {
+			retVal = ((WareHouseNode) wareHouseNode).addProduct(product);
 		}
 
-		// 2. create item with entered value
+		if (retVal) {
+			product.setCurrentPlace((WareHouse) wareHouseNode.getValue().getNodeValue());
+		}
 
-		// 3. add item to warehouse
+		RBNode<Integer> productNode = itemsByProductNumber.find(product.getProductNumber());
+		if (productNode == null) {
+			// if the item is not in db create new item
+			productNode = new ProductNumberNode(product);
+			itemsByProductNumber.insert(productNode);
+		}
 
-		return true;
+		return retVal;
 	}
 
 	@Override
@@ -117,15 +146,21 @@ public class Db implements StorageDatabase {
 	}
 
 	@Override
-	public boolean addWarehouse(WareHouseValue wh) {
+	public boolean addWarehouse(WareHouse wh) {
 		// 1. search if warehouse is not already inserted
 
 		// 2. create WHNode
 		// 3. add WHValue to WHNode
 		// 4. store WHNode with WHValue to DB
 
-		// TODO Auto-generated method stub
-		return false;
+		RBNode<Integer> item = warehousesById.find(wh.getId());
+		if (item != null) {
+			return false;
+		}
+
+		WareHouseNode newItem = new WareHouseNode(wh);
+
+		return warehousesById.insert(newItem);
 	}
 
 	@Override

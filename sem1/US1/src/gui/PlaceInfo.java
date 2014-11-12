@@ -14,7 +14,7 @@ import javax.swing.border.EmptyBorder;
 
 import core.data.Client;
 import core.data.ProductPlace;
-import core.data.WareHouseValue;
+import core.data.WareHouse;
 
 public class PlaceInfo extends JDialog {
 
@@ -50,8 +50,8 @@ public class PlaceInfo extends JDialog {
 			fieldID = new JTextField();
 			if (place instanceof Client) {
 				fieldID.setText(((Client) place).getId());
-			} else if (place instanceof WareHouseValue) {
-				fieldID.setText(((WareHouseValue) place).getId() + "");
+			} else if (place instanceof WareHouse) {
+				fieldID.setText(((WareHouse) place).getId() + "");
 			}
 			fieldID.setEditable(editable);
 			fieldID.setBounds(88, 39, 86, 20);

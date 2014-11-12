@@ -7,13 +7,13 @@ public class Client extends ProductPlace {
 	}
 
 	private String id;
-	private WareHouseValue warehouse;
+	private WareHouse warehouse;
 
-	public WareHouseValue getWarehouse() {
+	public WareHouse getWarehouse() {
 		return warehouse;
 	}
 
-	public void setWarehouse(WareHouseValue warehouse) {
+	public void setWarehouse(WareHouse warehouse) {
 		this.warehouse = warehouse;
 	}
 

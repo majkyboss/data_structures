@@ -11,7 +11,7 @@ import javax.swing.JTextField;
 
 import core.StorageDatabase;
 import core.data.Client;
-import core.data.WareHouseValue;
+import core.data.WareHouse;
 
 public class AddProductPlace extends JPanel {
 	private StorageDatabase database;
@@ -52,7 +52,7 @@ public class AddProductPlace extends JPanel {
 						}
 					} else {
 						int id = Integer.parseInt(fieldId.getText());
-						WareHouseValue wh = new WareHouseValue();
+						WareHouse wh = new WareHouse();
 						wh.setId(id);
 						wh.setAddress(address);
 						wh.setName(name);
