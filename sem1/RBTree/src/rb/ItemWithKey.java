@@ -1,5 +1,5 @@
 package rb;
 
-public interface ItemWithKey<T> extends Comparable<T>{
+public interface ItemWithKey<T> extends Comparable<T> {
 	T getKey();
 }

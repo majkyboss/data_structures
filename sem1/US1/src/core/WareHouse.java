@@ -1,18 +1,16 @@
 package core;
 
-import java.util.Date;
-
 import rb.RBNode;
 import rb.RBTree;
 import core.data.Product;
 import core.data.WareHouseValue;
 
-public class WareHouseNode extends RBNode<Integer> {
+public class WareHouse extends RBNode<Integer> {
 	private RBTree<String> storedByEan;
 
 	// private RBTree<Integer> dispatchedByPN;
 
-	public WareHouseNode() {
+	public WareHouse() {
 		super();
 		this.storedByEan = new RBTree<String>();
 		// this.dispatchedByPN = new RBTree<Integer>();
@@ -45,8 +43,9 @@ public class WareHouseNode extends RBNode<Integer> {
 		storedByEan.insert(item);
 
 		if (item instanceof EanNode) {
-//			RBTree<Date> itemsByDate = ((EanNode) item).getNodeValue();
+			// RBTree<Date> itemsByDate = ((EanNode) item).getNodeValue();
 			// the right command should be nodeToAdd.getValue().getNodeValue() but because the EanNode implements NodeValue interface I can skip it
+			// TODO try to think to implement NodeValue into RBNode (not as an attribute)
 			retVal = ((EanNode) item).addProduct(product);
 		}
 

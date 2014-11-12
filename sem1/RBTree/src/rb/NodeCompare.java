@@ -11,5 +11,5 @@ public interface NodeCompare<T extends Comparable<T>> extends ItemWithKey<T> {
 
 	// @Override
 	// int compareTo(T key);
-//	T getKey();
+	// T getKey();
 }

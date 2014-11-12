@@ -1,6 +1,5 @@
 package core.data;
 
-
 public class Client extends ProductPlace {
 	public Client() {
 		super();

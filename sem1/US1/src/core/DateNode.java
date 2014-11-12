@@ -2,11 +2,11 @@ package core;
 
 import java.util.Date;
 
-import core.data.Product;
 import rb.RBNode;
 import rb.RBTree;
+import core.data.Product;
 
-public class DateNode extends RBNode<Date> {
+public class DateNode extends RBNode<Date> implements NodeValue {
 	private Date key;
 	private RBTree<Integer> itemsByProductNumber;
 
@@ -26,7 +26,20 @@ public class DateNode extends RBNode<Date> {
 		// 2. if does not exist create new PN node
 		// 3. add product to node
 
+		RBNode<Integer> item = itemsByProductNumber.find(product.getProductNumber());
+		if (item == null) {
+			ProductNumberNode newItem = new ProductNumberNode(product);
+			item = newItem;
+		}
+
+		// .... product is already added to PNNode in construktor
+
 		return false;
+	}
+
+	@Override
+	public RBTree<Integer> getNodeValue() {
+		return itemsByProductNumber;
 	}
 
 }

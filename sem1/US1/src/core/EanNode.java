@@ -2,9 +2,9 @@ package core;
 
 import java.util.Date;
 
-import core.data.Product;
 import rb.RBNode;
 import rb.RBTree;
+import core.data.Product;
 
 public class EanNode extends RBNode<String> implements NodeValue {
 	private RBTree<Date> itemsByDate;
@@ -22,9 +22,9 @@ public class EanNode extends RBNode<String> implements NodeValue {
 		return key;
 	}
 
-	public RBTree<Date> getIncludedTree() {
-		return itemsByDate;
-	}
+	// public RBTree<Date> getIncludedTree() {
+	// return itemsByDate;
+	// }
 
 	@Override
 	public RBTree<Date> getNodeValue() {

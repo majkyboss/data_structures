@@ -14,7 +14,7 @@ public abstract class RBNode<T extends Comparable<T>> implements
 	private RBNode<T> rightChild;
 
 	public RBNode() {
-//		this.value = value;
+		// this.value = value;
 	}
 
 	public void setColor(int nodeColor) {
@@ -31,6 +31,7 @@ public abstract class RBNode<T extends Comparable<T>> implements
 
 	/**
 	 * Gets value stored in this tree node. The concrete value you can get from method {@link NodeValue#getNodeValue()}
+	 * 
 	 * @return
 	 */
 	public NodeValue getValue() {
