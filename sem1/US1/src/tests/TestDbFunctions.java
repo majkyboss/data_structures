@@ -13,11 +13,11 @@ import core.Db;
 import core.data.Product;
 import core.data.WareHouse;
 
-public class TestDb {
+public class TestDbFunctions {
 	private DateFormat shortDateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
 
 	@Test
-	public void testProduct() throws ParseException {
+	public void function4_AddProduct() throws ParseException {
 		// 1. add warehouse
 		// 2. add product to created warehouse
 

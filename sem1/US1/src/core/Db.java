@@ -27,14 +27,23 @@ public class Db implements StorageDatabase {
 		// 1. find the ean node
 		// 2. find date node
 		// 3. load <count> nodes which are on the right side from the found node
-		// TODO make method in tree which gets more then one node
+		// TODO !!! make method in tree which gets more then one node
 
 		return new LinkedList<>();
 	}
 
 	@Override
 	public int searchCount(String ean, int wareHouseId) {
-		// TODO Auto-generated method stub
+		RBNode<Integer> wh = warehousesById.find(wareHouseId);
+		if (wh != null && wh instanceof WareHouseNode) {
+			RBTree<String> eanItems = ((WareHouseNode) wh).getItemsByEan();
+			RBNode<String> eanNode = eanItems.find(ean);
+			if (eanNode != null && eanNode instanceof EanNode) {
+				RBTree<Date> dateItems = ((EanNode) eanItems.find(ean)).getNodeValue();
+				return dateItems.size();
+			}
+		}
+
 		return 0;
 	}
 
@@ -87,6 +96,8 @@ public class Db implements StorageDatabase {
 
 	@Override
 	public Client searchClient(String clientId, int wareHouseId) {
+		
+		
 		// TODO Auto-generated method stub
 		return null;
 	}
