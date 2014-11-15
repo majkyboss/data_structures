@@ -111,6 +111,20 @@ public class TestDbFunctions {
 
 	@Test
 	public void function5_searchClient() {
+		// 1. create warehouse
+		// 2. add client
+		// 3. find client
+		
+		WareHouse wh = new WareHouse();
+		wh.setAddress("adresa prveho skladu");
+		int id = wh.getId();
+		wh.setName("prvy sklad");
+		
+		Client c = new Client();
+		c.setAddress("adresa prveho odberatela");
+		c.setId(c.getId());
+		c.setName("prvy odberatel");
+		c.setWarehouse(wh);
 
 	}
 

@@ -35,7 +35,7 @@ public class Db implements StorageDatabase {
 	@Override
 	public int searchCount(String ean, int wareHouseId) {
 		RBNode<Integer> wh = warehousesById.find(wareHouseId);
-		
+
 		if (wh != null && wh instanceof WareHouseNode) {
 			RBTree<String> eanTree = ((WareHouseNode) wh).getTreeByEan();
 			RBNode<String> eanNode = eanTree.find(ean);
@@ -50,7 +50,8 @@ public class Db implements StorageDatabase {
 
 	@Override
 	public Product searchProduct(int productNum) {
-		// 1. try to find in product database the node with product with entered product number
+		// 1. try to find in product database the node with product with entered
+		// product number
 		NodeValue product = itemsByProductNumber.find(productNum).getValue();
 
 		if (product instanceof Product) {
@@ -97,8 +98,14 @@ public class Db implements StorageDatabase {
 
 	@Override
 	public Client searchClient(String clientId, int wareHouseId) {
+		// 1. find warehouse by id
+		// 2. find the client
 
-		// TODO Auto-generated method stub
+		RBNode<Integer> wh = warehousesById.find(wareHouseId);
+		if (wh != null && wh instanceof WareHouseNode) {
+			return ((WareHouseNode) wh).findClient(clientId);
+		}
+
 		return null;
 	}
 
@@ -152,6 +159,15 @@ public class Db implements StorageDatabase {
 
 	@Override
 	public boolean addClient(Client c, int whId) {
+		RBNode<Integer> whNode = warehousesById.find(whId);
+		if (whNode != null && whNode instanceof WareHouseNode) {
+			// change structure:
+			// whNode.getValue() will return whNode which has references to
+			// items stored dispatched and clients, no whNode will have refs to
+			// single structures
+			// ((WareHouseNode)whNode.getValue()).
+		}
+
 		// TODO Auto-generated method stub
 		return false;
 	}

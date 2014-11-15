@@ -2,18 +2,20 @@ package core;
 
 import rb.RBNode;
 import rb.RBTree;
+import core.data.Client;
 import core.data.Product;
 import core.data.WareHouse;
 
 public class WareHouseNode extends RBNode<Integer> {
 	private RBTree<String> storedByEan;
-
 	// private RBTree<Integer> dispatchedByPN;
+	private RBTree<String> clientsById;
 
 	public WareHouseNode(WareHouse wh) {
 		super();
 		this.storedByEan = new RBTree<String>();
 		// this.dispatchedByPN = new RBTree<Integer>();
+		this.clientsById = new RBTree<>();
 		setValue(wh);
 	}
 
@@ -45,8 +47,11 @@ public class WareHouseNode extends RBNode<Integer> {
 
 		if (item instanceof EanNode) {
 			// RBTree<Date> itemsByDate = ((EanNode) item).getNodeValue();
-			// the right command should be nodeToAdd.getValue().getNodeValue() but because the EanNode implements NodeValue interface I can skip it
-			// TODO try to think to implement NodeValue into RBNode (not as an attribute)
+			// the right command should be nodeToAdd.getValue().getNodeValue()
+			// but because the EanNode implements NodeValue interface I can skip
+			// it
+			// TODO try to think to implement NodeValue into RBNode (not as an
+			// attribute)
 			retVal = ((EanNode) item).addProduct(product);
 		}
 
@@ -57,4 +62,15 @@ public class WareHouseNode extends RBNode<Integer> {
 		return storedByEan;
 	}
 
+	public Client findClient(String id) {
+		RBNode<String> clientNode = clientsById.find(id);
+		if (clientNode != null && clientNode instanceof ClientNode) {
+			NodeValue client = clientNode.getValue();
+			if (client != null && client instanceof Client) {
+				return (Client) client;
+			}
+		}
+
+		return null;
+	}
 }
