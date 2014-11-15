@@ -6,5 +6,5 @@ public interface NodeValue {
 	 * 
 	 * @return
 	 */
-	Object getNodeValue();
+	 Object getNodeValue();
 }

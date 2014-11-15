@@ -37,7 +37,7 @@ public class Db implements StorageDatabase {
 		RBNode<Integer> wh = warehousesById.find(wareHouseId);
 
 		if (wh != null && wh instanceof WareHouseNode) {
-			RBTree<String> eanTree = ((WareHouseNode) wh).getTreeByEan();
+			RBTree<String> eanTree = ((WareHouse) wh.getValue()).getTreeByEan();
 			RBNode<String> eanNode = eanTree.find(ean);
 			if (eanNode != null && eanNode instanceof EanNode) {
 				RBTree<Date> dateTree = ((EanNode) eanNode).getNodeValue();
@@ -79,11 +79,11 @@ public class Db implements StorageDatabase {
 		if (wareHouseNode == null) {
 			retVal = false;
 		} else if (wareHouseNode instanceof WareHouseNode) {
-			retVal = ((WareHouseNode) wareHouseNode).addProduct(product);
+			retVal = ((WareHouse) wareHouseNode.getValue()).addProduct(product);
 		}
 
 		if (retVal) {
-			product.setCurrentPlace((WareHouse) wareHouseNode.getValue().getNodeValue());
+			product.setCurrentPlace((WareHouse) wareHouseNode.getValue());
 		}
 
 		RBNode<Integer> productNode = itemsByProductNumber.find(product.getProductNumber());
@@ -103,7 +103,7 @@ public class Db implements StorageDatabase {
 
 		RBNode<Integer> wh = warehousesById.find(wareHouseId);
 		if (wh != null && wh instanceof WareHouseNode) {
-			return ((WareHouseNode) wh).findClient(clientId);
+			return ((WareHouse) wh.getValue()).findClient(clientId);
 		}
 
 		return null;
@@ -166,6 +166,7 @@ public class Db implements StorageDatabase {
 			// items stored dispatched and clients, no whNode will have refs to
 			// single structures
 			// ((WareHouseNode)whNode.getValue()).
+			whNode.getValue();
 		}
 
 		// TODO Auto-generated method stub

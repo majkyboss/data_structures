@@ -157,12 +157,13 @@ public class RBTreeTest {
 				RBTreeCheckProperties<Integer> checker = new RBTreeCheckProperties<>();
 				if (i % 1000 == 0) {
 					boolean c = checker.checkProperties(tree);
-					System.out.println(i + " " + c);
+					Assert.assertTrue(c);
+					// System.out.println(i + " " + c);
 				}
 				// if (!c) {
 				// System.out.println();
 				// }
-				// Assert.assertTrue(c);
+
 			}
 		}
 
