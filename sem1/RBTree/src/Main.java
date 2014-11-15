@@ -75,7 +75,7 @@ public class Main {
 			RBNode<Integer> nodeToDel = null;
 			try {
 				key = Integer.parseInt(args[1]);
-				int value = Integer.parseInt(args[1]);
+				// int value = Integer.parseInt(args[1]);
 				nodeToDel = tree.find(key);
 			} catch (NumberFormatException e) {
 				key = 0;
