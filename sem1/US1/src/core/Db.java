@@ -40,7 +40,7 @@ public class Db implements StorageDatabase {
 			RBTree<String> eanTree = ((WareHouse) wh.getValue()).getTreeByEan();
 			RBNode<String> eanNode = eanTree.find(ean);
 			if (eanNode != null && eanNode instanceof EanNode) {
-				RBTree<Date> dateTree = ((EanNode) eanNode).getNodeValue();
+				RBTree<Date> dateTree = (RBTree<Date>) ((EanNode) eanNode).getValue();
 				return dateTree.size();
 			}
 		}
@@ -52,7 +52,7 @@ public class Db implements StorageDatabase {
 	public Product searchProduct(int productNum) {
 		// 1. try to find in product database the node with product with entered
 		// product number
-		NodeValue product = itemsByProductNumber.find(productNum).getValue();
+		Object product = itemsByProductNumber.find(productNum).getValue();
 
 		if (product instanceof Product) {
 			return (Product) product;
@@ -218,7 +218,7 @@ public class Db implements StorageDatabase {
 	public WareHouse getWarehouse(int warehouseId) {
 		RBNode<Integer> whNode = warehousesById.find(warehouseId);
 		if (whNode != null && whNode instanceof WareHouseNode) {
-			NodeValue wh = whNode.getValue();
+			Object wh = whNode.getValue();
 			if (wh != null && wh instanceof WareHouse) {
 				return (WareHouse) wh;
 			}

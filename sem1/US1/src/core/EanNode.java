@@ -6,7 +6,7 @@ import rb.RBNode;
 import rb.RBTree;
 import core.data.Product;
 
-public class EanNode extends RBNode<String> implements NodeValue {
+public class EanNode extends RBNode<String> {
 	private RBTree<Date> itemsByDate;
 	private String key;
 
@@ -14,7 +14,7 @@ public class EanNode extends RBNode<String> implements NodeValue {
 		super();
 		key = ean;
 		itemsByDate = new RBTree<>();
-		setValue(this);
+		setValue(itemsByDate);
 	}
 
 	@Override
@@ -27,7 +27,7 @@ public class EanNode extends RBNode<String> implements NodeValue {
 	// }
 
 	@Override
-	public RBTree<Date> getNodeValue() {
+	public RBTree<Date> getValue() {
 		return itemsByDate;
 	}
 

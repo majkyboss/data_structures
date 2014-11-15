@@ -1,8 +1,6 @@
 package core.data;
 
-import core.NodeValue;
-
-public class Client extends ProductPlace implements NodeValue {
+public class Client extends ProductPlace {
 	public Client() {
 		super();
 		this.id = IdCounter.getNextId() + "";
@@ -25,10 +23,5 @@ public class Client extends ProductPlace implements NodeValue {
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	@Override
-	public Object getNodeValue() {
-		return this;
 	}
 }

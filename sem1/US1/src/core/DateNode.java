@@ -6,7 +6,7 @@ import rb.RBNode;
 import rb.RBTree;
 import core.data.Product;
 
-public class DateNode extends RBNode<Date> implements NodeValue {
+public class DateNode extends RBNode<Date> {
 	private Date key;
 	private RBTree<Integer> itemsByProductNumber;
 
@@ -42,7 +42,7 @@ public class DateNode extends RBNode<Date> implements NodeValue {
 	}
 
 	@Override
-	public RBTree<Integer> getNodeValue() {
+	public RBTree<Integer> getValue() {
 		return itemsByProductNumber;
 	}
 

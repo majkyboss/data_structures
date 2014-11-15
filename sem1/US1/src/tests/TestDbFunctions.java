@@ -1,28 +1,18 @@
 package tests;
 
-import static org.junit.Assert.*;
-import gui.tables.ProductValueItem;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import rb.RBNode;
-import rb.RBTree;
-import sun.net.www.content.image.png;
 import core.Db;
-import core.EanNode;
-import core.NodeValue;
-import core.ProductNumberNode;
-import core.WareHouseNode;
 import core.data.Client;
 import core.data.Product;
-import core.data.TransportProduct;
 import core.data.WareHouse;
 
 public class TestDbFunctions {
@@ -114,12 +104,12 @@ public class TestDbFunctions {
 		// 1. create warehouse
 		// 2. add client
 		// 3. find client
-		
+
 		WareHouse wh = new WareHouse();
 		wh.setAddress("adresa prveho skladu");
 		int id = wh.getId();
 		wh.setName("prvy sklad");
-		
+
 		Client c = new Client();
 		c.setAddress("adresa prveho odberatela");
 		c.setId(c.getId());

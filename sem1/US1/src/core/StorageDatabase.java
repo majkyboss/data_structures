@@ -13,8 +13,10 @@ import core.data.WareHouse;
 public interface StorageDatabase {
 
 	/**
-	 * vyh¾adanie zadaného poètu tovarov s konkrétnym EAN kódom a s dátumom najneskoršej
-	 * spotreby väèším ako zadanı dátum nachádzajúcich sa v zadanom ve¾kosklade (identifikovanı
+	 * vyh¾adanie zadaného poètu tovarov s konkrétnym EAN kódom a s dátumom
+	 * najneskoršej
+	 * spotreby väèším ako zadanı dátum nachádzajúcich sa v zadanom ve¾kosklade
+	 * (identifikovanı
 	 * svojim identifikátorom), ktoré nie sú expedované
 	 * 
 	 * @param ean
@@ -27,7 +29,8 @@ public interface StorageDatabase {
 	List<Product> searchProducts(String ean, Date dateFrom, Date dateTo, int count, int wareHouseId);
 
 	/**
-	 * zistenie poètu tovarov s konkrétnym EAN kódom nachádzajúcich sa v zadanom ve¾kosklade
+	 * zistenie poètu tovarov s konkrétnym EAN kódom nachádzajúcich sa v zadanom
+	 * ve¾kosklade
 	 * (identifikovanı svojim identifikátorom), ktoré nie sú expedované
 	 * 
 	 * @param ean
@@ -37,8 +40,10 @@ public interface StorageDatabase {
 	int searchCount(String ean, int wareHouseId);
 
 	/**
-	 * vyh¾adanie tovaru (identifikovanı svojim vırobnım kódom) a vıpis všetkıch o òom
-	 * dostupnıch informácii (v prípade prebiehajúcej expedície aj informácie o nej) - vrátane
+	 * vyh¾adanie tovaru (identifikovanı svojim vırobnım kódom) a vıpis všetkıch
+	 * o òom
+	 * dostupnıch informácii (v prípade prebiehajúcej expedície aj informácie o
+	 * nej) - vrátane
 	 * informácie o tom, v ktorom ve¾kosklade sa nachádza
 	 * 
 	 * @param productNum
@@ -47,7 +52,8 @@ public interface StorageDatabase {
 	Product searchProduct(int productNum);
 
 	/**
-	 * naskladnenie (pridanie) tovaru do ve¾koskladu (identifikovanı svojim identifikátorom)
+	 * naskladnenie (pridanie) tovaru do ve¾koskladu (identifikovanı svojim
+	 * identifikátorom)
 	 * 
 	 * @param whId
 	 * @param product
@@ -56,7 +62,8 @@ public interface StorageDatabase {
 	boolean addProduct(int whId, Product product);
 
 	/**
-	 * vyh¾adanie lokálneho odberate¾a pod¾a jeho identifikátoru a priradeného ve¾koskladu
+	 * vyh¾adanie lokálneho odberate¾a pod¾a jeho identifikátoru a priradeného
+	 * ve¾koskladu
 	 * (identifikovanı svojim identifikátorom)
 	 * 
 	 * @param clientId
@@ -66,7 +73,8 @@ public interface StorageDatabase {
 	Client searchClient(String clientId, int wareHouseId);
 
 	/**
-	 * vykonanie záznamu o zaèiatku expedovania daného tovaru (identifikovanı vırobnım kódom)
+	 * vykonanie záznamu o zaèiatku expedovania daného tovaru (identifikovanı
+	 * vırobnım kódom)
 	 * do iného ve¾koskladu (identifikovanı svojim identifikátorom)
 	 * 
 	 * @param productNumber
@@ -77,7 +85,8 @@ public interface StorageDatabase {
 	boolean makeTransportToWareHouse(int productNumber, int wareHouseId, Date expectedDate);
 
 	/**
-	 * vykonanie záznamu o zaèiatku expedovania daného tovaru (identifikovanı vırobnım kódom)
+	 * vykonanie záznamu o zaèiatku expedovania daného tovaru (identifikovanı
+	 * vırobnım kódom)
 	 * k odberate¾ovi (identifikovanı svojim identifikátorom)
 	 * 
 	 * @param productNumber
@@ -88,8 +97,10 @@ public interface StorageDatabase {
 	boolean makeTransportToClient(int productNumber, String clientId, Date expectedDate);
 
 	/**
-	 * vykonanie záznamu o vyloení tovaru (identifikovanı vırobnım kódom) – koniec
-	 * expedovania do ve¾koskladu (nepoznáme jeho identifikátor), alebo k odberate¾ovi
+	 * vykonanie záznamu o vyloení tovaru (identifikovanı vırobnım kódom) –
+	 * koniec
+	 * expedovania do ve¾koskladu (nepoznáme jeho identifikátor), alebo k
+	 * odberate¾ovi
 	 * (nepoznáme jeho identifikátor)
 	 * 
 	 * @param productNum
@@ -99,7 +110,8 @@ public interface StorageDatabase {
 	boolean endTransport(int productNum, Date arrivalDate);
 
 	/**
-	 * vıpis odberate¾ov zadaného ve¾koskladu (identifikovanı svojim identifikátorom) zotriedenı
+	 * vıpis odberate¾ov zadaného ve¾koskladu (identifikovanı svojim
+	 * identifikátorom) zotriedenı
 	 * pod¾a ich identifikátorov
 	 * 
 	 * @param wareHouseId
@@ -108,7 +120,8 @@ public interface StorageDatabase {
 	List<Client> searchClients(int wareHouseId);
 
 	/**
-	 * vıpis práve expedovanıch tovarov z daného ve¾koskladu (identifikovanı svojim
+	 * vıpis práve expedovanıch tovarov z daného ve¾koskladu (identifikovanı
+	 * svojim
 	 * identifikátorom)
 	 * 
 	 * @param wareHouseId
@@ -117,8 +130,10 @@ public interface StorageDatabase {
 	List<TransportProduct> getLiveTransport(int wareHouseId);
 
 	/**
-	 * vıpis uskutoènenıch dodávok k zadanému odberate¾ovi (identifikovanı svojim
-	 * identifikátorom) priradeného k ve¾koskladu (identifikovanı svojim identifikátorom) -
+	 * vıpis uskutoènenıch dodávok k zadanému odberate¾ovi (identifikovanı
+	 * svojim
+	 * identifikátorom) priradeného k ve¾koskladu (identifikovanı svojim
+	 * identifikátorom) -
 	 * poadujú sa informácie: zaèiatok expedovania, koniec expedovania, EÈV
 	 * 
 	 * @param wareHouseFromId
@@ -129,7 +144,8 @@ public interface StorageDatabase {
 
 	/**
 	 * vıpis uskutoènenıch dodávok k zadanému ve¾koskladu (identifikovanı svojim
-	 * identifikátorom) - poadujú sa informácie: zaèiatok expedovania, koniec expedovania, EÈV
+	 * identifikátorom) - poadujú sa informácie: zaèiatok expedovania, koniec
+	 * expedovania, EÈV
 	 * 
 	 * @param wareHouseFromId
 	 * @param clientId
@@ -138,7 +154,8 @@ public interface StorageDatabase {
 	List<TransportProduct> showArrivedProductsInClinet(int wareHouseFromId, String clientId);
 
 	/**
-	 * vıpis tovarov na danom ve¾kosklade (identifikovanı svojim identifikátorom), ktorım konèí
+	 * vıpis tovarov na danom ve¾kosklade (identifikovanı svojim
+	 * identifikátorom), ktorım konèí
 	 * spotreba do zadaného poètu dní (napr. do 5 dní) od zadaného dátumu
 	 * 
 	 * @param dateFrom
@@ -174,8 +191,10 @@ public interface StorageDatabase {
 	boolean deleteProduct(int productNum);
 
 	/**
-	 * vıpis celkového mnostva a sumárnej hodnoty tovarov (pod¾a EAN kódov) pre danı
-	 * ve¾kosklad (identifikovanı svojim identifikátorom), to znamená uvies ko¾ko kusov tovaru sa
+	 * vıpis celkového mnostva a sumárnej hodnoty tovarov (pod¾a EAN kódov) pre
+	 * danı
+	 * ve¾kosklad (identifikovanı svojim identifikátorom), to znamená uvies
+	 * ko¾ko kusov tovaru sa
 	 * nachádza v sklade s danım EAN kódom a aká je sumárna cena za tieto tovary
 	 * 
 	 * @param clientId
@@ -185,7 +204,8 @@ public interface StorageDatabase {
 	boolean removeClient(String clientId, int warehouseId);
 
 	/**
-	 * zrušenie ve¾koskladu (identifikovanı svojim identifikátorom) - celá jeho agenda sa presunie
+	 * zrušenie ve¾koskladu (identifikovanı svojim identifikátorom) - celá jeho
+	 * agenda sa presunie
 	 * do iného ve¾koskladu (identifikovanı svojim identifikátorom)
 	 * 
 	 * @param wareHouseForDelId
@@ -195,7 +215,8 @@ public interface StorageDatabase {
 	boolean removeWarehouse(int wareHouseForDelId, int warehouseToMoveId);
 
 	/**
-	 * zrušenie odoberate¾a (identifikovanı svojim identifikátorom) ve¾koskladu (identifikovanı
+	 * zrušenie odoberate¾a (identifikovanı svojim identifikátorom) ve¾koskladu
+	 * (identifikovanı
 	 * svojim identifikátorom)
 	 * 
 	 * @param wareHouseId

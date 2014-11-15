@@ -8,7 +8,6 @@ import org.junit.Test;
 import rb.RBNode;
 import rb.RBTree;
 import rb.RBTreeCheckProperties;
-import core.IntegerNodeValue;
 
 public class RBTreeTest {
 	private static int maxNum = (int) Math.pow(10, 10);
@@ -26,22 +25,8 @@ public class RBTreeTest {
 		for (; i < itemsCount;) {
 			// generate one item
 			int key = (int) (Math.random() * maxNum);
-			// IntegerNodeKey treeKey = new IntegerNodeKey(key);
-			IntegerNodeValue treeValue = new IntegerNodeValue(key);
 			// insert generated item to RB tree
-			RBNode<Integer> node = new RBNode<Integer>() {
-
-				@Override
-				public Integer getKey() {
-					return (Integer) value.getNodeValue();
-				}
-				//
-				// @Override
-				// public void setKey(Integer key) {
-				// new IntegerNodeValue(key);
-				// }
-			};
-			node.setValue(treeValue);
+			RBNode<Integer> node = new IntegerNode(key);
 			boolean iserted = tree.insert(node);
 			if (iserted) {
 				i++;
@@ -67,22 +52,8 @@ public class RBTreeTest {
 		for (; i < itemsCount;) {
 			// generate one item
 			int key = (int) (Math.random() * maxNum);
-			// IntegerNodeKey treeKey = new IntegerNodeKey(key);
-			IntegerNodeValue treeValue = new IntegerNodeValue(key);
 			// insert generated item to RB tree
-			RBNode<Integer> item = new RBNode<Integer>() {
-
-				@Override
-				public Integer getKey() {
-					return (Integer) value.getNodeValue();
-				}
-				//
-				// @Override
-				// public void setKey(Integer key) {
-				// new IntegerNodeValue(key);
-				// }
-			};
-			item.setValue(treeValue);
+			RBNode<Integer> item = new IntegerNode(key);
 			boolean iserted = tree.insert(item);
 			if (iserted) {
 				i++;
@@ -100,7 +71,8 @@ public class RBTreeTest {
 
 	@Test
 	public void testDel() {
-		// this.testAdd();
+
+		System.out.println("longer test started: testDel()");
 
 		int itemsCount = (int) Math.pow(10, 5);
 		// !!! 10^7 - out of memory
@@ -113,22 +85,8 @@ public class RBTreeTest {
 		for (; i < itemsCount;) {
 			// generate one item
 			int key = (int) (Math.random() * maxNum);
-			// IntegerNodeKey treeKey = new IntegerNodeKey(key);
-			IntegerNodeValue treeValue = new IntegerNodeValue(key);
 			// insert generated item to RB tree
-			RBNode<Integer> node = new RBNode<Integer>() {
-
-				@Override
-				public Integer getKey() {
-					return (Integer) value.getNodeValue();
-				}
-				//
-				// @Override
-				// public void setKey(Integer key) {
-				// new IntegerNodeValue(key);
-				// }
-			};
-			node.setValue(treeValue);
+			RBNode<Integer> node = new IntegerNode(key);
 			boolean iserted = tree.insert(node);
 			if (iserted) {
 				i++;
@@ -171,6 +129,7 @@ public class RBTreeTest {
 		boolean checked = checker.checkProperties(tree);
 
 		Assert.assertTrue(checked);
+		System.out.println("longer test ended: testDel()");
 	}
 
 	// testing data classes
@@ -217,16 +176,10 @@ public class RBTreeTest {
 		for (; i < itemsCount;) {
 			// generate one item
 			int key = i;
-			IntegerNodeValue treeValue = new IntegerNodeValue(key);
-			// insert generated item to RB tree
-			RBNode<Integer> node = new RBNode<Integer>() {
 
-				@Override
-				public Integer getKey() {
-					return (Integer) value.getNodeValue();
-				}
-			};
-			node.setValue(treeValue);
+			// insert generated item to RB tree
+			RBNode<Integer> node = new IntegerNode(key);
+			node.setValue(key);
 			boolean iserted = tree.insert(node);
 			if (iserted) {
 				i++;

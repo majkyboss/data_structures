@@ -1,6 +1,6 @@
 package rb;
 
-import core.NodeValue;
+//import core.NodeValue;
 
 public abstract class RBNode<T extends Comparable<T>> implements
 		NodeCompare<T>, ItemWithKey<T> {
@@ -9,7 +9,7 @@ public abstract class RBNode<T extends Comparable<T>> implements
 	public static final int COLOR_NODE_DOUBLE_BLACK = 3;
 	private int color;
 	private RBNode<T> parent;
-	protected NodeValue value;
+	protected Object value;
 	private RBNode<T> leftChild;
 	private RBNode<T> rightChild;
 
@@ -35,11 +35,11 @@ public abstract class RBNode<T extends Comparable<T>> implements
 	 * 
 	 * @return
 	 */
-	public NodeValue getValue() {
+	public Object getValue() {
 		return value;
 	}
 
-	public void setValue(NodeValue value) {
+	public void setValue(Object value) {
 		// if there is no access modifier it will be accessible from this class
 		// and this package too, not from subclasses and not from world
 		this.value = value;

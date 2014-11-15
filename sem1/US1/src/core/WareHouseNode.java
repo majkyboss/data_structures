@@ -1,9 +1,6 @@
 package core;
 
 import rb.RBNode;
-import rb.RBTree;
-import core.data.Client;
-import core.data.Product;
 import core.data.WareHouse;
 
 public class WareHouseNode extends RBNode<Integer> {

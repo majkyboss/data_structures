@@ -4,9 +4,8 @@ import rb.RBNode;
 import rb.RBTree;
 import core.ClientNode;
 import core.EanNode;
-import core.NodeValue;
 
-public class WareHouse extends ProductPlace implements NodeValue {
+public class WareHouse extends ProductPlace {
 	private int id;
 	private RBTree<String> storedByEan;
 	// private RBTree<Integer> dispatchedByPN;
@@ -28,11 +27,6 @@ public class WareHouse extends ProductPlace implements NodeValue {
 		this.id = id;
 	}
 
-	@Override
-	public Object getNodeValue() {
-		return this;
-	}
-	
 	public boolean addProduct(Product product) {
 		// 1. try to find ean item
 		// 2. if does not exist create new item
@@ -74,7 +68,7 @@ public class WareHouse extends ProductPlace implements NodeValue {
 	public Client findClient(String id) {
 		RBNode<String> clientNode = clientsById.find(id);
 		if (clientNode != null && clientNode instanceof ClientNode) {
-			NodeValue client = clientNode.getValue();
+			Object client = clientNode.getValue();
 			if (client != null && client instanceof Client) {
 				return (Client) client;
 			}

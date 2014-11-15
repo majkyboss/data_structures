@@ -2,9 +2,7 @@ package core.data;
 
 import java.util.Date;
 
-import core.NodeValue;
-
-public class Product implements NodeValue {
+public class Product {
 	private String name;
 	private String ean;
 	private Date productionDate;
@@ -14,11 +12,6 @@ public class Product implements NodeValue {
 	private ECV ecv;
 
 	private WareHouse currentPlace;
-
-	@Override
-	public Object getNodeValue() {
-		return this;
-	}
 
 	public String getEan() {
 		return ean;

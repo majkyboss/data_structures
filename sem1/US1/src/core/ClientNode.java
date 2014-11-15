@@ -1,7 +1,7 @@
 package core;
 
-import core.data.Client;
 import rb.RBNode;
+import core.data.Client;
 
 public class ClientNode extends RBNode<String> {
 

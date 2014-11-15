@@ -1,7 +1,5 @@
 package rb;
 
-import core.NodeValue;
-
 /**
  * Class represents Red-Black tree structure. Works only with Red-Black nodes
  * {@link RBNode<T>}. <br>
@@ -257,7 +255,7 @@ public class RBTree<T extends Comparable<T>> {
 
 			// replaceNode(z, successor);
 			// replace z node by successor
-			NodeValue zValue = z.getValue();
+			Object zValue = z.getValue();
 			// T zKey = z.getKey();
 			// int zColor = z.getColor();
 			z.setValue(successor.getValue());

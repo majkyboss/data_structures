@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 import rb.RBNode;
 import rb.RBTree;
 import rb.RBTreeCheckProperties;
-import core.IntegerNodeValue;
+import test.IntegerNode;
 
 public class Main {
 
@@ -58,7 +58,7 @@ public class Main {
 			}
 			int key = Integer.parseInt(args[1]);
 			int value = key;
-			RBNode<Integer> node = new IntegerNode(new IntegerNodeValue(value));
+			RBNode<Integer> node = new IntegerNode(key);
 			if (tree != null) {
 				if (tree.insert(node)) {
 					System.out.println("added " + key);
@@ -166,19 +166,4 @@ public class Main {
 		parse("del 1");
 	}
 
-	public class IntegerNode extends RBNode<Integer> {
-		// private int key;
-
-		public IntegerNode(IntegerNodeValue value) {
-			super();
-			setValue(value);
-			// this.key = key;
-		}
-
-		@Override
-		public Integer getKey() {
-			return (Integer) value.getNodeValue();
-		}
-
-	}
 }
