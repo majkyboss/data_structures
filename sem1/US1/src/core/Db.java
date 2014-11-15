@@ -35,12 +35,13 @@ public class Db implements StorageDatabase {
 	@Override
 	public int searchCount(String ean, int wareHouseId) {
 		RBNode<Integer> wh = warehousesById.find(wareHouseId);
+		
 		if (wh != null && wh instanceof WareHouseNode) {
-			RBTree<String> eanItems = ((WareHouseNode) wh).getItemsByEan();
-			RBNode<String> eanNode = eanItems.find(ean);
+			RBTree<String> eanTree = ((WareHouseNode) wh).getTreeByEan();
+			RBNode<String> eanNode = eanTree.find(ean);
 			if (eanNode != null && eanNode instanceof EanNode) {
-				RBTree<Date> dateItems = ((EanNode) eanItems.find(ean)).getNodeValue();
-				return dateItems.size();
+				RBTree<Date> dateTree = ((EanNode) eanNode).getNodeValue();
+				return dateTree.size();
 			}
 		}
 
@@ -96,8 +97,7 @@ public class Db implements StorageDatabase {
 
 	@Override
 	public Client searchClient(String clientId, int wareHouseId) {
-		
-		
+
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -195,6 +195,17 @@ public class Db implements StorageDatabase {
 	@Override
 	public List<ProductValueItem> getProductsValue(int wareHouseId) {
 		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public WareHouse getWarehouse(int warehouseId) {
+		RBNode<Integer> whNode = warehousesById.find(warehouseId);
+		if (whNode != null && whNode instanceof WareHouseNode) {
+			NodeValue wh = whNode.getValue();
+			if (wh != null && wh instanceof WareHouse) {
+				return (WareHouse) wh;
+			}
+		}
 		return null;
 	}
 

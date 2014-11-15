@@ -53,4 +53,10 @@ public class EanNode extends RBNode<String> implements NodeValue {
 
 		return retVal;
 	}
+
+	@Override
+	public int getSize() {
+		// int oldSize = super.getSize();
+		return itemsByDate.size();
+	}
 }

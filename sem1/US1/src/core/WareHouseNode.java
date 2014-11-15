@@ -53,7 +53,7 @@ public class WareHouseNode extends RBNode<Integer> {
 		return retVal;
 	}
 
-	public RBTree<String> getItemsByEan() {
+	public RBTree<String> getTreeByEan() {
 		return storedByEan;
 	}
 

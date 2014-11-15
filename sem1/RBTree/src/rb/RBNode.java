@@ -30,7 +30,8 @@ public abstract class RBNode<T extends Comparable<T>> implements
 	}
 
 	/**
-	 * Gets value stored in this tree node. The concrete value you can get from method {@link NodeValue#getNodeValue()}
+	 * Gets value stored in this tree node. The concrete value you can get from
+	 * method {@link NodeValue#getNodeValue()}
 	 * 
 	 * @return
 	 */
@@ -39,7 +40,8 @@ public abstract class RBNode<T extends Comparable<T>> implements
 	}
 
 	public void setValue(NodeValue value) {
-		// if there is no access modifier it will be accessible from this class and this package too, not from subclasses and not from world
+		// if there is no access modifier it will be accessible from this class
+		// and this package too, not from subclasses and not from world
 		this.value = value;
 	}
 
@@ -98,6 +100,18 @@ public abstract class RBNode<T extends Comparable<T>> implements
 
 	@Override
 	public abstract T getKey();
+
+	/**
+	 * Returns size of this node. If node is the basic node, then it returns 1.
+	 * If the node is composite node then overwrited method in child class will
+	 * return
+	 * the current size of the composite node
+	 * 
+	 * @return current size of the node
+	 */
+	public int getSize() {
+		return 1;
+	}
 
 	// public abstract void setKey(T key);
 

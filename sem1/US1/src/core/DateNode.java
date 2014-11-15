@@ -27,13 +27,13 @@ public class DateNode extends RBNode<Date> implements NodeValue {
 		// 3. add product to node
 
 		boolean retVal = false;
-		
+
 		RBNode<Integer> item = itemsByProductNumber.find(product.getProductNumber());
 		if (item == null) {
 			ProductNumberNode newItem = new ProductNumberNode(product);
 			item = newItem;
 		}
-		
+
 		retVal = itemsByProductNumber.insert(item);
 
 		// .... product is already added to PNNode in construktor
@@ -46,4 +46,9 @@ public class DateNode extends RBNode<Date> implements NodeValue {
 		return itemsByProductNumber;
 	}
 
+	@Override
+	public int getSize() {
+		// int oldSize = super.getSize();
+		return itemsByProductNumber.size();
+	}
 }
