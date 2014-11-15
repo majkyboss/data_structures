@@ -68,4 +68,12 @@ public class Product {
 	public void setEan(String ean) {
 		this.ean = ean;
 	}
+
+	public ECV getEcv() {
+		return ecv;
+	}
+
+	public void setEcv(ECV ecv) {
+		this.ecv = ecv;
+	}
 }

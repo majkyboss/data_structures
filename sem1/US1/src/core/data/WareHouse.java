@@ -49,12 +49,6 @@ public class WareHouse extends ProductPlace {
 		storedByEan.insert(item);
 
 		if (item instanceof EanNode) {
-			// RBTree<Date> itemsByDate = ((EanNode) item).getNodeValue();
-			// the right command should be nodeToAdd.getValue().getNodeValue()
-			// but because the EanNode implements NodeValue interface I can skip
-			// it
-			// TODO try to think to implement NodeValue into RBNode (not as an
-			// attribute)
 			retVal = ((EanNode) item).addProduct(product);
 		}
 
