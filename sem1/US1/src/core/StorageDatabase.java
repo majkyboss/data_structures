@@ -26,7 +26,7 @@ public interface StorageDatabase {
 	 * @param wareHouseId
 	 * @return
 	 */
-	List<Product> searchProducts(String ean, Date dateFrom, Date dateTo, int count, int wareHouseId);
+	List<Product> searchProducts(String ean, Date dateFrom, Date dateTo, Integer count, int wareHouseId);
 
 	/**
 	 * zistenie poètu tovarov s konkrétnym EAN kódom nachádzajúcich sa v zadanom
@@ -130,6 +130,17 @@ public interface StorageDatabase {
 	List<TransportProduct> getLiveTransport(int wareHouseId);
 
 	/**
+	 * výpis uskutoènených dodávok k zadanému ve¾koskladu (identifikovaný svojim
+	 * identifikátorom) - požadujú sa informácie: zaèiatok expedovania, koniec
+	 * expedovania, EÈV
+	 * 
+	 * @param wareHouseFromId
+	 * @param clientId
+	 * @return
+	 */
+	List<TransportProduct> showArrivedProductsInClinet(int wareHouseFromId, String clientId);
+	
+	/**
 	 * výpis uskutoènených dodávok k zadanému odberate¾ovi (identifikovaný
 	 * svojim
 	 * identifikátorom) priradeného k ve¾koskladu (identifikovaný svojim
@@ -140,18 +151,7 @@ public interface StorageDatabase {
 	 * @param wareHouseToId
 	 * @return
 	 */
-	List<TransportProduct> showArrivedProductsInWareHouse(int wareHouseFromId, int wareHouseToId);
-
-	/**
-	 * výpis uskutoènených dodávok k zadanému ve¾koskladu (identifikovaný svojim
-	 * identifikátorom) - požadujú sa informácie: zaèiatok expedovania, koniec
-	 * expedovania, EÈV
-	 * 
-	 * @param wareHouseFromId
-	 * @param clientId
-	 * @return
-	 */
-	List<TransportProduct> showArrivedProductsInClinet(int wareHouseFromId, String clientId);
+	List<TransportProduct> showArrivedProductsInWareHouse( int wareHouseToId);
 
 	/**
 	 * výpis tovarov na danom ve¾kosklade (identifikovaný svojim

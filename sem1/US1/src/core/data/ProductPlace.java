@@ -1,16 +1,18 @@
 package core.data;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class ProductPlace {
 	protected String name;
 	protected String address;
-	protected List<Product> arrivedItems;
+	protected final List<TransportProduct> arrivedItems;
 
 	public ProductPlace() {
 		super();
 		this.name = "";
 		this.address = "";
+		arrivedItems = new LinkedList<TransportProduct>();
 	}
 
 	public String getName() {
@@ -29,12 +31,12 @@ public class ProductPlace {
 		this.address = address;
 	}
 
-	public List<Product> getArrivedItems() {
+	public List<TransportProduct> getArrivedItems() {
 		return arrivedItems;
 	}
 
-	public void setArrivedItems(List<Product> arrivedItems) {
-		this.arrivedItems = arrivedItems;
+	public boolean addArrivedItem(TransportProduct transport) {
+		return arrivedItems.add(transport);
 	}
 
 }

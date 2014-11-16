@@ -17,6 +17,7 @@ public class Product {
 	private RBTree<Integer> productNumbersTree;
 	private RBTree<Date> dateTree;
 	private RBTree<String> eanTree;
+	private TransportProduct transport;
 
 	public String getEan() {
 		return ean;
@@ -104,6 +105,14 @@ public class Product {
 
 	public void setEanTree(RBTree<String> eanTree) {
 		this.eanTree = eanTree;
+	}
+
+	public TransportProduct getTransport() {
+		return transport;
+	}
+
+	public void setTransport(TransportProduct transport) {
+		this.transport = transport;
 	}
 
 }

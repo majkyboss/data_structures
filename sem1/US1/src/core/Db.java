@@ -2,7 +2,9 @@ package core;
 
 import gui.tables.ProductValueItem;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,7 +29,7 @@ public class Db implements StorageDatabase {
 	}
 
 	@Override
-	public List<Product> searchProducts(String ean, Date dateFrom, Date dateTo, int count, int wareHouseId) {
+	public List<Product> searchProducts(String ean, Date dateFrom, Date dateTo, Integer count, int wareHouseId) {
 		// 1. find the ean node
 		// 2. find date node
 		// 3. load <count> nodes which are on the right side from the found node
@@ -38,11 +40,15 @@ public class Db implements StorageDatabase {
 			int i = 0; // number of items added to list
 			for (Iterator<RBNode<Date>> iterator = dateTree.getInOrderIterator(dateFrom); iterator.hasNext();) {
 				RBNode<Date> dateNode = iterator.next();
-				if (dateNode == null || (dateNode instanceof DateNode && dateTo != null && dateNode.getKey().compareTo(dateTo) > 1) || i >= count) {
+				//@f:off
+				if (dateNode == null 
+						|| (dateNode instanceof DateNode && dateTo != null && dateNode.getKey().compareTo(dateTo) > 0)
+						|| (count != null && i >= count)) {
 					break;
 				}
+				//@f:on
 				for (RBNode<Integer> pnNode : ((DateNode) dateNode).getValue()) {
-					if (i < count) {
+					if (count == null || i < count) {
 						products.add(((ProductNumberNode) pnNode).getValue());
 						i++;
 					}
@@ -159,7 +165,7 @@ public class Db implements StorageDatabase {
 		// 1. find product by PN
 		// 2. remove item from warehouse
 		// 3. make transport
-		// 4. add product to transport
+		// 4. add product to transport and transport to product
 		// 5. find destination place
 		// 6. set departure and destination
 		// 7. set dispatched date
@@ -187,6 +193,7 @@ public class Db implements StorageDatabase {
 			eanTree.delete(eanTree.find(product.getEan()));
 		// 3, 4
 		TransportProduct transport = new TransportProduct(product);
+		product.setTransport(transport);
 		// 5
 		// from parameter
 		// 6
@@ -213,38 +220,118 @@ public class Db implements StorageDatabase {
 
 	@Override
 	public boolean endTransport(int productNum, Date arrivalDate) {
-		// TODO Auto-generated method stub
-		return false;
+		// 1. find transport by productNum
+		// 2. delete transport from warehouse
+		// 3. set arrived date
+		// 4. add transport to arrivedItems of destination
+		// 5. add product to destination (only warehouse)
+		Product product = searchProduct(productNum);
+
+		TransportProduct transport = product.getTransport();
+		WareHouse wh = (WareHouse) transport.getDeparture();
+		RBTree<Integer> whDispatched = wh.getDispatchedByPN();
+		whDispatched.delete(whDispatched.find(transport.getPN()));
+
+		transport.setArrivedDate(arrivalDate);
+
+		ProductPlace destinationPlace = transport.getDestination();
+		boolean retVal = destinationPlace.addArrivedItem(transport);
+
+		if (destinationPlace instanceof WareHouse) {
+			retVal &= ((WareHouse) destinationPlace).addProduct(product);
+		}
+
+		return retVal;
 	}
 
 	@Override
 	public List<Client> searchClients(int wareHouseId) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Client> clients = new LinkedList<>();
+		WareHouse wh = getWarehouse(wareHouseId);
+		if (wh != null) {
+			RBTree<String> clientsTree = wh.getClientsById();
+			for (RBNode<String> clientNode : clientsTree) {
+				Client c = ((ClientNode) clientNode).getValue();
+				clients.add(c);
+			}
+		}
+
+		return clients;
 	}
 
+	/**
+	 * use {@link #getLiveTransportRBTree(int)} which is quickly
+	 */
 	@Override
 	public List<TransportProduct> getLiveTransport(int wareHouseId) {
-		// TODO Auto-generated method stub
-		return null;
+		List<TransportProduct> transports = new LinkedList<>();
+		WareHouse wh = getWarehouse(wareHouseId);
+		if (wh != null) {
+			RBTree<Integer> dispatchedTree = wh.getDispatchedByPN();
+			for (RBNode<Integer> transportNode : dispatchedTree) {
+				transports.add((TransportProduct) transportNode.getValue());
+			}
+		}
+
+		return transports;
 	}
 
-	@Override
-	public List<TransportProduct> showArrivedProductsInWareHouse(int wareHouseFromId, int wareHouseToId) {
-		// TODO Auto-generated method stub
+	public RBTree<Integer> getLiveTransportRBTree(int wareHouseId) {
+
+		WareHouse wh = getWarehouse(wareHouseId);
+		if (wh != null) {
+			return wh.getDispatchedByPN();
+		}
+
 		return null;
 	}
 
 	@Override
 	public List<TransportProduct> showArrivedProductsInClinet(int wareHouseFromId, String clientId) {
-		// TODO Auto-generated method stub
+		WareHouse wh = getWarehouse(wareHouseFromId);
+		if (wh != null) {
+			Client client = wh.getClient(clientId);
+			if (client != null) {
+				return showArrivedProducts(client);
+			}
+		}
+
 		return null;
 	}
 
 	@Override
-	public List<Product> searchProducts(Date dateFrom, int daysUntilDate, int wareHouseId) {
-		// TODO Auto-generated method stub
+	public List<TransportProduct> showArrivedProductsInWareHouse(int wareHouseToId) {
+		WareHouse wh = getWarehouse(wareHouseToId);
+		if (wh != null) {
+			return showArrivedProducts(wh);
+		}
+
 		return null;
+	}
+
+	private List<TransportProduct> showArrivedProducts(ProductPlace place) {
+		return place.getArrivedItems();
+	}
+
+	@Override
+	public List<Product> searchProducts(Date dateFrom, int daysUntilDate, int wareHouseId) {
+
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(dateFrom);
+		calendar.add(Calendar.DAY_OF_YEAR, daysUntilDate);
+		Date dateTo = calendar.getTime();
+
+		List<Product> products = new LinkedList<>();
+
+		WareHouse wh = getWarehouse(wareHouseId);
+		if (wh != null) {
+			RBTree<String> eanTree = wh.getStoredItemsByEan();
+			for (RBNode<String> eanNode : eanTree) {
+				List<Product> eanProducts = searchProducts(eanNode.getKey(), dateFrom, dateTo, null, wareHouseId);
+				products.addAll(eanProducts);
+			}
+		}
+		return products;
 	}
 
 	@Override
@@ -287,6 +374,7 @@ public class Db implements StorageDatabase {
 
 	@Override
 	public boolean deleteProduct(int productNum) {
+		
 		// TODO Auto-generated method stub
 		return false;
 	}

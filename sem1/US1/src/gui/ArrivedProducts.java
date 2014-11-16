@@ -41,7 +41,7 @@ public class ArrivedProducts extends JPanel {
 					List<TransportProduct> foundProducts = new LinkedList<>();
 					if (!toClient) {
 						int wareHouseToId = Integer.parseInt(fieldPlaceTo.getText());
-						foundProducts = database.showArrivedProductsInWareHouse(wareHouseFromId, wareHouseToId);
+						foundProducts = database.showArrivedProductsInWareHouse(wareHouseToId);
 					} else {
 						String clientId = fieldPlaceTo.getText();
 						foundProducts = database.showArrivedProductsInClinet(wareHouseFromId, clientId);

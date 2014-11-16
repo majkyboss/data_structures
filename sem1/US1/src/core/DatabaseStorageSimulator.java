@@ -28,7 +28,7 @@ public class DatabaseStorageSimulator implements StorageDatabase {
 	}
 
 	@Override
-	public List<Product> searchProducts(String ean, Date dateFrom, Date dateTo, int count, int wareHouseId) {
+	public List<Product> searchProducts(String ean, Date dateFrom, Date dateTo, Integer count, int wareHouseId) {
 		LinkedList<Product> l = new LinkedList<>();
 		Product p = new Product();
 		p.setName("first product");
@@ -149,7 +149,7 @@ public class DatabaseStorageSimulator implements StorageDatabase {
 	}
 
 	@Override
-	public List<TransportProduct> showArrivedProductsInWareHouse(int wareHouseFromId, int wareHouseToId) {
+	public List<TransportProduct> showArrivedProductsInWareHouse(int wareHouseToId) {
 		Product p = new Product();
 		p.setProductNumber(1);
 
@@ -368,4 +368,5 @@ public class DatabaseStorageSimulator implements StorageDatabase {
 
 		return list;
 	}
+
 }

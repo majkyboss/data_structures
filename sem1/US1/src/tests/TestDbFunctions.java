@@ -5,7 +5,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,10 +16,10 @@ import java.util.Set;
 import org.junit.Assert;
 import org.junit.Test;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import core.Db;
 import core.data.Client;
 import core.data.Product;
+import core.data.ProductPlace;
 import core.data.TransportProduct;
 import core.data.WareHouse;
 
@@ -204,15 +206,124 @@ public class TestDbFunctions {
 	}
 
 	@Test
-	public void function7_makeTransportToClient() {
+	public void function7_makeTransportToClient() throws ParseException {
+		Db database = new Db();
+		WareHouse whDeparture = new WareHouse();
+		whDeparture.setName("prvy sklad");
+		boolean departureAdded = database.addWarehouse(whDeparture);
+		assertTrue(departureAdded);
+
+		Product p = new Product();
+		p.setCost(300.50);
+		p.setEan("000000000001");
+		p.setMinDate(shortDateFormat.parse("1.12.2054"));
+		p.setName("produkt jedna");
+		p.setProductionDate(new Date());
+		p.setProductNumber(1);
+		boolean productAdded = database.addProduct(whDeparture.getId(), p);
+		assertTrue(productAdded);
+
+		Client cDestination = new Client();
+		cDestination.setName("odberatel prvy");
+		boolean destinationAdded = database.addClient(cDestination, whDeparture.getId());
+		assertTrue(destinationAdded);
+
+		Date expDate = shortDateFormat.parse("10.12.2014");
+
+		boolean transportMade = database.makeTransportToClient(p.getProductNumber(), cDestination.getId(), expDate);
+		assertTrue(transportMade);
+
+		WareHouse whLoaded = database.getWarehouse(whDeparture.getId());
+		TransportProduct transpLoaded = whLoaded.getDispatchedItem(p.getProductNumber());
+
+		assertEquals(transpLoaded.getProduct(), p);
 	}
 
 	@Test
-	public void function8_endTransport() {
+	public void function8_endTransport() throws ParseException {
+		// add warehouse
+		// add product to wh
+		// add destination place
+		// move product from wh to destination
+
+		Client c = new Client();
+		c.setName("odberatel prvy");
+
+		WareHouse wh = new WareHouse();
+		wh.setName("prvy sklad");
+
+		ProductPlace[] places = new ProductPlace[] { c, wh };
+
+		for (int i = 0; i < places.length; i++) {
+			ProductPlace destination = places[i];
+
+			Db database = new Db();
+			WareHouse whDeparture = new WareHouse();
+			whDeparture.setName("prvy sklad");
+			boolean departureAdded = database.addWarehouse(whDeparture);
+			assertTrue(departureAdded);
+
+			Product p = new Product();
+			p.setCost(300.50);
+			p.setEan("000000000001");
+			p.setMinDate(shortDateFormat.parse("1.12.2054"));
+			p.setName("produkt jedna");
+			p.setProductionDate(new Date());
+			p.setProductNumber(1);
+			boolean productAdded = database.addProduct(whDeparture.getId(), p);
+			assertTrue(productAdded);
+
+			boolean destinactionAdded = false;
+			if (destination instanceof Client) {
+				destinactionAdded = database.addClient((Client) destination, whDeparture.getId());
+			} else if (destination instanceof WareHouse) {
+				destinactionAdded = database.addWarehouse((WareHouse) destination);
+			}
+			assertTrue(destinactionAdded);
+
+			Date expDate = new Date();
+			boolean transportAdded = false;
+			if (destination instanceof Client) {
+				transportAdded = database.makeTransportToClient(p.getProductNumber(), ((Client) destination).getId(), expDate);
+			} else if (destination instanceof WareHouse) {
+				transportAdded = database.makeTransportToWareHouse(p.getProductNumber(), ((WareHouse) destination).getId(), expDate);
+			}
+			assertTrue(transportAdded);
+
+			Date arrDate = new Date();
+			boolean transportEnd = database.endTransport(p.getProductNumber(), arrDate);
+			assertTrue(transportEnd);
+
+			TransportProduct transport = destination.getArrivedItems().get(0);
+			assertEquals(transport.getProduct(), p);
+			// TODO check also warehouse (stored products and dispatched
+			// products)
+		}
+
 	}
 
 	@Test
 	public void function9_searchClients() {
+		Db database = new Db();
+		WareHouse wh = new WareHouse();
+		wh.setName("prvy sklad");
+		boolean departureAdded = database.addWarehouse(wh);
+		assertTrue(departureAdded);
+
+		List<Client> clients = new LinkedList<>();
+		for (int i = 0; i < 10; i++) {
+			Client c = new Client();
+			c.setName("klient " + i);
+			boolean clientAdded = database.addClient(c, wh.getId());
+			assertTrue(clientAdded);
+			clients.add(c);
+		}
+
+		List<Client> clientsLoaded = database.searchClients(wh.getId());
+		Set<Client> clientsSet = new HashSet<>(clients);
+		Set<Client> clientsLoadedSet = new HashSet<>(clientsLoaded);
+
+		assertEquals(clientsSet, clientsLoadedSet);
 	}
 
 	@Test
@@ -229,6 +340,44 @@ public class TestDbFunctions {
 
 	@Test
 	public void function13_searchProducts() {
+		Date dateFrom = new Date();
+		int daysUntilDate = 5;
+
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(dateFrom);
+		calendar.add(Calendar.DAY_OF_YEAR, daysUntilDate);
+		Date dateTo = calendar.getTime();
+
+		WareHouse wh = new WareHouse();
+		wh.setName("prvy sklad");
+		int whId = wh.getId();
+
+		Db database = new Db();
+		assertTrue(database.addWarehouse(wh));
+
+		List<Product> products = new LinkedList<>();
+		for (int i = 0; i < 10; i++) {
+			Product product = new Product();
+			product.setCost(300.50);
+			product.setEan("000000000001");
+			calendar.setTime(dateFrom);
+			calendar.add(Calendar.DAY_OF_YEAR, i+1);
+			product.setMinDate(calendar.getTime());
+			product.setName("produkt jedna");
+			product.setProductionDate(new Date());
+			product.setProductNumber(1);
+			if (calendar.getTime().compareTo(dateTo) <= 0) {
+				products.add(product);
+			}
+
+			assertTrue(database.addProduct(whId, product));
+		}
+
+		List<Product> loadedProducts = database.searchProducts(new Date(), daysUntilDate, whId);
+		Set<Product> productsSet = new HashSet<>(products);
+		Set<Product> loadedProductsSet = new HashSet<>(loadedProducts);
+
+		assertEquals(productsSet, loadedProductsSet);
 	}
 
 	@Test
