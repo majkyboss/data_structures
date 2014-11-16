@@ -16,18 +16,23 @@ import java.util.Stack;
 public class InOrderBinaryTreeIterator<T extends Comparable<T>> implements
 		Iterator<RBNode<T>> {
 	Stack<RBNode<T>> stack = new Stack<RBNode<T>>();
+	RBNode<T> stopNode = null;
+
+	/** Constructor */
+	public InOrderBinaryTreeIterator(RBNode<T> root, RBNode<T> stopNode) {
+		pushLeftChildren(root);
+		this.stopNode = stopNode;
+	}
 
 	/** Push node cur and all of its left children into stack */
 	private void pushLeftChildren(RBNode<T> cur) {
-		while (cur != null) {
+		do {
+			if (cur == null) {
+				break;
+			}
 			stack.push(cur);
 			cur = cur.getLeftChild();
-		}
-	}
-
-	/** Constructor */
-	public InOrderBinaryTreeIterator(RBNode<T> root) {
-		pushLeftChildren(root);
+		} while (!cur.equals(stopNode));
 	}
 
 	public boolean hasNext() {
