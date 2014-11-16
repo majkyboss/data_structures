@@ -222,4 +222,6 @@ public interface StorageDatabase {
 	 * @return
 	 */
 	List<ProductValueItem> getProductsValue(int wareHouseId);
+
+	List<WareHouse> getWarehouses();
 }

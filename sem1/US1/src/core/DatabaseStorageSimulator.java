@@ -368,4 +368,15 @@ public class DatabaseStorageSimulator implements StorageDatabase {
 		return list;
 	}
 
+	@Override
+	public List<WareHouse> getWarehouses() {
+		List<WareHouse> list = new LinkedList<>();
+		WareHouse wh = new WareHouse();
+		wh.setName("test warehouse");
+		wh.setAddress("test address");
+		list.add(wh);
+
+		return list;
+	}
+
 }

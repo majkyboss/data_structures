@@ -530,4 +530,14 @@ public class Db implements StorageDatabase {
 		}
 		return null;
 	}
+
+	@Override
+	public List<WareHouse> getWarehouses() {
+		List<WareHouse> whs = new LinkedList<>();
+		for (RBNode<Integer> whNode : warehousesById) {
+			whs.add(((WareHouseNode) whNode).getValue());
+		}
+
+		return whs;
+	}
 }
