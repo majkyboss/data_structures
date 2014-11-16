@@ -182,15 +182,7 @@ public class Db implements StorageDatabase {
 		}
 		// 2
 		WareHouse whDeparture = product.getCurrentPlace();
-		RBTree<Integer> pnTree = product.getProductNumbersTree();
-		if (pnTree.size() == 1)
-			pnTree.delete(pnTree.find(productNumber));
-		RBTree<Date> dateTree = product.getDateTree();
-		if (dateTree.size() == 1)
-			dateTree.delete(dateTree.find(product.getMinDate()));
-		RBTree<String> eanTree = product.getEanTree();
-		if (eanTree.size() == 1)
-			eanTree.delete(eanTree.find(product.getEan()));
+		deleteFromWh(product);
 		// 3, 4
 		TransportProduct transport = new TransportProduct(product);
 		product.setTransport(transport);
@@ -225,6 +217,7 @@ public class Db implements StorageDatabase {
 		// 3. set arrived date
 		// 4. add transport to arrivedItems of destination
 		// 5. add product to destination (only warehouse)
+		// 6. delete product from all products tree
 		Product product = searchProduct(productNum);
 
 		TransportProduct transport = product.getTransport();
@@ -239,6 +232,10 @@ public class Db implements StorageDatabase {
 
 		if (destinationPlace instanceof WareHouse) {
 			retVal &= ((WareHouse) destinationPlace).addProduct(product);
+		}
+
+		if (retVal) {
+			retVal &= (itemsByProductNumber.delete(itemsByProductNumber.find(productNum)) != null);
 		}
 
 		return retVal;
@@ -374,9 +371,41 @@ public class Db implements StorageDatabase {
 
 	@Override
 	public boolean deleteProduct(int productNum) {
-		
+		// delete from allproducts
+		// delete from arrived items
+		// delete from stored
+		RBNode<Integer> productNode = itemsByProductNumber.find(productNum);
+		if (productNode != null && productNode instanceof ProductNumberNode) {
+			Product product = ((ProductNumberNode) productNode).getValue();
+			itemsByProductNumber.delete(productNode);
+
+		}
+
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	private boolean deleteFromWh(Product product) {
+		WareHouse wh = product.getCurrentPlace();
+		boolean retVal = false;
+		if (wh != null) {
+			RBTree<Integer> pnTree = product.getProductNumbersTree();
+			retVal = pnTree.delete(pnTree.find(product.getProductNumber())) != null;
+
+			RBTree<Date> dateTree = product.getDateTree();
+			RBNode<Date> dateNode = dateTree.find(product.getMinDate());
+			if (dateNode.getSize() == 0) {
+				retVal &= dateTree.delete(dateNode) != null;
+
+				RBTree<String> eanTree = product.getEanTree();
+				RBNode<String> eanNode = eanTree.find(product.getEan());
+				if (eanNode.getSize() == 0) {
+					retVal &= eanTree.delete(eanNode) != null;
+				}
+			}
+		}
+
+		return retVal;
 	}
 
 	@Override

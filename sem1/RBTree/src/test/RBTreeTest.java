@@ -212,4 +212,13 @@ public class RBTreeTest {
 
 		Assert.assertTrue(checked);
 	}
+	
+	@Test
+	public void testSize() {
+		RBTree<Integer> tree = new RBTree<>();
+		Assert.assertEquals(tree.size(), 0);
+		
+		tree.insert(new IntegerNode(10));
+		Assert.assertEquals(tree.size(), 1);
+	}
 }

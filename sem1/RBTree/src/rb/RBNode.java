@@ -101,15 +101,18 @@ public abstract class RBNode<T extends Comparable<T>> implements
 	public abstract T getKey();
 
 	/**
-	 * Returns size of this node. If node is the basic node, then it returns 1.
-	 * If the node is composite node then overwrited method in child class will
-	 * return
-	 * the current size of the composite node
+	 * Returns size of this node. If node is the basic node, then it returns 1
+	 * when the value is set, otherwise 0.
+	 * If the node is composite node then overrided method in child class will
+	 * return the current size of the composite node
 	 * 
 	 * @return current size of the node
 	 */
 	public int getSize() {
-		return 1;
+		if (value!=null) {
+			return 1;
+		}
+		return 0;
 	}
 
 	// public abstract void setKey(T key);
