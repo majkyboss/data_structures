@@ -379,39 +379,58 @@ public class Db implements StorageDatabase {
 			Product product = ((ProductNumberNode) productNode).getValue();
 			itemsByProductNumber.delete(productNode);
 
+			deleteFromArrived(product);
+
+			deleteFromWh(product);
 		}
 
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
-	private boolean deleteFromWh(Product product) {
+	private void deleteFromArrived(Product product) {
+
+		int productNum = product.getProductNumber();
+
+		// check all warehouses and delete if found
+		for (RBNode<Integer> whNode : warehousesById) {
+			((WareHouseNode) whNode).getValue().deleteArrivedItem(productNum);
+		}
+
+		for (RBNode<String> clientNode : allClients) {
+			((ClientNode) clientNode).getValue().deleteArrivedItem(productNum);
+		}
+	}
+
+	private void deleteFromWh(Product product) {
 		WareHouse wh = product.getCurrentPlace();
-		boolean retVal = false;
 		if (wh != null) {
 			RBTree<Integer> pnTree = product.getProductNumbersTree();
-			retVal = pnTree.delete(pnTree.find(product.getProductNumber())) != null;
+			pnTree.delete(pnTree.find(product.getProductNumber()));
 
 			RBTree<Date> dateTree = product.getDateTree();
 			RBNode<Date> dateNode = dateTree.find(product.getMinDate());
 			if (dateNode.getSize() == 0) {
-				retVal &= dateTree.delete(dateNode) != null;
+				dateTree.delete(dateNode);
 
 				RBTree<String> eanTree = product.getEanTree();
 				RBNode<String> eanNode = eanTree.find(product.getEan());
 				if (eanNode.getSize() == 0) {
-					retVal &= eanTree.delete(eanNode) != null;
+					eanTree.delete(eanNode);
 				}
 			}
 		}
-
-		return retVal;
 	}
 
 	@Override
 	public boolean removeClient(String clientId, int warehouseId) {
-		// TODO Auto-generated method stub
-		return false;
+		// remove from warehouse
+		// remove from clients
+		WareHouse wh = getWarehouse(warehouseId);
+		wh.getClientsById().delete(wh.getClientsById().find(clientId));
+
+		allClients.delete(allClients.find(clientId));
+
+		return true;
 	}
 
 	@Override

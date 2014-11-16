@@ -1,5 +1,6 @@
 package core.data;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,6 +38,22 @@ public class ProductPlace {
 
 	public boolean addArrivedItem(TransportProduct transport) {
 		return arrivedItems.add(transport);
+	}
+
+	public boolean deleteArrivedItem(int productNum) {
+		// List<TransportProduct> toRemove = new LinkedList<>();
+		for (TransportProduct transport : arrivedItems) {
+			if (transport.getPN() == productNum) {
+				// toRemove.add(transport);
+				return arrivedItems.remove(transport);
+			}
+		}
+		// boolean retVal = false;
+		// synchronized (arrivedItems) {
+		// retVal = arrivedItems.removeAll(toRemove);
+		// }
+
+		return false;
 	}
 
 }
