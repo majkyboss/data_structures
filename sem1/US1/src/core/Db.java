@@ -435,12 +435,48 @@ public class Db implements StorageDatabase {
 
 	@Override
 	public boolean removeWarehouse(int wareHouseForDelId, int warehouseToMoveId) {
-		// TODO Auto-generated method stub
-		return false;
+		// delete from warehouses
+		// move all clients to destination warehouse
+		// move all transports to destination warehouse
+		// set every transport departure as new warehouse
+		// move all product one by one to destination warehouse
+
+		boolean retVal = true;
+
+		RBNode<Integer> whToDelNode = warehousesById.find(wareHouseForDelId);
+		warehousesById.delete(whToDelNode);
+		WareHouse destinationWarehouse = getWarehouse(warehouseToMoveId);
+
+		WareHouse wh = ((WareHouseNode) whToDelNode).getValue();
+		RBTree<String> clientsTree = wh.getClientsById();
+		for (RBNode<String> clientNode : clientsTree) {
+			Client client = ((ClientNode) clientNode).getValue();
+			retVal &= destinationWarehouse.addClient(client);
+		}
+
+		RBTree<Integer> dispatchedTree = wh.getDispatchedByPN();
+		for (RBNode<Integer> transportNode : dispatchedTree) {
+			TransportProduct transport = ((TransportNode) transportNode).getValue();
+			transport.setDeparture(destinationWarehouse);
+			retVal &= destinationWarehouse.getDispatchedByPN().insert(new TransportNode(transport));
+		}
+
+		for (RBNode<String> eanNode : wh.getStoredItemsByEan()) {
+			for (RBNode<Date> dateNode : ((EanNode) eanNode).getValue()) {
+				for (RBNode<Integer> pnNode : ((DateNode) dateNode).getValue()) {
+					Product p = ((ProductNumberNode) pnNode).getValue();
+					retVal &= destinationWarehouse.addProduct(p);
+				}
+			}
+		}
+
+		return retVal;
 	}
 
 	@Override
 	public List<ProductValueItem> getProductsValue(int wareHouseId) {
+		
+		
 		// TODO Auto-generated method stub
 		return null;
 	}
