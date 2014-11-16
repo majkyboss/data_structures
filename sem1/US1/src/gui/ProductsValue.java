@@ -1,6 +1,5 @@
 package gui;
 
-import gui.tables.ProductValueItem;
 import gui.tables.ProductsValueModel;
 
 import java.awt.Container;
@@ -16,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import core.StorageDatabase;
+import core.data.ProductValueItem;
 
 public class ProductsValue extends JPanel {
 	private JTextField fieldWH;

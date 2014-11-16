@@ -1,7 +1,5 @@
 package core;
 
-import gui.tables.ProductValueItem;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -14,6 +12,7 @@ import rb.RBTree;
 import core.data.Client;
 import core.data.Product;
 import core.data.ProductPlace;
+import core.data.ProductValueItem;
 import core.data.TransportProduct;
 import core.data.WareHouse;
 
@@ -475,10 +474,28 @@ public class Db implements StorageDatabase {
 
 	@Override
 	public List<ProductValueItem> getProductsValue(int wareHouseId) {
-		
-		
-		// TODO Auto-generated method stub
-		return null;
+		List<ProductValueItem> productValues = new LinkedList<>();
+		WareHouse wh = getWarehouse(wareHouseId);
+		for (RBNode<String> eanNode : wh.getStoredItemsByEan()) {
+			ProductValueItem productValue = new ProductValueItem();
+			productValue.setEan(eanNode.getKey());
+			int count = 0;
+			double value = 0.0;
+			for (RBNode<Date> dateNode : ((EanNode) eanNode).getValue()) {
+				for (RBNode<Integer> pnNode : ((DateNode) dateNode).getValue()) {
+					Product p = ((ProductNumberNode) pnNode).getValue();
+					if (p != null) {
+						count++;
+						value += p.getCost();
+					}
+				}
+			}
+			productValue.setValue(value);
+			productValue.setCount(count);
+			productValues.add(productValue);
+		}
+
+		return productValues;
 	}
 
 	public WareHouse getWarehouse(int warehouseId) {

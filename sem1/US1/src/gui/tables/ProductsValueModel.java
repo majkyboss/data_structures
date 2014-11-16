@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import core.data.ProductValueItem;
+
 public class ProductsValueModel extends AbstractTableModel {
 	private List<ProductValueItem> items;
 	private String[] colNames = new String[] { "EAN", "count", "value" };

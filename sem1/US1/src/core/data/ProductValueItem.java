@@ -1,4 +1,4 @@
-package gui.tables;
+package core.data;
 
 public class ProductValueItem {
 	private String ean;

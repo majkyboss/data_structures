@@ -1,12 +1,11 @@
 package core;
 
-import gui.tables.ProductValueItem;
-
 import java.util.Date;
 import java.util.List;
 
 import core.data.Client;
 import core.data.Product;
+import core.data.ProductValueItem;
 import core.data.TransportProduct;
 import core.data.WareHouse;
 
