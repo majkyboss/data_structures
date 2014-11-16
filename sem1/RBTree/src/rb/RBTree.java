@@ -1,5 +1,9 @@
 package rb;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Stack;
+
 /**
  * Class represents Red-Black tree structure. Works only with Red-Black nodes
  * {@link RBNode<T>}. <br>
@@ -7,7 +11,7 @@ package rb;
  * 
  * @author Banik
  */
-public class RBTree<T extends Comparable<T>> {
+public class RBTree<T extends Comparable<T>> implements Iterable<RBNode<T>> {
 	protected static final int INDENT_STEP = 6;
 
 	@SuppressWarnings("rawtypes")
@@ -624,4 +628,18 @@ public class RBTree<T extends Comparable<T>> {
 	public int getSize() {
 		return size;
 	}
+
+	@Override
+	public Iterator<RBNode<T>> iterator() {
+		return getInOrderIterator();
+	}
+
+	public synchronized Iterator<RBNode<T>> getInOrderIterator() {
+		return new InOrderBinaryTreeIterator<>(root);
+	}
+
+	public Iterator<RBNode<T>> getLevelOrderIterator() {
+		return null;
+	}
+
 }

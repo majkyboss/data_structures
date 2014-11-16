@@ -82,7 +82,7 @@ public interface StorageDatabase {
 	 * @param expectedDate
 	 * @return
 	 */
-	boolean makeTransportToWareHouse(int productNumber, int wareHouseId, Date expectedDate);
+	boolean makeTransportToWareHouse(int productNumber, int wareHouseDestinationId, Date expectedDate);
 
 	/**
 	 * vykonanie záznamu o zaèiatku expedovania daného tovaru (identifikovaný

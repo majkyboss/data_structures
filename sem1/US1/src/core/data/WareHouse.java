@@ -1,21 +1,24 @@
 package core.data;
 
+import java.util.Date;
+
 import rb.RBNode;
 import rb.RBTree;
 import core.ClientNode;
 import core.EanNode;
+import core.TransportNode;
 
 public class WareHouse extends ProductPlace {
 	private int id;
 	private RBTree<String> storedByEan;
-	// private RBTree<Integer> dispatchedByPN;
+	private RBTree<Integer> dispatchedByPN;
 	private RBTree<String> clientsById;
 
 	public WareHouse() {
 		super();
 		this.id = IdCounter.getNextId();
 		this.storedByEan = new RBTree<String>();
-		// this.dispatchedByPN = new RBTree<Integer>();
+		this.dispatchedByPN = new RBTree<Integer>();
 		this.clientsById = new RBTree<>();
 	}
 
@@ -51,11 +54,14 @@ public class WareHouse extends ProductPlace {
 		if (item instanceof EanNode) {
 			retVal = ((EanNode) item).addProduct(product);
 		}
+		if (retVal) {
+			product.setEanTree(storedByEan);
+		}
 
 		return retVal;
 	}
 
-	public RBTree<String> getTreeByEan() {
+	public RBTree<String> getStoredItemsByEan() {
 		return storedByEan;
 	}
 
@@ -68,6 +74,26 @@ public class WareHouse extends ProductPlace {
 			}
 		}
 
+		return null;
+	}
+
+	public boolean addClient(Client client) {
+		return clientsById.insert(new ClientNode(client));
+	}
+
+	public RBTree<String> getClientsById() {
+		return clientsById;
+	}
+
+	public RBTree<Integer> getDispatchedByPN() {
+		return dispatchedByPN;
+	}
+
+	public TransportProduct getDispatchedItem(int productNumber) {
+		RBNode<Integer> transpNode = dispatchedByPN.find(productNumber);
+		if (transpNode != null && transpNode instanceof TransportNode) {
+			return ((TransportNode) transpNode).getValue();
+		}
 		return null;
 	}
 }

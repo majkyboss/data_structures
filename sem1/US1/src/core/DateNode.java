@@ -35,6 +35,9 @@ public class DateNode extends RBNode<Date> {
 		}
 
 		retVal = itemsByProductNumber.insert(item);
+		if (retVal) {
+			product.setProductNumbersTree(itemsByProductNumber);
+		}
 
 		// .... product is already added to PNNode in construktor
 

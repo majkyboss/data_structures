@@ -7,12 +7,17 @@ public class ClientNode extends RBNode<String> {
 
 	public ClientNode(Client clientValue) {
 		super();
-		setValue(clientValue);
+		value = clientValue;
 	}
 
 	@Override
 	public String getKey() {
 		return ((Client) getValue()).getId();
+	}
+
+	@Override
+	public Client getValue() {
+		return (Client) super.getValue();
 	}
 
 }

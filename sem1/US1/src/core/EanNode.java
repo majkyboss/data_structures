@@ -14,7 +14,7 @@ public class EanNode extends RBNode<String> {
 		super();
 		key = ean;
 		itemsByDate = new RBTree<>();
-		setValue(itemsByDate);
+		value = itemsByDate;
 	}
 
 	@Override
@@ -49,6 +49,9 @@ public class EanNode extends RBNode<String> {
 
 		if (item instanceof DateNode) {
 			retVal = ((DateNode) item).addProduct(product);
+		}
+		if (retVal) {
+			product.setDateTree(itemsByDate);
 		}
 
 		return retVal;

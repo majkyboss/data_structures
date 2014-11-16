@@ -3,7 +3,8 @@ package core.data;
 import java.util.Date;
 
 public class TransportProduct {
-	private int productId;
+	// private int productId;
+	private Product product;
 	private ProductPlace departure;
 	private ProductPlace destination;
 	private Date dispatchedDate;
@@ -11,12 +12,17 @@ public class TransportProduct {
 	private String carEcv;
 	private Date arrivedDate;
 
-	public int getProductId() {
-		return productId;
+	public TransportProduct(Product product) {
+		super();
+		this.product = product;
 	}
 
-	public void setProductId(int productId) {
-		this.productId = productId;
+	public Product getProduct() {
+		return product;
+	}
+
+	public int getPN() {
+		return product.getProductNumber();
 	}
 
 	public ProductPlace getDeparture() {

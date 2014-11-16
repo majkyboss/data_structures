@@ -179,7 +179,6 @@ public class RBTreeTest {
 
 			// insert generated item to RB tree
 			RBNode<Integer> node = new IntegerNode(key);
-			node.setValue(key);
 			boolean iserted = tree.insert(node);
 			if (iserted) {
 				i++;

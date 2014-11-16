@@ -10,9 +10,11 @@ import java.util.Date;
 import org.junit.Assert;
 import org.junit.Test;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import core.Db;
 import core.data.Client;
 import core.data.Product;
+import core.data.TransportProduct;
 import core.data.WareHouse;
 
 public class TestDbFunctions {
@@ -101,25 +103,49 @@ public class TestDbFunctions {
 
 	@Test
 	public void function5_searchClient() {
-		// 1. create warehouse
-		// 2. add client
-		// 3. find client
-
-		WareHouse wh = new WareHouse();
-		wh.setAddress("adresa prveho skladu");
-		int id = wh.getId();
-		wh.setName("prvy sklad");
-
-		Client c = new Client();
-		c.setAddress("adresa prveho odberatela");
-		c.setId(c.getId());
-		c.setName("prvy odberatel");
-		c.setWarehouse(wh);
-
+		addAndFindClient();
 	}
 
 	@Test
-	public void function6_makeTransportToWareHouse() {
+	public void function6_makeTransportToWareHouse() throws ParseException {
+		// create warehouse
+		// add warehouse
+		// create product
+		// add product
+		// create dest wh
+		// add dest wh
+		// create exp date
+		// make transport
+		Db database = new Db();
+		WareHouse whDeparture = new WareHouse();
+		whDeparture.setName("prvy sklad");
+		boolean departureAdded = database.addWarehouse(whDeparture);
+		assertTrue(departureAdded);
+
+		Product p = new Product();
+		p.setCost(300.50);
+		p.setEan("000000000001");
+		p.setMinDate(shortDateFormat.parse("1.12.2054"));
+		p.setName("produkt jedna");
+		p.setProductionDate(new Date());
+		p.setProductNumber(1);
+		boolean productAdded = database.addProduct(whDeparture.getId(), p);
+		assertTrue(productAdded);
+
+		WareHouse whDestination = new WareHouse();
+		whDestination.setName("druhy sklad");
+		boolean destinationAdded = database.addWarehouse(whDestination);
+		assertTrue(destinationAdded);
+
+		Date expDate = shortDateFormat.parse("10.12.2014");
+
+		boolean transportMade = database.makeTransportToWareHouse(p.getProductNumber(), whDestination.getId(), expDate);
+		assertTrue(transportMade);
+
+		WareHouse whLoaded = database.getWarehouse(whDeparture.getId());
+		TransportProduct transpLoaded = whLoaded.getDispatchedItem(p.getProductNumber());
+
+		assertEquals(transpLoaded.getProduct(), p);
 	}
 
 	@Test
@@ -151,11 +177,7 @@ public class TestDbFunctions {
 	}
 
 	@Test
-	public void function14_addClient() {
-	}
-
-	@Test
-	public void function15_addWarehouse() {
+	public void function14_addWarehouse() {
 		// 1. add warehouse
 		// 2. add product to created warehouse
 
@@ -174,6 +196,11 @@ public class TestDbFunctions {
 	}
 
 	@Test
+	public void function15_addClient() {
+		addAndFindClient();
+	}
+
+	@Test
 	public void function16_deleteProduct() {
 	}
 
@@ -187,6 +214,36 @@ public class TestDbFunctions {
 
 	@Test
 	public void function19_getProductsValue() {
+	}
+
+	private void addAndFindClient() {
+		// 1. create warehouse
+		// 2. add warehouse
+		// 3. create client
+		// 4. add client
+		// 5. find client
+
+		Db database = new Db();
+
+		WareHouse wh = new WareHouse();
+		wh.setAddress("adresa prveho skladu");
+		int whId = wh.getId();
+		wh.setName("prvy sklad");
+		boolean whAdded = database.addWarehouse(wh);
+		assertTrue(whAdded);
+
+		Client c = new Client();
+		c.setAddress("adresa prveho odberatela");
+		String cId = c.getId();
+		c.setName("prvy odberatel");
+		c.setWarehouse(wh);
+
+		boolean cAdded = database.addClient(c, whId);
+		assertTrue(cAdded);
+
+		Client cLoadedFromDB = database.getClient(cId, whId);
+
+		assertEquals(cLoadedFromDB, c);
 	}
 
 }

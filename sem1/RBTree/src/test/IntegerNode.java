@@ -11,7 +11,7 @@ import rb.RBNode;
 public class IntegerNode extends RBNode<Integer> {
 	public IntegerNode(Integer value) {
 		super();
-		setValue(value);
+		this.value = value;
 	}
 
 	@Override

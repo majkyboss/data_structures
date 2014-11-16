@@ -10,16 +10,19 @@ import rb.RBNode;
 import rb.RBTree;
 import core.data.Client;
 import core.data.Product;
+import core.data.ProductPlace;
 import core.data.TransportProduct;
 import core.data.WareHouse;
 
 public class Db implements StorageDatabase {
 	private final RBTree<Integer> warehousesById;
 	private final RBTree<Integer> itemsByProductNumber;
+	private final RBTree<String> allClients;
 
 	public Db() {
 		this.warehousesById = new RBTree<>();
 		this.itemsByProductNumber = new RBTree<>();
+		this.allClients = new RBTree<>();
 	}
 
 	@Override
@@ -37,7 +40,7 @@ public class Db implements StorageDatabase {
 		RBNode<Integer> wh = warehousesById.find(wareHouseId);
 
 		if (wh != null && wh instanceof WareHouseNode) {
-			RBTree<String> eanTree = ((WareHouse) wh.getValue()).getTreeByEan();
+			RBTree<String> eanTree = ((WareHouse) wh.getValue()).getStoredItemsByEan();
 			RBNode<String> eanNode = eanTree.find(ean);
 			if (eanNode != null && eanNode instanceof EanNode) {
 				RBTree<Date> dateTree = (RBTree<Date>) ((EanNode) eanNode).getValue();
@@ -54,7 +57,7 @@ public class Db implements StorageDatabase {
 		// product number
 		Object product = itemsByProductNumber.find(productNum).getValue();
 
-		if (product instanceof Product) {
+		if (product != null && product instanceof Product) {
 			return (Product) product;
 		}
 
@@ -75,15 +78,16 @@ public class Db implements StorageDatabase {
 
 		boolean retVal = false;
 
-		RBNode<Integer> wareHouseNode = warehousesById.find(whId);
-		if (wareHouseNode == null) {
+		// RBNode<Integer> wareHouseNode = warehousesById.find(whId);
+		WareHouse wh = getWarehouse(whId);
+		if (wh == null) {
 			retVal = false;
-		} else if (wareHouseNode instanceof WareHouseNode) {
-			retVal = ((WareHouse) wareHouseNode.getValue()).addProduct(product);
 		}
+		retVal = wh.addProduct(product);
 
+		// set references to parent structures
 		if (retVal) {
-			product.setCurrentPlace((WareHouse) wareHouseNode.getValue());
+			product.setCurrentPlace(wh);
 		}
 
 		RBNode<Integer> productNode = itemsByProductNumber.find(product.getProductNumber());
@@ -110,15 +114,71 @@ public class Db implements StorageDatabase {
 	}
 
 	@Override
-	public boolean makeTransportToWareHouse(int productNumber, int wareHouseId, Date expectedDate) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean makeTransportToWareHouse(int productNumber, int wareHouseDestinationId, Date expectedDate) {
+		ProductPlace destination = getWarehouse(wareHouseDestinationId);
+		return makeTransport(productNumber, destination, expectedDate);
 	}
 
 	@Override
 	public boolean makeTransportToClient(int productNumber, String clientId, Date expectedDate) {
-		// TODO Auto-generated method stub
-		return false;
+		ProductPlace destination = getClient(clientId);
+		return makeTransport(productNumber, destination, expectedDate);
+	}
+
+	private boolean makeTransport(int productNumber, ProductPlace destination, Date expectedDate) {
+		// 1. find product by PN
+		// 2. remove item from warehouse
+		// 3. make transport
+		// 4. add product to transport
+		// 5. find destination place
+		// 6. set departure and destination
+		// 7. set dispatched date
+		// 8. set expected date
+		// 9. set ECV of car
+		// 10. add transport to dispatched tree in departure warehouse (by
+		// product id)
+		// 11. reset current place in product
+
+		// 1
+		Product product = searchProduct(productNumber);
+		if (product == null) {
+			return false;
+		}
+		// 2
+		WareHouse whDeparture = product.getCurrentPlace();
+		RBTree<Integer> pnTree = product.getProductNumbersTree();
+		if (pnTree.size() == 1)
+			pnTree.delete(pnTree.find(productNumber));
+		RBTree<Date> dateTree = product.getDateTree();
+		if (dateTree.size() == 1)
+			dateTree.delete(dateTree.find(product.getMinDate()));
+		RBTree<String> eanTree = product.getEanTree();
+		if (eanTree.size() == 1)
+			eanTree.delete(eanTree.find(product.getEan()));
+		// 3, 4
+		TransportProduct transport = new TransportProduct(product);
+		// 5
+		// from parameter
+		// 6
+		transport.setDeparture(whDeparture);
+		transport.setDestination(destination);
+		// 7
+		transport.setDispatchedDate(new Date());
+		// 8
+		transport.setExpectedDate(expectedDate);
+		// 9
+		// TODO generate ecv
+		transport.setCarEcv("some ECV");
+		// 10
+		RBTree<Integer> dispatched = whDeparture.getDispatchedByPN();
+		boolean retVal = dispatched.insert(new TransportNode(transport));
+		// 11
+		product.setCurrentPlace(null);
+		product.setProductNumbersTree(null);
+		product.setDateTree(null);
+		product.setEanTree(null);
+
+		return retVal;
 	}
 
 	@Override
@@ -158,22 +218,6 @@ public class Db implements StorageDatabase {
 	}
 
 	@Override
-	public boolean addClient(Client c, int whId) {
-		RBNode<Integer> whNode = warehousesById.find(whId);
-		if (whNode != null && whNode instanceof WareHouseNode) {
-			// change structure:
-			// whNode.getValue() will return whNode which has references to
-			// items stored dispatched and clients, no whNode will have refs to
-			// single structures
-			// ((WareHouseNode)whNode.getValue()).
-			whNode.getValue();
-		}
-
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public boolean addWarehouse(WareHouse wh) {
 		// 1. search if warehouse is not already inserted
 
@@ -189,6 +233,26 @@ public class Db implements StorageDatabase {
 		WareHouseNode newItem = new WareHouseNode(wh);
 
 		return warehousesById.insert(newItem);
+	}
+
+	@Override
+	public boolean addClient(Client c, int whId) {
+		// 1. find warehouse
+		// 2. add entered client into warehouse
+		// 3. set ref for client to wh
+
+		boolean retVal = false;
+
+		WareHouse wh = getWarehouse(whId);
+		if (wh != null) {
+			retVal = wh.addClient(c);
+			if (retVal) {
+				c.setWarehouse(wh);
+				allClients.insert(new ClientNode(c));
+			}
+		}
+
+		return retVal;
 	}
 
 	@Override
@@ -226,4 +290,25 @@ public class Db implements StorageDatabase {
 		return null;
 	}
 
+	public Client getClient(String cId, int warehouseId) {
+		// 1. find warehouse by id
+		// 2. find client by id
+		RBNode<Integer> whNode = warehousesById.find(warehouseId);
+		if (whNode != null && whNode instanceof WareHouseNode) {
+			RBNode<String> clientNode = ((WareHouse) whNode.getValue()).getClientsById().find(cId);
+			if (clientNode != null && clientNode instanceof ClientNode) {
+				return ((ClientNode) clientNode).getValue();
+			}
+		}
+
+		return null;
+	}
+
+	private Client getClient(String clientId) {
+		RBNode<String> cNode = allClients.find(clientId);
+		if (cNode != null && cNode instanceof ClientNode) {
+			return ((ClientNode) cNode).getValue();
+		}
+		return null;
+	}
 }

@@ -14,4 +14,9 @@ public class WareHouseNode extends RBNode<Integer> {
 	public Integer getKey() {
 		return ((WareHouse) value).getId();
 	}
+
+	@Override
+	public WareHouse getValue() {
+		return (WareHouse) super.getValue();
+	}
 }

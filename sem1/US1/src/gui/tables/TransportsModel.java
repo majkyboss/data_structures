@@ -36,7 +36,7 @@ public class TransportsModel extends AbstractTableModel {
 		Object ret = null;
 		switch (col) {
 		case 0:
-			ret = p.getProductId();
+			ret = p.getPN();
 			break;
 		case 1:
 			ret = p.getDeparture();

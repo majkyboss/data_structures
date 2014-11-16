@@ -123,17 +123,21 @@ public class DatabaseStorageSimulator implements StorageDatabase {
 
 	@Override
 	public List<TransportProduct> getLiveTransport(int wareHouseId) {
+		Product p = new Product();
+		p.setProductNumber(1);
+
 		LinkedList<TransportProduct> l = new LinkedList<>();
-		TransportProduct pt = new TransportProduct();
-		pt.setProductId(1);
+		TransportProduct pt = new TransportProduct(p);
 		pt.setDeparture(new WareHouse());
 		pt.setDestination(new WareHouse());
 		pt.setDispatchedDate(new Date());
 		pt.setExpectedDate(new Date());
 		pt.setCarEcv("ZA555ZA");
 		l.add(pt);
-		pt = new TransportProduct();
-		pt.setProductId(2);
+
+		p = new Product();
+		p.setProductNumber(2);
+		pt = new TransportProduct(p);
 		pt.setDeparture(new WareHouse());
 		pt.setDestination(new WareHouse());
 		pt.setDispatchedDate(new Date());
@@ -146,17 +150,21 @@ public class DatabaseStorageSimulator implements StorageDatabase {
 
 	@Override
 	public List<TransportProduct> showArrivedProductsInWareHouse(int wareHouseFromId, int wareHouseToId) {
+		Product p = new Product();
+		p.setProductNumber(1);
+
 		LinkedList<TransportProduct> l = new LinkedList<>();
-		TransportProduct pt = new TransportProduct();
-		pt.setProductId(1);
+		TransportProduct pt = new TransportProduct(p);
 		pt.setDeparture(new WareHouse());
 		pt.setDestination(new WareHouse());
 		pt.setDispatchedDate(new Date());
 		pt.setExpectedDate(new Date());
 		pt.setCarEcv("ZA555ZA");
 		l.add(pt);
-		pt = new TransportProduct();
-		pt.setProductId(2);
+
+		p = new Product();
+		p.setProductNumber(2);
+		pt = new TransportProduct(p);
 		pt.setDeparture(new WareHouse());
 		pt.setDestination(new WareHouse());
 		pt.setDispatchedDate(new Date());
@@ -169,9 +177,11 @@ public class DatabaseStorageSimulator implements StorageDatabase {
 
 	@Override
 	public List<TransportProduct> showArrivedProductsInClinet(int wareHouseFromId, String clientId) {
+		Product p = new Product();
+		p.setProductNumber(1);
+
 		LinkedList<TransportProduct> l = new LinkedList<>();
-		TransportProduct pt = new TransportProduct();
-		pt.setProductId(1);
+		TransportProduct pt = new TransportProduct(p);
 		pt.setDeparture(new WareHouse());
 		pt.setDestination(new Client());
 		pt.setDispatchedDate(new Date());
@@ -179,8 +189,10 @@ public class DatabaseStorageSimulator implements StorageDatabase {
 		pt.setCarEcv("ZA555ZA");
 		pt.setArrivedDate(new Date());
 		l.add(pt);
-		pt = new TransportProduct();
-		pt.setProductId(2);
+
+		p = new Product();
+		p.setProductNumber(2);
+		pt = new TransportProduct(p);
 		pt.setDeparture(new WareHouse());
 		pt.setDestination(new Client());
 		pt.setDispatchedDate(new Date());
