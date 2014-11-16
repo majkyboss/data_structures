@@ -15,4 +15,10 @@ public class ProductNumberNode extends RBNode<Integer> {
 	public Integer getKey() {
 		return ((Product) value).getProductNumber();
 	}
+
+	@Override
+	public Product getValue() {
+		// TODO Auto-generated method stub
+		return (Product) super.getValue();
+	}
 }

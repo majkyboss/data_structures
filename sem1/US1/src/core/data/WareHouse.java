@@ -61,11 +61,7 @@ public class WareHouse extends ProductPlace {
 		return retVal;
 	}
 
-	public RBTree<String> getStoredItemsByEan() {
-		return storedByEan;
-	}
-
-	public Client findClient(String id) {
+	public Client getClient(String id) {
 		RBNode<String> clientNode = clientsById.find(id);
 		if (clientNode != null && clientNode instanceof ClientNode) {
 			Object client = clientNode.getValue();
@@ -79,6 +75,10 @@ public class WareHouse extends ProductPlace {
 
 	public boolean addClient(Client client) {
 		return clientsById.insert(new ClientNode(client));
+	}
+	
+	public RBTree<String> getStoredItemsByEan() {
+		return storedByEan;
 	}
 
 	public RBTree<String> getClientsById() {

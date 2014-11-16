@@ -3,6 +3,7 @@ package core;
 import gui.tables.ProductValueItem;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,9 +31,38 @@ public class Db implements StorageDatabase {
 		// 1. find the ean node
 		// 2. find date node
 		// 3. load <count> nodes which are on the right side from the found node
-		// TODO !!! make method in tree which gets more then one node
+		List<Product> products = new LinkedList<>();
 
-		return new LinkedList<>();
+		RBTree<Date> dateTree = getDateTree(wareHouseId, ean);
+		if (dateTree != null) {
+			int i = 0; // number of items added to list
+			for (Iterator<RBNode<Date>> iterator = dateTree.getInOrderIterator(dateFrom); iterator.hasNext();) {
+				RBNode<Date> dateNode = iterator.next();
+				if (dateNode == null || (dateNode instanceof DateNode && dateTo != null && dateNode.getKey().compareTo(dateTo) > 1) || i >= count) {
+					break;
+				}
+				for (RBNode<Integer> pnNode : ((DateNode) dateNode).getValue()) {
+					if (i < count) {
+						products.add(((ProductNumberNode) pnNode).getValue());
+						i++;
+					}
+				}
+			}
+		}
+
+		return products;
+	}
+
+	private RBTree<Date> getDateTree(int warehouseId, String ean) {
+		WareHouse wh = getWarehouse(warehouseId);
+		if (wh != null) {
+			RBNode<String> eanNode = wh.getStoredItemsByEan().find(ean);
+			if (eanNode != null && eanNode instanceof EanNode) {
+				return ((EanNode) eanNode).getValue();
+			}
+		}
+
+		return null;
 	}
 
 	@Override
@@ -107,7 +137,7 @@ public class Db implements StorageDatabase {
 
 		RBNode<Integer> wh = warehousesById.find(wareHouseId);
 		if (wh != null && wh instanceof WareHouseNode) {
-			return ((WareHouse) wh.getValue()).findClient(clientId);
+			return ((WareHouse) wh.getValue()).getClient(clientId);
 		}
 
 		return null;

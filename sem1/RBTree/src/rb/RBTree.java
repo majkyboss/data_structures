@@ -631,11 +631,11 @@ public class RBTree<T extends Comparable<T>> implements Iterable<RBNode<T>> {
 
 	@Override
 	public Iterator<RBNode<T>> iterator() {
-		return getInOrderIterator();
+		return getInOrderIterator(null);
 	}
 
-	public synchronized Iterator<RBNode<T>> getInOrderIterator() {
-		return new InOrderBinaryTreeIterator<>(root);
+	public synchronized Iterator<RBNode<T>> getInOrderIterator(T startKey) {
+		return new InOrderBinaryTreeIterator<>(root, startKey);
 	}
 
 	public Iterator<RBNode<T>> getLevelOrderIterator() {

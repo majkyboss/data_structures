@@ -5,34 +5,36 @@ import java.util.NoSuchElementException;
 import java.util.Stack;
 
 /**
- * <a href=
+ * Implemented according to <a href=
  * "http://n00tc0d3r.blogspot.sk/2013/08/implement-iterator-for-binarytree-i-in.html"
- * >source web page link</a>
+ * >link (author: Sophie)</a>
  * 
- * @author Sophie
+ * @author Banik
  * 
  * @param <T>
  */
 public class InOrderBinaryTreeIterator<T extends Comparable<T>> implements
 		Iterator<RBNode<T>> {
 	Stack<RBNode<T>> stack = new Stack<RBNode<T>>();
-	RBNode<T> stopNode = null;
+	T startKey = null;
+	T stopKey = null;
 
 	/** Constructor */
-	public InOrderBinaryTreeIterator(RBNode<T> root, RBNode<T> stopNode) {
+	public InOrderBinaryTreeIterator(RBNode<T> root, T startKey) {
 		pushLeftChildren(root);
-		this.stopNode = stopNode;
+		this.startKey = startKey;
+		// this.stopKey = stopKey;
 	}
 
 	/** Push node cur and all of its left children into stack */
 	private void pushLeftChildren(RBNode<T> cur) {
-		do {
-			if (cur == null) {
+		while (cur != null) {
+			stack.push(cur);
+			if (startKey != null && cur.getKey().equals(startKey)) {
 				break;
 			}
-			stack.push(cur);
 			cur = cur.getLeftChild();
-		} while (!cur.equals(stopNode));
+		}
 	}
 
 	public boolean hasNext() {

@@ -6,6 +6,10 @@ import static org.junit.Assert.assertTrue;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -21,7 +25,58 @@ public class TestDbFunctions {
 	private DateFormat shortDateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
 
 	@Test
-	public void function1_searchProducts() {
+	public void function1_searchProducts() throws ParseException {
+		// add warehouse
+		// add few items with same ean codes, diff dates
+
+		Db database = new Db();
+
+		// creating and adding warehouse
+		WareHouse wh = new WareHouse();
+		wh.setAddress("adresa prveho skladu");
+		int whId = wh.getId();
+		wh.setName("prvy sklad");
+		boolean whAdded = database.addWarehouse(wh);
+		assertTrue(whAdded);
+
+		// inserting iMax products
+		int iMax = 100;
+		int same = 15;
+		String ean1 = "000000000011";
+		String ean2 = "000000002200";
+
+		List<Product> products = new LinkedList<Product>();
+
+		Date minDate = shortDateFormat.parse("1.12.2020");
+		for (int i = 0; i < iMax; i++) {
+			Product p = new Product();
+			p.setCost(Math.random() * 300);
+			p.setEan(ean1);
+			// add products with min year 2020-2029
+			// p.setMinDate(shortDateFormat.parse("1.12.202" + (i % 10)));
+			p.setMinDate(shortDateFormat.parse("1.12.2021"));
+			p.setName("produkt " + i);
+			p.setProductionDate(new Date());
+			p.setProductNumber(i);
+
+			if (i > 10 && i <= 10 + same) {
+				p.setEan(ean2);
+				if (i < 15) {
+					p.setMinDate(minDate);
+					products.add(p);
+				}
+			}
+
+			boolean pAdded = database.addProduct(whId, p);
+			// if some product was not added
+			assertTrue(pAdded);
+		}
+
+		int count = 4;
+		List<Product> productsLoaded = database.searchProducts(ean2, shortDateFormat.parse("1.11.2020"), null, count, whId);
+		Set<Product> addedItems = new HashSet<>(products);
+		Set<Product> loadedItems = new HashSet<>(productsLoaded);
+		assertEquals(addedItems, loadedItems);
 	}
 
 	@Test
