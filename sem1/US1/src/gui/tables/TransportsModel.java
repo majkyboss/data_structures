@@ -7,8 +7,8 @@ import javax.swing.table.AbstractTableModel;
 import core.data.TransportProduct;
 
 public class TransportsModel extends AbstractTableModel {
-	List<TransportProduct> items;
-	String[] columns = new String[] { "product id", "from", "to", "date dispatched", "date expected", "car ecv", "date arrived" };
+	private List<TransportProduct> items;
+	private String[] columns = new String[] { "product id", "from", "to", "date dispatched", "date expected", "car ecv", "date arrived" };
 
 	public TransportsModel(List<TransportProduct> items) {
 		super();

@@ -19,6 +19,11 @@ public class ProductsValueModel extends AbstractTableModel {
 	public int getColumnCount() {
 		return colNames.length;
 	}
+	
+	@Override
+	public String getColumnName(int arg0) {
+		return colNames[arg0];
+	}
 
 	@Override
 	public int getRowCount() {

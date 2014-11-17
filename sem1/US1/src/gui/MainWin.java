@@ -395,6 +395,22 @@ public class MainWin extends JFrame {
 			}
 		});
 		mnAll.add(menuItem);
+		
+		menuItem = new JMenuItem("Get all clients");
+		menuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				showContent(new ClientsView(storage));
+			}
+		});
+		mnAll.add(menuItem);
+		menuItem = new JMenuItem("Get all clients");
+		menuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				showContent(new ClientsView(storage));
+			}
+		});
+		mnClients.add(menuItem);
+		
 
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

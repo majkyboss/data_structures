@@ -8,6 +8,7 @@ import core.data.WareHouse;
 
 public class WarehousesModel extends AbstractTableModel {
 	private List<WareHouse> items;
+	private String[] columns = new String[] { "wh ID", "name", "address", "stored items", "clients"};
 
 	public WarehousesModel(List<WareHouse> items) {
 		super();
@@ -15,8 +16,13 @@ public class WarehousesModel extends AbstractTableModel {
 	}
 
 	@Override
+	public String getColumnName(int arg0) {
+		return columns[arg0];
+	}
+
+	@Override
 	public int getColumnCount() {
-		return 6;
+		return columns.length;
 	}
 
 	@Override

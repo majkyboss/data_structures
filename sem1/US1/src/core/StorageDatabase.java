@@ -226,4 +226,6 @@ public interface StorageDatabase {
 	List<WareHouse> getWarehouses();
 
 	List<Product> getAllProducts();
+
+	List<Client> getAllClients();
 }

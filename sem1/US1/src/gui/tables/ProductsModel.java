@@ -8,6 +8,7 @@ import core.data.Product;
 
 public class ProductsModel extends AbstractTableModel {
 	private List<Product> items;
+	private String[] columns = new String[] { "ean code", "name", "product num.", "min. date", "cost"};
 
 	public ProductsModel(List<Product> items) {
 		super();
@@ -15,8 +16,13 @@ public class ProductsModel extends AbstractTableModel {
 	}
 
 	@Override
+	public String getColumnName(int arg0) {
+		return columns[arg0];
+	}
+
+	@Override
 	public int getColumnCount() {
-		return 6;
+		return columns.length;
 	}
 
 	@Override

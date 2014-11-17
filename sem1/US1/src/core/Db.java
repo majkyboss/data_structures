@@ -632,4 +632,14 @@ public class Db implements StorageDatabase {
 
 		return products;
 	}
+	
+	@Override
+	public List<Client> getAllClients() {
+		List<Client> clients = new LinkedList<>();
+		for (RBNode<String> clientNode : allClients) {
+			clients.add(((ClientNode) clientNode).getValue());
+		}
+
+		return clients;
+	}
 }

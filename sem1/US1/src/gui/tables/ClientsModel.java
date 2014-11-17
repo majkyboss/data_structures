@@ -8,6 +8,7 @@ import core.data.Client;
 
 public class ClientsModel extends AbstractTableModel {
 	private List<Client> clients;
+	private String[] columns = new String[] { "client id", "name", "address",};
 
 	public ClientsModel(List<Client> clients) {
 		super();
@@ -15,8 +16,13 @@ public class ClientsModel extends AbstractTableModel {
 	}
 
 	@Override
+	public String getColumnName(int arg0) {
+		return columns[arg0];
+	}
+
+	@Override
 	public int getColumnCount() {
-		return 3;
+		return columns.length;
 	}
 
 	@Override
@@ -26,17 +32,17 @@ public class ClientsModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int row, int col) {
-		Client p = clients.get(row);
+		Client c = clients.get(row);
 		Object ret = null;
 		switch (col) {
 		case 0:
-			ret = p.getId();
+			ret = c.getId();
 			break;
 		case 1:
-			ret = p.getName();
+			ret = c.getName();
 			break;
 		case 2:
-			ret = p.getAddress();
+			ret = c.getAddress();
 			break;
 		default:
 			break;

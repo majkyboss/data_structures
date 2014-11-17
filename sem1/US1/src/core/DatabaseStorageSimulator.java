@@ -385,4 +385,9 @@ public class DatabaseStorageSimulator implements StorageDatabase {
 		throw new NotImplementedException();
 	}
 
+	@Override
+	public List<Client> getAllClients() {
+		throw new NotImplementedException();
+	}
+
 }
