@@ -8,7 +8,7 @@ import core.data.Product;
 
 public class ProductsModel extends AbstractTableModel {
 	private List<Product> items;
-	private String[] columns = new String[] { "ean code", "name", "product num.", "min. date", "cost"};
+	private String[] columns = new String[] { "ean code", "name", "product num.","production date", "min. date", "cost"};
 
 	public ProductsModel(List<Product> items) {
 		super();
@@ -42,13 +42,13 @@ public class ProductsModel extends AbstractTableModel {
 			ret = p.getName();
 			break;
 		case 2:
-			ret = p.getProductionDate();
+			ret = p.getProductNumber();
 			break;
 		case 3:
-			ret = p.getMinDate();
+			ret = p.getProductionDate();
 			break;
 		case 4:
-			ret = p.getProductNumber();
+			ret = p.getMinDate();
 			break;
 		case 5:
 			ret = p.getCost();

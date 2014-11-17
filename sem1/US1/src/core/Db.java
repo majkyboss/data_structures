@@ -25,10 +25,10 @@ public class Db implements StorageDatabase {
 		this.warehousesById = new RBTree<>();
 		this.itemsByProductNumber = new RBTree<>();
 		this.allClients = new RBTree<>();
-		initDB();
+		// initDB();
 	}
 
-	private void initDB() {
+	public void initDB() {
 		// add whs
 		// add clients
 		// add products
@@ -37,7 +37,7 @@ public class Db implements StorageDatabase {
 		// end transports
 
 		System.out.println("initializing started");
-		
+
 		// wh generating
 		String[] addresses = new String[] { "Ulica 1, 111 11 Mesto 1", "Ulica 2, 112 10 Mesto 2", "Ulica 3, 113 11 Mesto 3", "Ulica 4, 114 11 Mesto 4" };
 		String whName = "wh";
@@ -72,38 +72,38 @@ public class Db implements StorageDatabase {
 		Date today = new Date();
 		LinkedList<Integer> productsIds = new LinkedList<>();
 		// for all whs
-//		for (int i = 0; i < whIds.size(); i++) {
-			int whId = whIds.get(0);
-			// create <eanCount> products with same ean
-			for (int j = 0; j < eanCount; j++) {
-				StringBuilder ean = new StringBuilder();
-				ean.append(j + "");
-				ean.reverse();
-				while (ean.length() < 12) {
-					ean.append("0");
-				}
-				ean.reverse();
+		// for (int i = 0; i < whIds.size(); i++) {
+		int whId = whIds.get(0);
+		// create <eanCount> products with same ean
+		for (int j = 0; j < eanCount; j++) {
+			StringBuilder ean = new StringBuilder();
+			ean.append(j + "");
+			ean.reverse();
+			while (ean.length() < 12) {
+				ean.append("0");
+			}
+			ean.reverse();
 
-				// <dateCount> products with same min date
-				for (int k = 20; k < dateCount + 20; k++) {
-					Calendar calendar = new GregorianCalendar();
-					calendar.setTime(today);
-					calendar.set(Calendar.DAY_OF_YEAR, k);
+			// <dateCount> products with same min date
+			for (int k = 20; k < dateCount + 20; k++) {
+				Calendar calendar = new GregorianCalendar();
+				calendar.setTime(today);
+				calendar.add(Calendar.DAY_OF_YEAR, k);
 
-					for (int l = 0; l < pnCount; l++) {
-						Product p = new Product();
-						p.setName("prouct " + p.getProductNumber());
-						p.setEan(ean.toString());
-						p.setProductionDate(new Date());
-						p.setMinDate(calendar.getTime());
-						p.setCost(10.0);
+				for (int l = 0; l < pnCount; l++) {
+					Product p = new Product();
+					p.setName("prouct " + p.getProductNumber());
+					p.setEan(ean.toString());
+					p.setProductionDate(new Date());
+					p.setMinDate(calendar.getTime());
+					p.setCost(10.0);
 
-						addProduct(whId, p);
-						productsIds.add(p.getProductNumber());
-					}
+					addProduct(whId, p);
+					productsIds.add(p.getProductNumber());
 				}
 			}
-//		}
+		}
+		// }
 
 		System.out.println("initialized");
 
@@ -217,6 +217,10 @@ public class Db implements StorageDatabase {
 		return retVal;
 	}
 
+	boolean addProduct(Product p) {
+		return itemsByProductNumber.insert(new ProductNumberNode(p));
+	}
+
 	@Override
 	public Client searchClient(String clientId, int wareHouseId) {
 		// 1. find warehouse by id
@@ -311,12 +315,13 @@ public class Db implements StorageDatabase {
 		ProductPlace destinationPlace = transport.getDestination();
 		boolean retVal = destinationPlace.addArrivedItem(transport);
 
-		if (destinationPlace instanceof WareHouse) {
-			retVal &= ((WareHouse) destinationPlace).addProduct(product);
-		}
-
 		if (retVal) {
 			retVal &= (itemsByProductNumber.delete(itemsByProductNumber.find(productNum)) != null);
+		}
+
+		if (destinationPlace instanceof WareHouse) {
+			// retVal &= ((WareHouse) destinationPlace).addProduct(product);
+			retVal &= addProduct(((WareHouse) destinationPlace).getId(), product);
 		}
 
 		return retVal;
@@ -622,7 +627,7 @@ public class Db implements StorageDatabase {
 
 		return whs;
 	}
-	
+
 	@Override
 	public List<Product> getAllProducts() {
 		List<Product> products = new LinkedList<>();
@@ -632,7 +637,7 @@ public class Db implements StorageDatabase {
 
 		return products;
 	}
-	
+
 	@Override
 	public List<Client> getAllClients() {
 		List<Client> clients = new LinkedList<>();

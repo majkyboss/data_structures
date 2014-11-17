@@ -6,15 +6,18 @@ import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Test;
 
 import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvToBean;
 
@@ -100,8 +103,40 @@ public class TestCSV {
 
 	@Test
 	public void testLoadProduct() throws IOException {
+		load("productSaved.csv");
+		load("product.csv");
+
+		save("productSaved.csv");
+
+	}
+
+	private void save(String filePath) throws IOException {
+		LinkedList<String[]> allRows = new LinkedList<>();
+		allRows.add(new String[] { "produkt 1", "000000000001", "17.11.2014", "17.12.2014", "1", "300" });
+		allRows.add(new String[] { "produkt 3", "000000000003", "17.11.2014", "17.12.2014", "3", "300" });
+		allRows.add(new String[] { "produkt 2", "000000000002", "17.11.2014", "17.12.2014", "2", "300" });
+
+		// CSVWriter writer = new CSVWriter(new FileWriter(filePath));
+		CSVWriter writer = new CSVWriter(new FileWriter(filePath), ',', '"');
+
+		// // Create record
+		// String[] record = "4,David,Miller,Australia,30".split(",");
+		// // Write the record to file
+		// writer.writeNext(record);
+
+		writer.writeNext(new String[] { "name", "ean", "productionDate", "minDate", "productNumber", "cost" });
+
+		// for (String[] row : allRows) {
+		writer.writeAll(allRows);
+		// }
+
+		// close the writer
+		writer.close();
+	}
+
+	private void load(String filePath) throws IOException {
 		// Build reader instance
-		CSVReader reader = new CSVReader(new FileReader("product.csv"), ',', '"', 1);
+		CSVReader reader = new CSVReader(new FileReader(filePath), ',', '"', 0);
 
 		// Read all rows at once
 		List<String[]> allRows = reader.readAll();
@@ -110,8 +145,5 @@ public class TestCSV {
 		for (String[] row : allRows) {
 			System.out.println(Arrays.toString(row));
 		}
-
-
-		System.out.println("age sum: ");
 	}
 }

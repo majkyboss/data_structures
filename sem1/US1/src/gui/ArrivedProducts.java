@@ -39,12 +39,12 @@ public class ArrivedProducts extends JPanel {
 					int wareHouseFromId = Integer.parseInt(fieldWH.getText());
 
 					List<TransportProduct> foundProducts = new LinkedList<>();
-					if (!toClient) {
-						int wareHouseToId = Integer.parseInt(fieldPlaceTo.getText());
-						foundProducts = database.showArrivedProductsInWareHouse(wareHouseToId);
-					} else {
+					if (toClient) {
 						String clientId = fieldPlaceTo.getText();
 						foundProducts = database.showArrivedProductsInClinet(wareHouseFromId, clientId);
+					} else {
+						int wareHouseToId = Integer.parseInt(fieldPlaceTo.getText());
+						foundProducts = database.showArrivedProductsInWareHouse(wareHouseToId);
 					}
 
 					if (foundProducts.isEmpty()) {
@@ -64,13 +64,17 @@ public class ArrivedProducts extends JPanel {
 
 		JLabel lblWH = new JLabel("Warehouse:");
 		lblWH.setBounds(12, 45, 86, 14);
-		add(lblWH);
+		if (toClient) {
+			add(lblWH);
+		}
 
 		fieldWH = new JTextField();
 		fieldWH.setText("1");
 		fieldWH.setColumns(10);
 		fieldWH.setBounds(95, 43, 120, 20);
-		add(fieldWH);
+		if (toClient) {
+			add(fieldWH);
+		}
 
 		JLabel lblToPlace = new JLabel();
 		lblToPlace.setText("s");

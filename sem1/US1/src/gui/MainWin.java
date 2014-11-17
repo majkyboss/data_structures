@@ -2,16 +2,21 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.text.ParseException;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import core.CSVHandler;
 import core.Db;
 import core.StorageDatabase;
 
@@ -41,20 +46,8 @@ public class MainWin extends JFrame {
 	 */
 	public MainWin() {
 		// data init
-		storage = new Db();
-		// TODO delete simulation state
-		// this.storage = DatabaseStorageSimulator.getInstance();
-		final JPanel function1 = new Products(storage);
-		final JPanel function2 = new ProductsCount(storage);
-		final JPanel function3 = new OneProduct(storage);
-		final JPanel function4 = new AddProduct(storage);
-		final JPanel function5 = new OneClient(storage);
-		final JPanel function9 = new Clients(storage);
-		final JPanel function10 = new TransportsLive(storage);
-		final JPanel function11 = new ArrivedProducts(storage, true);
-		final JPanel function12 = new ArrivedProducts(storage, false);
-		final JPanel function13 = new ProductsNumDays(storage);
-		final JPanel function17 = new ProductsValue(storage);
+		storage = getNewDbInstance();
+
 		// end data init
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -77,74 +70,78 @@ public class MainWin extends JFrame {
 
 		JMenu mnAll = new JMenu("All");
 		menuBar.add(mnAll);
+
+		JMenu mnTools = new JMenu("Tools");
+		menuBar.add(mnTools);
+
 		// initMenu(mnAll);
 		JMenuItem menuItem = new JMenuItem("1 Search products by date");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(function1);
+				showContent(new Products(storage));
 			}
 		});
 		mnAll.add(menuItem);
 		menuItem = new JMenuItem("1 Search products by date");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(function1);
+				showContent(new Products(storage));
 			}
 		});
 		mnProducts.add(menuItem);
 		menuItem = new JMenuItem("2 Search products count");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(function2);
+				showContent(new ProductsCount(storage));
 			}
 		});
 		mnAll.add(menuItem);
 		menuItem = new JMenuItem("2 Search products count");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(function2);
+				showContent(new ProductsCount(storage));
 			}
 		});
 		mnProducts.add(menuItem);
 		menuItem = new JMenuItem("3 Search product by product num.");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(function3);
+				showContent(new OneProduct(storage));
 			}
 		});
 		mnAll.add(menuItem);
 		menuItem = new JMenuItem("3 Search product by product num.");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(function3);
+				showContent(new OneProduct(storage));
 			}
 		});
 		mnProducts.add(menuItem);
 		menuItem = new JMenuItem("4 Add product");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(function4);
+				showContent(new AddProduct(storage));
 			}
 		});
 		mnAll.add(menuItem);
 		menuItem = new JMenuItem("4 Add product");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(function4);
+				showContent(new AddProduct(storage));
 			}
 		});
 		mnProducts.add(menuItem);
 		menuItem = new JMenuItem("5 Search client");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(function5);
+				showContent(new OneClient(storage));
 			}
 		});
 		mnAll.add(menuItem);
 		menuItem = new JMenuItem("5 Search client");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(function5);
+				showContent(new OneClient(storage));
 			}
 		});
 		mnClients.add(menuItem);
@@ -193,91 +190,91 @@ public class MainWin extends JFrame {
 		menuItem = new JMenuItem("9 Get clients of warehouse");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(function9);
+				showContent(new Clients(storage));
 			}
 		});
 		mnAll.add(menuItem);
 		menuItem = new JMenuItem("9 Get clients of warehouse");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(function9);
+				showContent(new Clients(storage));
 			}
 		});
 		mnWarehouses.add(menuItem);
 		menuItem = new JMenuItem("10 Get live transports");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(function10);
+				showContent(new TransportsLive(storage));
 			}
 		});
 		mnAll.add(menuItem);
 		menuItem = new JMenuItem("10 Get live transports");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(function10);
+				showContent(new TransportsLive(storage));
 			}
 		});
 		mnWarehouses.add(menuItem);
 		menuItem = new JMenuItem("11 Get arrived products to client");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(function11);
+				showContent(new ArrivedProducts(storage, true));
 			}
 		});
 		mnAll.add(menuItem);
 		menuItem = new JMenuItem("11 Get arrived products to client");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(function11);
+				showContent(new ArrivedProducts(storage, true));
 			}
 		});
 		mnClients.add(menuItem);
 		menuItem = new JMenuItem("11 Get arrived products to client");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(function11);
+				showContent(new ArrivedProducts(storage, true));
 			}
 		});
 		mnTransport.add(menuItem);
 		menuItem = new JMenuItem("12 Get arrived products to warehouse");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(function12);
+				showContent(new ArrivedProducts(storage, false));
 			}
 		});
 		mnAll.add(menuItem);
 		menuItem = new JMenuItem("12 Get arrived products to warehouse");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(function12);
+				showContent(new ArrivedProducts(storage, false));
 			}
 		});
 		mnWarehouses.add(menuItem);
 		menuItem = new JMenuItem("12 Get arrived products to warehouse");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(function12);
+				showContent(new ArrivedProducts(storage, false));
 			}
 		});
 		mnTransport.add(menuItem);
 		menuItem = new JMenuItem("13 Get products by date + n");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(function13);
+				showContent(new ProductsNumDays(storage));
 			}
 		});
 		mnAll.add(menuItem);
 		menuItem = new JMenuItem("13 Get products by date + n");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(function13);
+				showContent(new ProductsNumDays(storage));
 			}
 		});
 		mnProducts.add(menuItem);
 		menuItem = new JMenuItem("13 Get products by date + n");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(function13);
+				showContent(new ProductsNumDays(storage));
 			}
 		});
 		mnWarehouses.add(menuItem);
@@ -326,14 +323,14 @@ public class MainWin extends JFrame {
 		menuItem = new JMenuItem("17 Get products value");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(function17);
+				showContent(new ProductsValue(storage));
 			}
 		});
 		mnAll.add(menuItem);
 		menuItem = new JMenuItem("17 Get products value");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(function17);
+				showContent(new ProductsValue(storage));
 			}
 		});
 		mnWarehouses.add(menuItem);
@@ -395,7 +392,7 @@ public class MainWin extends JFrame {
 			}
 		});
 		mnAll.add(menuItem);
-		
+
 		menuItem = new JMenuItem("Get all clients");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -410,12 +407,68 @@ public class MainWin extends JFrame {
 			}
 		});
 		mnClients.add(menuItem);
-		
+
+		menuItem = new JMenuItem("Init DB");
+		menuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				// showContent(new ClientsView(storage));
+				storage = getNewDbInstance();
+				if (storage instanceof Db) {
+					((Db) storage).initDB();
+					JOptionPane.showMessageDialog(getParent(), "Database initialized.", "Setting DB", JOptionPane.PLAIN_MESSAGE);
+				}
+			}
+		});
+		mnTools.add(menuItem);
+
+		menuItem = new JMenuItem("Load Db");
+		menuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				// showContent(new ClientsView(storage));
+				String dirPath = ".";
+				try {
+					new CSVHandler(storage).load_csv(dirPath);
+					JOptionPane.showMessageDialog(getParent(), "Database loaded.", "Loading DB", JOptionPane.PLAIN_MESSAGE);
+				} catch (
+						HeadlessException
+						| IOException
+						| ParseException e) {
+					e.printStackTrace();
+					JOptionPane.showMessageDialog(getParent(), "Database has not loaded.", "Loading DB", JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
+		mnTools.add(menuItem);
+		menuItem = new JMenuItem("Save DB");
+		menuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				// showContent(new ClientsView(storage));
+				String dirPath = ".";
+				try {
+					new CSVHandler(storage).save_csv(dirPath);
+					JOptionPane.showMessageDialog(getParent(), "Database saved.", "Save DB", JOptionPane.PLAIN_MESSAGE);
+				} catch (
+						HeadlessException
+						| IOException e) {
+					e.printStackTrace();
+					JOptionPane.showMessageDialog(getParent(), "Database has not saved.", "Save DB", JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
+		mnTools.add(menuItem);
 
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
+	}
+
+	private StorageDatabase getNewDbInstance() {
+		StorageDatabase db = null;
+		db = new Db();
+		// simulation state
+		// this.storage = DatabaseStorageSimulator.getInstance();
+		return db;
 	}
 
 	// private void initMenu(JMenu menu) {
