@@ -19,6 +19,7 @@ import javax.swing.border.EmptyBorder;
 import core.CSVHandler;
 import core.Db;
 import core.StorageDatabase;
+import core.data.IdCounter;
 
 public class MainWin extends JFrame {
 
@@ -413,6 +414,7 @@ public class MainWin extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				// showContent(new ClientsView(storage));
 				storage = getNewDbInstance();
+				IdCounter.reset();
 				if (storage instanceof Db) {
 					((Db) storage).initDB();
 					JOptionPane.showMessageDialog(getParent(), "Database initialized.", "Setting DB", JOptionPane.PLAIN_MESSAGE);
@@ -426,6 +428,7 @@ public class MainWin extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				// showContent(new ClientsView(storage));
 				String dirPath = ".";
+				storage = getNewDbInstance();
 				try {
 					new CSVHandler(storage).load_csv(dirPath);
 					JOptionPane.showMessageDialog(getParent(), "Database loaded.", "Loading DB", JOptionPane.PLAIN_MESSAGE);
@@ -465,6 +468,7 @@ public class MainWin extends JFrame {
 
 	private StorageDatabase getNewDbInstance() {
 		StorageDatabase db = null;
+		IdCounter.reset();
 		db = new Db();
 		// simulation state
 		// this.storage = DatabaseStorageSimulator.getInstance();

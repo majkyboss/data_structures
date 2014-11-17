@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import core.StorageDatabase;
+import core.data.IdCounter;
 import core.data.Product;
 
 public class AddProduct extends JPanel {
@@ -130,7 +131,7 @@ public class AddProduct extends JPanel {
 		add(lblProductionNumber);
 
 		fieldProductionNumber = new JTextField();
-		fieldProductionNumber.setText("1");
+		fieldProductionNumber.setText(IdCounter.getFutureId() + "");
 		fieldProductionNumber.setBounds(163, 120, 151, 20);
 		add(fieldProductionNumber);
 		fieldProductionNumber.setColumns(10);

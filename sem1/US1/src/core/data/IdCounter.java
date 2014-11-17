@@ -14,4 +14,14 @@ public class IdCounter {
 	public static int getFutureId() {
 		return i + 1;
 	}
+
+	public static void reset() {
+		i = -1;
+	}
+
+	public static void checkMax(int productNumber) {
+		if (i < productNumber) {
+			i = productNumber;
+		}
+	}
 }

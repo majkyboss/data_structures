@@ -11,6 +11,7 @@ import javax.swing.JTextField;
 
 import core.StorageDatabase;
 import core.data.Client;
+import core.data.IdCounter;
 import core.data.WareHouse;
 
 public class AddProductPlace extends JPanel {
@@ -87,7 +88,7 @@ public class AddProductPlace extends JPanel {
 		lblId.setBounds(10, 42, 46, 14);
 		add(lblId);
 
-		fieldId = new JTextField();
+		fieldId = new JTextField(IdCounter.getFutureId() + "");
 		fieldId.setBounds(71, 39, 86, 20);
 		add(fieldId);
 		fieldId.setColumns(10);

@@ -19,6 +19,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 
 import core.data.Client;
+import core.data.IdCounter;
 import core.data.Product;
 import core.data.ProductPlace;
 import core.data.TransportProduct;
@@ -36,7 +37,7 @@ public class CSVHandler {
 	private final String clientsFileName = "clients.csv";
 	private final String[] clientsColumns = new String[] { "id", "name", "address", "warehouse id" };
 	private String[] clientValues = new String[clientsColumns.length];
-	private final String storedProductsFileName = "storedProducts.csv";
+	private final String productsByPnFileName = "productsByPN.csv";
 	private final String[] productColumns = new String[] { "name", "ean", "productionDate", "minDate", "productNumber", "cost", "warehouse id" };
 	private String[] productValues = new String[productColumns.length];
 	private final String dispatchedProductsFileName = "dispatchedItems.csv";
@@ -75,6 +76,7 @@ public class CSVHandler {
 			wh.setName(whValues[1]);
 			wh.setAddress(whValues[2]);
 			db.addWarehouse(wh);
+			IdCounter.checkMax(Integer.parseInt(whValues[0]));
 		}
 		reader.close();
 
@@ -88,10 +90,11 @@ public class CSVHandler {
 			client.setName(clientValues[1]);
 			client.setAddress(clientValues[2]);
 			db.addClient(client, Integer.parseInt(clientValues[3]));
+			IdCounter.checkMax(Integer.parseInt(clientValues[0]));
 		}
 		reader.close();
 
-		reader = new CSVReader(new FileReader(dirPath + exportDir + storedProductsFileName), ',', '"', 1);
+		reader = new CSVReader(new FileReader(dirPath + exportDir + productsByPnFileName), ',', '"', 1);
 		allRows = reader.readAll();
 		for (String[] row : allRows) {
 			productValues = row;
@@ -101,7 +104,8 @@ public class CSVHandler {
 			product.setEan(productValues[1]);
 			product.setProductionDate(shortDateFormat.parse(productValues[2]));
 			product.setMinDate(shortDateFormat.parse(productValues[3]));
-			product.setProductNumber(Integer.parseInt(productValues[4]));
+			int productNumber = Integer.parseInt(productValues[4]);
+			product.setProductNumber(productNumber);
 			product.setCost(Double.parseDouble(productValues[5]));
 			String whId = productValues[6];
 			if (!whId.equals("")) {
@@ -111,6 +115,7 @@ public class CSVHandler {
 					((Db) db).addProduct(product);
 				}
 			}
+			IdCounter.checkMax(productNumber);
 		}
 		reader.close();
 
@@ -160,7 +165,8 @@ public class CSVHandler {
 			product.setEan(transportValues[transportColumns.length + 1]);
 			product.setProductionDate(shortDateFormat.parse(transportValues[transportColumns.length + 2]));
 			product.setMinDate(shortDateFormat.parse(transportValues[transportColumns.length + 3]));
-			product.setProductNumber(Integer.parseInt(transportValues[0]));
+			int productNumber = Integer.parseInt(transportValues[0]);
+			product.setProductNumber(productNumber);
 			product.setCost(Double.parseDouble(transportValues[transportColumns.length + 5]));
 
 			TransportProduct transport = new TransportProduct(product);
@@ -174,6 +180,7 @@ public class CSVHandler {
 			transport.setCarEcv(transportValues[5]);
 
 			destination.addArrivedItem(transport);
+			IdCounter.checkMax(productNumber);
 		}
 		reader.close();
 
@@ -224,7 +231,7 @@ public class CSVHandler {
 
 		// ------------------------------------------------------------------------------------------------------
 		// saving stored products
-		writer = new CSVWriter(new FileWriter(dirPath + exportDir + storedProductsFileName), ',', '"');
+		writer = new CSVWriter(new FileWriter(dirPath + exportDir + productsByPnFileName), ',', '"');
 		List<Product> products = db.getAllProducts();
 		writer.writeNext(productColumns);
 		for (Product product : products) {
