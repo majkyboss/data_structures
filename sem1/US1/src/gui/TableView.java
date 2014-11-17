@@ -40,7 +40,7 @@ public class TableView extends JPanel {
 
 		JScrollPane scrollPane = new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPane.setPreferredSize(new Dimension(350, 270));
-		mainContent.add(scrollPane, BorderLayout.NORTH);
+		mainContent.add(scrollPane, BorderLayout.CENTER);
 
 		JPanel topPanel = new JPanel();
 		add(topPanel, BorderLayout.NORTH);

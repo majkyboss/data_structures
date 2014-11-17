@@ -25,20 +25,87 @@ public class Db implements StorageDatabase {
 		this.warehousesById = new RBTree<>();
 		this.itemsByProductNumber = new RBTree<>();
 		this.allClients = new RBTree<>();
+		initDB();
 	}
 
 	private void initDB() {
 		// add whs
-		// add products
 		// add clients
+		// add products
 		//
 		// create transports
 		// end transports
+
+		System.out.println("initializing started");
+		
+		// wh generating
+		String[] addresses = new String[] { "Ulica 1, 111 11 Mesto 1", "Ulica 2, 112 10 Mesto 2", "Ulica 3, 113 11 Mesto 3", "Ulica 4, 114 11 Mesto 4" };
+		String whName = "wh";
 		int whCount = 10;
+		LinkedList<Integer> whIds = new LinkedList<>();
 		for (int i = 0; i < whCount; i++) {
 			WareHouse wh = new WareHouse();
-			// wh.set
+			wh.setAddress(addresses[(int) ((Math.random() * 10) % 4)]);
+			wh.setName(whName + " " + wh.getId());
+			addWarehouse(wh);
+			whIds.add(wh.getId());
 		}
+
+		// clients generating
+		int clientsCount = 10;
+		LinkedList<String> clientIds = new LinkedList<>();
+		for (int i = 0; i < whIds.size(); i++) {
+			int whId = whIds.get(i);
+			for (int j = 0; j < clientsCount; j++) {
+				Client c = new Client();
+				c.setAddress(addresses[(int) ((Math.random() * 10) % 4)]);
+				c.setName("client " + c.getId());
+				addClient(c, whId);
+				clientIds.add(c.getId());
+			}
+		}
+		// products generating
+		int eanCount = 130;
+		int dateCount = 20;
+		int pnCount = 150;
+		int productsCount = eanCount * dateCount * pnCount;
+		Date today = new Date();
+		LinkedList<Integer> productsIds = new LinkedList<>();
+		// for all whs
+//		for (int i = 0; i < whIds.size(); i++) {
+			int whId = whIds.get(0);
+			// create <eanCount> products with same ean
+			for (int j = 0; j < eanCount; j++) {
+				StringBuilder ean = new StringBuilder();
+				ean.append(j + "");
+				ean.reverse();
+				while (ean.length() < 12) {
+					ean.append("0");
+				}
+				ean.reverse();
+
+				// <dateCount> products with same min date
+				for (int k = 20; k < dateCount + 20; k++) {
+					Calendar calendar = new GregorianCalendar();
+					calendar.setTime(today);
+					calendar.set(Calendar.DAY_OF_YEAR, k);
+
+					for (int l = 0; l < pnCount; l++) {
+						Product p = new Product();
+						p.setName("prouct " + p.getProductNumber());
+						p.setEan(ean.toString());
+						p.setProductionDate(new Date());
+						p.setMinDate(calendar.getTime());
+						p.setCost(10.0);
+
+						addProduct(whId, p);
+						productsIds.add(p.getProductNumber());
+					}
+				}
+			}
+//		}
+
+		System.out.println("initialized");
 
 	}
 
@@ -554,5 +621,15 @@ public class Db implements StorageDatabase {
 		}
 
 		return whs;
+	}
+	
+	@Override
+	public List<Product> getAllProducts() {
+		List<Product> products = new LinkedList<>();
+		for (RBNode<Integer> productNode : itemsByProductNumber) {
+			products.add(((ProductNumberNode) productNode).getValue());
+		}
+
+		return products;
 	}
 }

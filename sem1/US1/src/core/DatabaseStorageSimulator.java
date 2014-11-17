@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import core.data.Client;
 import core.data.Product;
 import core.data.ProductValueItem;
@@ -377,6 +378,11 @@ public class DatabaseStorageSimulator implements StorageDatabase {
 		list.add(wh);
 
 		return list;
+	}
+
+	@Override
+	public List<Product> getAllProducts() {
+		throw new NotImplementedException();
 	}
 
 }

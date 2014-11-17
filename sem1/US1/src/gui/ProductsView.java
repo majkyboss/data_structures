@@ -1,5 +1,6 @@
 package gui;
 
+import gui.tables.ProductsModel;
 import gui.tables.WarehousesModel;
 
 import java.awt.Container;
@@ -9,35 +10,35 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import core.StorageDatabase;
+import core.data.Product;
 import core.data.WareHouse;
 
-public class WareHousesView extends JPanel {
+public class ProductsView extends JPanel {
 	private StorageDatabase database;
 
 	/**
 	 * Create the panel.
 	 */
-	public WareHousesView(StorageDatabase db) {
+	public ProductsView(StorageDatabase db) {
 		this.database = db;
 		setLayout(null);
 
 		JButton btnLoad = new JButton("Load");
 		btnLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				List<WareHouse> items = database.getWarehouses();
-				loadWarehouses(items);
+				List<Product> items = database.getAllProducts();
+				loadProducts(items);
 			}
 		});
 		btnLoad.setBounds(10, 11, 89, 23);
 		add(btnLoad);
 	}
 
-	private void loadWarehouses(List<WareHouse> items) {
+	private void loadProducts(List<Product> items) {
 		TableView tableView = new TableView(this);
-		tableView.updateTable(new WarehousesModel(items));
+		tableView.updateTable(new ProductsModel(items));
 
 		Container c = getParent();
 		c.removeAll();
