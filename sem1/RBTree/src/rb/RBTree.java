@@ -1,8 +1,6 @@
 package rb;
 
 import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.Stack;
 
 /**
  * Class represents Red-Black tree structure. Works only with Red-Black nodes

@@ -27,6 +27,21 @@ public class Db implements StorageDatabase {
 		this.allClients = new RBTree<>();
 	}
 
+	private void initDB() {
+		// add whs
+		// add products
+		// add clients
+		//
+		// create transports
+		// end transports
+		int whCount = 10;
+		for (int i = 0; i < whCount; i++) {
+			WareHouse wh = new WareHouse();
+			// wh.set
+		}
+
+	}
+
 	@Override
 	public List<Product> searchProducts(String ean, Date dateFrom, Date dateTo, Integer count, int wareHouseId) {
 		// 1. find the ean node

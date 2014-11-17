@@ -361,7 +361,7 @@ public class TestDbFunctions {
 			product.setCost(300.50);
 			product.setEan("000000000001");
 			calendar.setTime(dateFrom);
-			calendar.add(Calendar.DAY_OF_YEAR, i+1);
+			calendar.add(Calendar.DAY_OF_YEAR, i + 1);
 			product.setMinDate(calendar.getTime());
 			product.setName("produkt jedna");
 			product.setProductionDate(new Date());

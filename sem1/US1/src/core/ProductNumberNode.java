@@ -4,7 +4,6 @@ import rb.RBNode;
 import core.data.Product;
 
 public class ProductNumberNode extends RBNode<Integer> {
-	
 
 	public ProductNumberNode(Product product) {
 		super();

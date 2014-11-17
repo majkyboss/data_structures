@@ -1,6 +1,5 @@
 package gui;
 
-import gui.tables.ProductsModel;
 import gui.tables.WarehousesModel;
 
 import java.awt.Container;
@@ -9,13 +8,10 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import core.StorageDatabase;
-import core.data.Client;
 import core.data.WareHouse;
 
 public class WareHousesView extends JPanel {
@@ -31,7 +27,7 @@ public class WareHousesView extends JPanel {
 	public WareHousesView(StorageDatabase db) {
 		this.database = db;
 		setLayout(null);
-		
+
 		JButton btnLoad = new JButton("Load");
 		btnLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {

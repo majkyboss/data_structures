@@ -138,7 +138,7 @@ public interface StorageDatabase {
 	 * @return
 	 */
 	List<TransportProduct> showArrivedProductsInClinet(int wareHouseFromId, String clientId);
-	
+
 	/**
 	 * výpis uskutoènených dodávok k zadanému odberate¾ovi (identifikovaný
 	 * svojim
@@ -150,7 +150,7 @@ public interface StorageDatabase {
 	 * @param wareHouseToId
 	 * @return
 	 */
-	List<TransportProduct> showArrivedProductsInWareHouse( int wareHouseToId);
+	List<TransportProduct> showArrivedProductsInWareHouse(int wareHouseToId);
 
 	/**
 	 * výpis tovarov na danom ve¾kosklade (identifikovaný svojim

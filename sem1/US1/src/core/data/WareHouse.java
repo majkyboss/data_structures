@@ -1,7 +1,5 @@
 package core.data;
 
-import java.util.Date;
-
 import rb.RBNode;
 import rb.RBTree;
 import core.ClientNode;
@@ -76,7 +74,7 @@ public class WareHouse extends ProductPlace {
 	public boolean addClient(Client client) {
 		return clientsById.insert(new ClientNode(client));
 	}
-	
+
 	public RBTree<String> getStoredItemsByEan() {
 		return storedByEan;
 	}

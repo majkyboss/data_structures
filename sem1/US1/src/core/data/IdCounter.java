@@ -10,4 +10,8 @@ public class IdCounter {
 	public static int getNextId() {
 		return ++i;
 	}
+
+	public static int getFutureId() {
+		return i + 1;
+	}
 }

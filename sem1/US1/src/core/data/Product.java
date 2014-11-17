@@ -19,6 +19,11 @@ public class Product {
 	private RBTree<String> eanTree;
 	private TransportProduct transport;
 
+	public Product() {
+		super();
+		this.productNumber = IdCounter.getNextId();
+	}
+
 	public String getEan() {
 		return ean;
 	}

@@ -1,7 +1,7 @@
 package core;
 
-import core.data.TransportProduct;
 import rb.RBNode;
+import core.data.TransportProduct;
 
 public class TransportNode extends RBNode<Integer> {
 

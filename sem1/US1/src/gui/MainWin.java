@@ -12,7 +12,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import core.DatabaseStorageSimulator;
 import core.Db;
 import core.StorageDatabase;
 

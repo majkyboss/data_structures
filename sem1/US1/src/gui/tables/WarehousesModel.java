@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import core.data.Product;
 import core.data.WareHouse;
 
 public class WarehousesModel extends AbstractTableModel {

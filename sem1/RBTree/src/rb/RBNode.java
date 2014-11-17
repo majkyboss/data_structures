@@ -109,7 +109,7 @@ public abstract class RBNode<T extends Comparable<T>> implements
 	 * @return current size of the node
 	 */
 	public int getSize() {
-		if (value!=null) {
+		if (value != null) {
 			return 1;
 		}
 		return 0;
