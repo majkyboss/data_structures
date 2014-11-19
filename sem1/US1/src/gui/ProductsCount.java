@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DateFormat;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -12,11 +11,11 @@ import javax.swing.JTextField;
 
 import core.StorageDatabase;
 
+@SuppressWarnings("serial")
 public class ProductsCount extends JPanel {
 	private JTextField fieldEan;
 	private JTextField fieldWH;
 	private StorageDatabase database;
-	private DateFormat shortDateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
 
 	/**
 	 * Create the panel.

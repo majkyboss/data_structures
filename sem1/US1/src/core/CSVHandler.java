@@ -8,12 +8,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import rb.RBNode;
-import rb.RBTree;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;

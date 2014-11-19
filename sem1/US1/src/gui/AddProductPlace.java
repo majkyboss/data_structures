@@ -14,6 +14,7 @@ import core.data.Client;
 import core.data.IdCounter;
 import core.data.WareHouse;
 
+@SuppressWarnings("serial")
 public class AddProductPlace extends JPanel {
 	private StorageDatabase database;
 	private JTextField fieldName;

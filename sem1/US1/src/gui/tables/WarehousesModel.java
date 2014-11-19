@@ -6,9 +6,10 @@ import javax.swing.table.AbstractTableModel;
 
 import core.data.WareHouse;
 
+@SuppressWarnings("serial")
 public class WarehousesModel extends AbstractTableModel {
 	private List<WareHouse> items;
-	private String[] columns = new String[] { "wh ID", "name", "address", "stored items", "clients"};
+	private String[] columns = new String[] { "wh ID", "name", "address", "stored items", "clients" };
 
 	public WarehousesModel(List<WareHouse> items) {
 		super();

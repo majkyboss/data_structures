@@ -16,6 +16,7 @@ import core.data.Client;
 import core.data.ProductPlace;
 import core.data.WareHouse;
 
+@SuppressWarnings("serial")
 public class PlaceInfo extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();

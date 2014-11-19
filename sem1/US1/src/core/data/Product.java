@@ -1,7 +1,5 @@
 package core.data;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.util.Date;
 
 import rb.RBTree;
@@ -113,21 +111,21 @@ public class Product {
 		this.transport = transport;
 	}
 
-//	public void parseProdDate(String date) {
-//		try {
-//			setProductionDate(DateFormat.getDateInstance(DateFormat.SHORT).parse(date));
-//		} catch (ParseException e) {
-//			System.out.println("Product.parseProductionDate()");
-//			e.printStackTrace();
-//		}
-//	}
-//
-//	public void parseMinDate(String date) {
-//		try {
-//			setMinDate(DateFormat.getDateInstance(DateFormat.SHORT).parse(date));
-//		} catch (ParseException e) {
-//			System.out.println("Product.parseMinDate()");
-//			e.printStackTrace();
-//		}
-//	}
+	// public void parseProdDate(String date) {
+	// try {
+	// setProductionDate(DateFormat.getDateInstance(DateFormat.SHORT).parse(date));
+	// } catch (ParseException e) {
+	// System.out.println("Product.parseProductionDate()");
+	// e.printStackTrace();
+	// }
+	// }
+	//
+	// public void parseMinDate(String date) {
+	// try {
+	// setMinDate(DateFormat.getDateInstance(DateFormat.SHORT).parse(date));
+	// } catch (ParseException e) {
+	// System.out.println("Product.parseMinDate()");
+	// e.printStackTrace();
+	// }
+	// }
 }

@@ -1,6 +1,11 @@
 package gui;
 
+import gui.tables.ClientsModel;
+import gui.tables.ProductsModel;
+import gui.tables.WarehousesModel;
+
 import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
@@ -21,6 +26,7 @@ import core.Db;
 import core.StorageDatabase;
 import core.data.IdCounter;
 
+@SuppressWarnings("serial")
 public class MainWin extends JFrame {
 
 	/**
@@ -367,14 +373,16 @@ public class MainWin extends JFrame {
 		menuItem = new JMenuItem("Get warehouses");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(new WareHousesView(storage));
+				// showContent(new WareHousesView(storage));
+				showAllWHs();
 			}
 		});
 		mnWarehouses.add(menuItem);
 		menuItem = new JMenuItem("Get warehouses");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(new WareHousesView(storage));
+				// showContent(new WareHousesView(storage));
+				showAllWHs();
 			}
 		});
 		mnAll.add(menuItem);
@@ -382,14 +390,16 @@ public class MainWin extends JFrame {
 		menuItem = new JMenuItem("Get all products");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(new ProductsView(storage));
+				// showContent(new ProductsView(storage));
+				showAllProducts();
 			}
 		});
 		mnProducts.add(menuItem);
 		menuItem = new JMenuItem("Get all products");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(new ProductsView(storage));
+				// showContent(new ProductsView(storage));
+				showAllProducts();
 			}
 		});
 		mnAll.add(menuItem);
@@ -397,14 +407,16 @@ public class MainWin extends JFrame {
 		menuItem = new JMenuItem("Get all clients");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(new ClientsView(storage));
+				// showContent(new ClientsView(storage));
+				showAllClients();
 			}
 		});
 		mnAll.add(menuItem);
 		menuItem = new JMenuItem("Get all clients");
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showContent(new ClientsView(storage));
+				// showContent(new ClientsView(storage));
+				showAllClients();
 			}
 		});
 		mnClients.add(menuItem);
@@ -484,5 +496,38 @@ public class MainWin extends JFrame {
 		contentPane.add(component);
 		contentPane.revalidate();
 		contentPane.repaint();
+	}
+
+	private void showAllClients() {
+		TableView tableView = new TableView(null);
+		tableView.updateTable(new ClientsModel(storage.getAllClients()));
+
+		Container c = contentPane;
+		c.removeAll();
+		c.add(tableView);
+		c.revalidate();
+		c.repaint();
+	}
+
+	private void showAllProducts() {
+		TableView tableView = new TableView(null);
+		tableView.updateTable(new ProductsModel(storage.getAllProducts()));
+
+		Container c = contentPane;
+		c.removeAll();
+		c.add(tableView);
+		c.revalidate();
+		c.repaint();
+	}
+
+	private void showAllWHs() {
+		TableView tableView = new TableView(null);
+		tableView.updateTable(new WarehousesModel(storage.getWarehouses()));
+
+		Container c = contentPane;
+		c.removeAll();
+		c.add(tableView);
+		c.revalidate();
+		c.repaint();
 	}
 }

@@ -1,7 +1,6 @@
 package gui;
 
 import gui.tables.ProductsModel;
-import gui.tables.WarehousesModel;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -13,8 +12,8 @@ import javax.swing.JPanel;
 
 import core.StorageDatabase;
 import core.data.Product;
-import core.data.WareHouse;
 
+@SuppressWarnings("serial")
 public class ProductsView extends JPanel {
 	private StorageDatabase database;
 

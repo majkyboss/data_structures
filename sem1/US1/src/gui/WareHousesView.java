@@ -9,11 +9,11 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import core.StorageDatabase;
 import core.data.WareHouse;
 
+@SuppressWarnings("serial")
 public class WareHousesView extends JPanel {
 	private StorageDatabase database;
 

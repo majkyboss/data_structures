@@ -3,7 +3,6 @@ package core.data.csv.mapping;
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.io.IOException;
-import java.lang.reflect.Method;
 
 import com.opencsv.CSVReader;
 import com.opencsv.bean.ColumnPositionMappingStrategy;

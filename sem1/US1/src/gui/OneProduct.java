@@ -1,12 +1,8 @@
 package gui;
 
-import gui.tables.ProductsModel;
-
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DateFormat;
-import java.util.LinkedList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -16,10 +12,10 @@ import javax.swing.JTextField;
 import core.StorageDatabase;
 import core.data.Product;
 
+@SuppressWarnings("serial")
 public class OneProduct extends JPanel {
 	private JTextField fieldProductNum;
 	private StorageDatabase database;
-	private DateFormat shortDateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
 
 	/**
 	 * Create the panel.
@@ -58,15 +54,18 @@ public class OneProduct extends JPanel {
 	}
 
 	private void openFoundItem(Product product) {
-		// TODO !!! required create separate window for product info
-		LinkedList<Product> items = new LinkedList<>();
-		items.add(product);
-		TableView tableView = new TableView(this);
-		tableView.updateTable(new ProductsModel(items));
+		// required create separate window for product info
+		// LinkedList<Product> items = new LinkedList<>();
+		// items.add(product);
+		// TableView tableView = new TableView(this);
+		// tableView.updateTable(new ProductsModel(items));
+
+		ProductInfo productView = new ProductInfo(this, product);
 
 		Container c = getParent();
 		c.removeAll();
-		c.add(tableView);
+		// c.add(tableView);
+		c.add(productView);
 		c.revalidate();
 		c.repaint();
 	}

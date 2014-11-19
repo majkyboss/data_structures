@@ -17,6 +17,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+@SuppressWarnings("serial")
 public class TableView extends JPanel {
 	private JTable table;
 	private JPanel history;
@@ -42,21 +43,24 @@ public class TableView extends JPanel {
 		scrollPane.setPreferredSize(new Dimension(350, 270));
 		mainContent.add(scrollPane, BorderLayout.CENTER);
 
-		JPanel topPanel = new JPanel();
-		add(topPanel, BorderLayout.NORTH);
-		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
+		if (lastPanel != null) {
 
-		JButton btnBack = new JButton("back");
-		btnBack.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Container parent = getParent();
-				parent.removeAll();
-				parent.add(history);
-				parent.revalidate();
-				parent.repaint();
-			}
-		});
-		topPanel.add(btnBack);
+			JPanel topPanel = new JPanel();
+			add(topPanel, BorderLayout.NORTH);
+			topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
+
+			JButton btnBack = new JButton("back");
+			btnBack.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					Container parent = getParent();
+					parent.removeAll();
+					parent.add(history);
+					parent.revalidate();
+					parent.repaint();
+				}
+			});
+			topPanel.add(btnBack);
+		}
 	}
 
 	public void updateTable(TableModel model) {

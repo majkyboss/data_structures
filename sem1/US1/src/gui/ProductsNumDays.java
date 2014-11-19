@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import core.StorageDatabase;
 import core.data.Product;
 
+@SuppressWarnings("serial")
 public class ProductsNumDays extends JPanel {
 	private JTextField fieldWH;
 	private JTextField fieldDateFrom;

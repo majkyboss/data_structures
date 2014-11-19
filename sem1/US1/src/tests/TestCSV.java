@@ -1,16 +1,13 @@
 package tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,9 +17,6 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvToBean;
-
-import core.data.Product;
-import core.data.csv.mapping.ProductCSVStrategy;
 
 public class TestCSV {
 
@@ -136,6 +130,7 @@ public class TestCSV {
 
 	private void load(String filePath) throws IOException {
 		// Build reader instance
+		@SuppressWarnings("resource")
 		CSVReader reader = new CSVReader(new FileReader(filePath), ',', '"', 0);
 
 		// Read all rows at once

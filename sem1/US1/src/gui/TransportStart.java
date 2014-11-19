@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 
 import core.StorageDatabase;
 
+@SuppressWarnings("serial")
 public class TransportStart extends JPanel {
 	private JTextField fieldProductNum;
 	private StorageDatabase database;

@@ -5,7 +5,6 @@ import gui.tables.ProductsValueModel;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DateFormat;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -17,10 +16,10 @@ import javax.swing.JTextField;
 import core.StorageDatabase;
 import core.data.ProductValueItem;
 
+@SuppressWarnings("serial")
 public class ProductsValue extends JPanel {
 	private JTextField fieldWH;
 	private StorageDatabase database;
-	private DateFormat shortDateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
 
 	/**
 	 * Create the panel.

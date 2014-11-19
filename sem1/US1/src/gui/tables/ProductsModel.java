@@ -1,14 +1,18 @@
 package gui.tables;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
 import core.data.Product;
 
+@SuppressWarnings("serial")
 public class ProductsModel extends AbstractTableModel {
 	private List<Product> items;
-	private String[] columns = new String[] { "ean code", "name", "product num.","production date", "min. date", "cost"};
+	private String[] columns = new String[] { "ean code", "name", "product num.", "production date", "min. date", "cost" };
+	private DateFormat shortDateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
 
 	public ProductsModel(List<Product> items) {
 		super();
@@ -34,6 +38,8 @@ public class ProductsModel extends AbstractTableModel {
 	public Object getValueAt(int row, int col) {
 		Product p = items.get(row);
 		Object ret = null;
+		String sDate = "";
+		Date date = null;
 		switch (col) {
 		case 0:
 			ret = p.getEan();
@@ -45,10 +51,18 @@ public class ProductsModel extends AbstractTableModel {
 			ret = p.getProductNumber();
 			break;
 		case 3:
-			ret = p.getProductionDate();
+			date = p.getProductionDate();
+			if (date != null) {
+				sDate = shortDateFormat.format(date);
+			}
+			ret = sDate;
 			break;
 		case 4:
-			ret = p.getMinDate();
+			date = p.getMinDate();
+			if (date != null) {
+				sDate = shortDateFormat.format(date);
+			}
+			ret = sDate;
 			break;
 		case 5:
 			ret = p.getCost();

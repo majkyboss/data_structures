@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DateFormat;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -12,10 +11,10 @@ import javax.swing.JTextField;
 
 import core.StorageDatabase;
 
+@SuppressWarnings("serial")
 public class DeletePlaces extends JPanel {
 	private JTextField fieldPlaceForDel;
 	private StorageDatabase database;
-	private DateFormat shortDateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
 	private JTextField fieldWareHouse;
 
 	/**

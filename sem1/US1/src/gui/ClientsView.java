@@ -12,8 +12,8 @@ import javax.swing.JPanel;
 
 import core.StorageDatabase;
 import core.data.Client;
-import core.data.WareHouse;
 
+@SuppressWarnings("serial")
 public class ClientsView extends JPanel {
 	private StorageDatabase database;
 

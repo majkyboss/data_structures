@@ -6,6 +6,7 @@ import javax.swing.table.AbstractTableModel;
 
 import core.data.ProductValueItem;
 
+@SuppressWarnings("serial")
 public class ProductsValueModel extends AbstractTableModel {
 	private List<ProductValueItem> items;
 	private String[] colNames = new String[] { "EAN", "count", "value" };
@@ -19,7 +20,7 @@ public class ProductsValueModel extends AbstractTableModel {
 	public int getColumnCount() {
 		return colNames.length;
 	}
-	
+
 	@Override
 	public String getColumnName(int arg0) {
 		return colNames[arg0];

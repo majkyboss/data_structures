@@ -16,6 +16,7 @@ import core.StorageDatabase;
 import core.data.IdCounter;
 import core.data.Product;
 
+@SuppressWarnings("serial")
 public class AddProduct extends JPanel {
 	private JTextField fieldEan;
 	private JTextField fieldWH;

@@ -68,6 +68,7 @@ public class Db implements StorageDatabase {
 		int eanCount = 130;
 		int dateCount = 20;
 		int pnCount = 150;
+		@SuppressWarnings("unused")
 		int productsCount = eanCount * dateCount * pnCount;
 		Date today = new Date();
 		LinkedList<Integer> productsIds = new LinkedList<>();

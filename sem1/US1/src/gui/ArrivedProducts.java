@@ -5,7 +5,6 @@ import gui.tables.TransportsModel;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DateFormat;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,10 +17,10 @@ import javax.swing.JTextField;
 import core.StorageDatabase;
 import core.data.TransportProduct;
 
+@SuppressWarnings("serial")
 public class ArrivedProducts extends JPanel {
 	private JTextField fieldWH;
 	private StorageDatabase database;
-	private DateFormat shortDateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
 	private JTextField fieldPlaceTo;
 
 	/**

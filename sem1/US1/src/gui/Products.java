@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import core.StorageDatabase;
 import core.data.Product;
 
+@SuppressWarnings("serial")
 public class Products extends JPanel {
 	private JTextField fieldEan;
 	private JTextField fieldWH;

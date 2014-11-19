@@ -6,9 +6,10 @@ import javax.swing.table.AbstractTableModel;
 
 import core.data.Client;
 
+@SuppressWarnings("serial")
 public class ClientsModel extends AbstractTableModel {
 	private List<Client> clients;
-	private String[] columns = new String[] { "client id", "name", "address",};
+	private String[] columns = new String[] { "client id", "name", "address", };
 
 	public ClientsModel(List<Client> clients) {
 		super();
