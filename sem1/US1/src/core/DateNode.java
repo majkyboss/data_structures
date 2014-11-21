@@ -14,6 +14,7 @@ public class DateNode extends RBNode<Date> {
 		super();
 		this.key = key;
 		itemsByProductNumber = new RBTree<>();
+		value = itemsByProductNumber;
 	}
 
 	@Override
@@ -46,7 +47,21 @@ public class DateNode extends RBNode<Date> {
 
 	@Override
 	public RBTree<Integer> getValue() {
-		return itemsByProductNumber;
+		return (RBTree<Integer>) super.getValue();
+	}
+
+	@Override
+	protected void setValue(Object value) {
+		itemsByProductNumber = (RBTree<Integer>) value;
+		value = itemsByProductNumber;
+		RBNode<Integer> productRoot = itemsByProductNumber.getRoot();
+		if (productRoot!=null) {
+			Product product = ((ProductNumberNode)productRoot).getValue();
+			if (product!=null) {
+				key = product.getMinDate();
+			}
+		}
+//		super.setValue(value);
 	}
 
 	@Override

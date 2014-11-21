@@ -28,7 +28,27 @@ public class EanNode extends RBNode<String> {
 
 	@Override
 	public RBTree<Date> getValue() {
-		return itemsByDate;
+		return (RBTree<Date>) super.getValue();
+	}
+
+	@Override
+	protected void setValue(Object value) {
+		itemsByDate = (RBTree<Date>) value;
+		value = itemsByDate;
+		
+		RBNode<Date> dateRoot = itemsByDate.getRoot();
+		if (dateRoot!=null && dateRoot instanceof DateNode) {
+			RBTree<Integer> itemsByProductNumber = ((DateNode) dateRoot).getValue();
+			RBNode<Integer> productRoot = itemsByProductNumber.getRoot();
+			if (productRoot!=null) {
+				Product product = ((ProductNumberNode)productRoot).getValue();
+				if (product!=null) {
+					key = product.getEan();
+				}
+			}
+		}
+		
+		
 	}
 
 	public boolean addProduct(Product product) {

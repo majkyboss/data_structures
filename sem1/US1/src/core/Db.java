@@ -41,7 +41,7 @@ public class Db implements StorageDatabase {
 		// wh generating
 		String[] addresses = new String[] { "Ulica 1, 111 11 Mesto 1", "Ulica 2, 112 10 Mesto 2", "Ulica 3, 113 11 Mesto 3", "Ulica 4, 114 11 Mesto 4" };
 		String whName = "wh";
-		int whCount = 10;
+		int whCount = 100;
 		LinkedList<Integer> whIds = new LinkedList<>();
 		for (int i = 0; i < whCount; i++) {
 			WareHouse wh = new WareHouse();
@@ -52,7 +52,7 @@ public class Db implements StorageDatabase {
 		}
 
 		// clients generating
-		int clientsCount = 10;
+		int clientsCount = 100;
 		LinkedList<String> clientIds = new LinkedList<>();
 		for (int i = 0; i < whIds.size(); i++) {
 			int whId = whIds.get(i);
@@ -65,9 +65,9 @@ public class Db implements StorageDatabase {
 			}
 		}
 		// products generating
-		int eanCount = 130;
-		int dateCount = 20;
-		int pnCount = 150;
+		int eanCount = 5;
+		int dateCount = 2;
+		int pnCount = 10;
 		@SuppressWarnings("unused")
 		int productsCount = eanCount * dateCount * pnCount;
 		Date today = new Date();
