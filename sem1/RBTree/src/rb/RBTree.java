@@ -33,7 +33,7 @@ public class RBTree<T extends Comparable<T>> implements Iterable<RBNode<T>> {
 	}
 
 	protected RBNode<T> root = null;
-	private int size = 0;
+//	private int size = 0;
 
 	/**
 	 * 
@@ -148,7 +148,7 @@ public class RBTree<T extends Comparable<T>> implements Iterable<RBNode<T>> {
 		newNode.setColor(RBNode.COLOR_NODE_RED);
 		insertFixUp(newNode);
 		// System.out.print("");
-		size++;
+//		size++;
 		return true;
 	}
 
@@ -247,7 +247,7 @@ public class RBTree<T extends Comparable<T>> implements Iterable<RBNode<T>> {
 					deleteFixUp(z, zParent, zWasLeft);
 				}
 			}
-			size--;
+//			size--;
 			return z;
 
 		} else if (leftChild != null && rightChild != null) { // 3. if the z
@@ -285,7 +285,7 @@ public class RBTree<T extends Comparable<T>> implements Iterable<RBNode<T>> {
 			//
 			// deleteFixUp(z, zParent, zWasLeft);
 			// }
-			size--;
+//			size--;
 			return returnObject;
 
 		} else {/* if (leftChild != null || rightChild != null) */// 2. if node
@@ -315,7 +315,7 @@ public class RBTree<T extends Comparable<T>> implements Iterable<RBNode<T>> {
 
 			child.setColor(z.getColor());
 
-			size--;
+//			size--;
 			return z;
 		}
 	}
@@ -623,9 +623,9 @@ public class RBTree<T extends Comparable<T>> implements Iterable<RBNode<T>> {
 	 * 
 	 * @return
 	 */
-	public int getSize() {
-		return size;
-	}
+//	public int getSize() {
+//		return size;
+//	}
 
 	@Override
 	public Iterator<RBNode<T>> iterator() {

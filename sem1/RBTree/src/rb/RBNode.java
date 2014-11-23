@@ -38,7 +38,7 @@ public abstract class RBNode<T extends Comparable<T>> implements
 		return value;
 	}
 
-	void setValue(Object value) {
+	protected void setValue(Object value) {
 		// if there is no access modifier it will be accessible from this class
 		// and this package too, not from subclasses and not from world
 		this.value = value;

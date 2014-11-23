@@ -21,8 +21,9 @@ public class InOrderBinaryTreeIterator<T extends Comparable<T>> implements
 
 	/** Constructor */
 	public InOrderBinaryTreeIterator(RBNode<T> root, T startKey) {
-		pushLeftChildren(root);
 		this.startKey = startKey;
+		pushLeftChildren(root);
+		
 		// this.stopKey = stopKey;
 	}
 
@@ -47,6 +48,9 @@ public class InOrderBinaryTreeIterator<T extends Comparable<T>> implements
 		}
 
 		RBNode<T> res = stack.pop();
+//		if (res.getRightChild()==null && res.getParent()!=null) {
+//			res = res.getParent();
+//		}
 		pushLeftChildren(res.getRightChild());
 
 		return res;

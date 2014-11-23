@@ -52,7 +52,7 @@ public class Db implements StorageDatabase {
 		}
 
 		// clients generating
-		int clientsCount = 100;
+		int clientsCount = 200;
 		LinkedList<String> clientIds = new LinkedList<>();
 		for (int i = 0; i < whIds.size(); i++) {
 			int whId = whIds.get(i);
