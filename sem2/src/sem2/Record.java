@@ -6,13 +6,19 @@ public class Record {
 	private int address = 0;
 	private int byteSize = 0;
 
+	public Record(int recordSize, int address) {
+		super();
+		byteSize = recordSize;
+		this.address = address;
+	}
+
 	public byte[] getBytes() {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO add header
+		return value.getBytes();
 	}
 
 	public void fillFromBytes(byte[] value, int offset) {
-		// TODO Auto-generated method stub
+		this.value.fillFromBytes(value, offset);
 	}
 
 	public int getByteSize() {
@@ -32,9 +38,12 @@ public class Record {
 		valid = false;
 	}
 
+	public void setAddress(int address) {
+		this.address = address;
+	}
+
 	public int getAddress() {
-		// TODO Auto-generated method stub
-		return 0;
+		return address;
 	}
 
 	public RecordValue getValue() {
@@ -42,8 +51,10 @@ public class Record {
 	}
 
 	public void setValue(RecordValue value) {
-		this.value = value;
-		valid = true;
+		if (value != null) {
+			this.value = value;
+			valid = true;
+		}
 	}
 
 }

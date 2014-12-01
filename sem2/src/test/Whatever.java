@@ -30,9 +30,25 @@ public class Whatever {
 		int id = idCounter;
 
 		public int getHash() {
-//			return id;
+			// return id;
 			return this.hashCode();
 		}
+	}
+
+	@Test
+	public void testMethods() {
+		int offset = 0;
+		method1(offset);
+		System.out.println("");
+	}
+
+	private void method1(int offset) {
+		method2(offset);
+		System.out.println("");
+	}
+
+	private void method2(int offset) {
+		offset += 5;
 	}
 
 }
