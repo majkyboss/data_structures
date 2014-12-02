@@ -1,4 +1,4 @@
-package sem2_newStart;
+package sem2_newStart.recordBased;
 
 public class Car {
 	public static final int carNumber_maxLength = 7*2;

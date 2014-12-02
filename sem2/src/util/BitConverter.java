@@ -1,4 +1,5 @@
 package util;
+
 public class BitConverter {
 	public static final int INT_SIZE = Integer.BYTES;
 	public static final int LONG_SIZE = Long.BYTES;
@@ -114,5 +115,18 @@ public class BitConverter {
 		for (int i = 0; i < source.length && i < toArray.length; i++) {
 			toArray[offset + i] = source[i];
 		}
+	}
+
+	public static void putShort(short value, byte[] array, int offset) {
+		array[offset] = (byte) (0xff & (value >> 8));
+		array[offset + 1] = (byte) (0xff & value);
+	}
+
+	public static short getShort(byte[] array, int offset) {
+
+		//@f:off
+		return (short) (((array[offset] & 0xff) << 8) | 
+						 (array[offset + 1] & 0xff));
+		//@f:on
 	}
 }

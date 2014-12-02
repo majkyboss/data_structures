@@ -1,35 +1,15 @@
 package sem2_newStart;
 
-public abstract class Record<T> {
+public abstract class Record<T> extends FileItem {
 	protected T value;
-	private int byteSize;
-	private int address;
 	private boolean valid;
 
 	public Record(int byteSize) {
-		super();
-		this.byteSize = byteSize;
+		super(byteSize);
 	}
 
 	public Record(byte[] bytes) {
-		super();
-		fillFromBytes(bytes);
-	}
-
-	public int getByteSize() {
-		return byteSize;
-	}
-
-	public abstract byte[] getBytes();
-
-	public abstract void fillFromBytes(byte[] bytes);
-
-	public int getAddress() {
-		return address;
-	}
-
-	public void setAddress(int address) {
-		this.address = address;
+		super(bytes);
 	}
 
 	public boolean isValid() {

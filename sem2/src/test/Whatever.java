@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.sun.org.apache.bcel.internal.classfile.InnerClass;
+
 public class Whatever {
 
 	@Test
@@ -51,4 +53,38 @@ public class Whatever {
 		offset += 5;
 	}
 
+	@Test
+	public void testObjectArray() throws Exception {
+		Object[] array = new Object[4];
+		array[0] = new TempObject(0, 1);
+		array[1] = new TempObject(2, 3);
+		array[2] = new Object();
+		array[3] = new TempObject2(4, 5);
+
+		System.out.println();
+	}
+
+	@SuppressWarnings("unused")
+	private static class TempObject {
+		int a;
+		int b;
+
+		public TempObject(int a, int b) {
+			super();
+			this.a = a;
+			this.b = b;
+		}
+	}
+
+	@SuppressWarnings("unused")
+	private static class TempObject2 {
+		int c;
+		int d;
+
+		public TempObject2(int c, int d) {
+			super();
+			this.c = c;
+			this.d = d;
+		}
+	}
 }

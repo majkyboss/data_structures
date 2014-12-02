@@ -1,4 +1,4 @@
-package sem2_newStart;
+package sem2_newStart.blocksBased;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -6,22 +6,22 @@ import java.io.FileNotFoundException;
 
 import util.BinaryFileHandler;
 
-public class SomeFile<T> {
+public class BlockFile<T> {
 	private String path = "";
 	private int blockSize = 0;
 	private int absoluteAddress = 0;
 
-	public SomeFile(String path, int blockSize) {
+	public BlockFile(String path, int blockSize) {
 		super();
 		this.path = path;
 		this.blockSize = blockSize;
 	}
 
-	public void write(Record<T> record) {
-		BinaryFileHandler.saveToBinaryFile(record.getBytes(), new File(path), absoluteAddress, record.getByteSize());
+	public void write(Block<T> block) {
+		BinaryFileHandler.saveToBinaryFile(block.getBytes(), new File(path), absoluteAddress, block.getByteSize());
 	}
 
-	public void read(int length, Record<T> record) {
+	public void read(int length, Block<T> record) {
 		try {
 			byte[] bytes = BinaryFileHandler.loadBinaryFile(new FileInputStream(new File(path)), absoluteAddress, record.getByteSize());
 			record.fillFromBytes(bytes);
@@ -40,6 +40,7 @@ public class SomeFile<T> {
 	}
 
 	public int getValidAddress() {
+		//TODO implement finding first valid address in file
 		return 0;
 	}
 }

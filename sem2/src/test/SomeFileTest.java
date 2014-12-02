@@ -8,16 +8,16 @@ import java.io.FileNotFoundException;
 
 import org.junit.Test;
 
-import sem2_newStart.Car;
-import sem2_newStart.CarRecord;
-import sem2_newStart.SomeFile;
+import sem2_newStart.recordBased.Car;
+import sem2_newStart.recordBased.CarRecord;
+import sem2_newStart.recordBased.SomeFile;
 import util.BinaryFileHandler;
 
 public class SomeFileTest {
 
 	@Test
 	public void test() throws FileNotFoundException {
-		String path = "testDir/someFileTes";
+		String path = "testDir/someFileTest";
 		String carNumber = "ZA111AA";
 		String vinNumber = "01234567891234567";
 		int weight = 500;

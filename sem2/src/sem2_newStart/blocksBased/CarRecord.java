@@ -1,5 +1,7 @@
-package sem2_newStart;
+package sem2_newStart.blocksBased;
 
+import sem2_newStart.Record;
+import sem2_newStart.recordBased.Car;
 import util.BitConverter;
 
 public class CarRecord extends Record<Car> {
