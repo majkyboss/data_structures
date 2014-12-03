@@ -1,8 +1,8 @@
 package sem2.recordBased;
 
 public class Car {
-	public static final int carNumber_maxLength = 7*2;
-	public static final int vinNumber_maxLength = 17*2;
+	public static final int carNumber_maxLength = 7 * 2;
+	public static final int vinNumber_maxLength = 17 * 2;
 
 	private String carNumber;
 	private String vinNumber;

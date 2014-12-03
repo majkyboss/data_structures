@@ -1,10 +1,8 @@
 package test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
-
-import com.sun.org.apache.bcel.internal.classfile.InnerClass;
 
 public class Whatever {
 
@@ -23,6 +21,7 @@ public class Whatever {
 		// 1924582348
 		// 11003494
 
+		@SuppressWarnings("unused")
 		int retVal = Integer.compare(hash1, hash2);
 		assertNotEquals(hash1, hash2 - 1);
 	}

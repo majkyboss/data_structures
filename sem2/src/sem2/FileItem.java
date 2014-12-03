@@ -6,7 +6,7 @@ public abstract class FileItem {
 	 */
 	private int byteSize;
 	protected int address;
-	
+
 	public FileItem(int byteSize) {
 		super();
 		this.byteSize = byteSize;

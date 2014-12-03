@@ -14,7 +14,7 @@ public class CarBlock extends Block<Car> {
 
 	@Override
 	protected void initRecords() {
-		if (records!=null) {
+		if (records != null) {
 			for (int i = 0; i < records.length; i++) {
 				records[i] = new CarRecord();
 			}

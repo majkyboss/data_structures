@@ -1,6 +1,7 @@
 package test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,7 +9,6 @@ import java.io.FileNotFoundException;
 
 import org.junit.Test;
 
-import sem2.blocksBased.Block;
 import sem2.blocksBased.BlockFile;
 import sem2.blocksBased.CarBlock;
 import sem2.blocksBased.CarRecord;
@@ -43,11 +43,11 @@ public class BlockFileTest {
 		assertArrayEquals(expectedBytes, loadedBytes);
 
 		// loading record
+		@SuppressWarnings("unused")
 		CarRecord recordLoaded = new CarRecord();
 		CarBlock blockLoaded = new CarBlock(record.getByteSize(), (short) 2);
 		// read from actual adrress
-		file.read(recordLoaded.getByteSize(), blockLoaded);
-		
+		file.read(blockLoaded);
 
 		Car carLoaded = blockLoaded.getValue(0);
 

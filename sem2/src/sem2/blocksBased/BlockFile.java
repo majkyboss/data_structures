@@ -21,7 +21,7 @@ public class BlockFile<T> {
 		BinaryFileHandler.saveToBinaryFile(block.getBytes(), new File(path), absoluteAddress, block.getByteSize());
 	}
 
-	public void read(int length, Block<T> block) {
+	public void read(Block<T> block) {
 		try {
 			byte[] bytes = BinaryFileHandler.loadBinaryFile(new FileInputStream(new File(path)), absoluteAddress, block.getByteSize());
 			block.fillFromBytes(bytes);
@@ -32,6 +32,7 @@ public class BlockFile<T> {
 
 	public void seek(int relativeAddress) {
 		// entered block number, to get real address multiply by block size
+		// and it sets the address to the block
 		absoluteAddress = relativeAddress * blockSize;
 	}
 
@@ -40,7 +41,8 @@ public class BlockFile<T> {
 	}
 
 	public int getValidAddress() {
-		//TODO implement finding first valid address in file
+		// TODO implement finding first valid address in file
+
 		return 0;
 	}
 }
