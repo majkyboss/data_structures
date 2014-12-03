@@ -1,7 +1,6 @@
 package test;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,12 +12,46 @@ import sem2.blocksBased.BlockFile;
 import sem2.blocksBased.CarBlock;
 import sem2.blocksBased.CarRecord;
 import sem2.recordBased.Car;
+import sem2.recordBased.CarRecord_recordBase;
+import sem2.recordBased.RecordFile;
 import util.BinaryFileHandler;
 
-public class BlockFileTest {
+public class BasicTests {
 
 	@Test
-	public void test() throws FileNotFoundException {
+	public void testRecordFile() throws FileNotFoundException {
+		String path = "testDir/someFileTest";
+		String carNumber = "ZA111AA";
+		String vinNumber = "01234567891234567";
+		int weight = 500;
+
+		Car c = new Car(carNumber, vinNumber, weight);
+		CarRecord_recordBase record = new CarRecord_recordBase();
+		record.setValue(c);
+
+		RecordFile<Car> file = new RecordFile<>(path, record.getByteSize());
+		// get first valid address
+		int address = file.getValidAddress();
+
+		file.seek(address);
+		file.write(record);
+
+		byte[] loadedBytes = BinaryFileHandler.loadBinaryFile(new FileInputStream(new File(path)), file.getActualAddress(), record.getByteSize());
+		byte[] expectedBytes = new byte[] { 0x00, 0x5a, 0x00, 0x41, 0x00, 0x31, 0x00, 0x31, 0x00, 0x31, 0x00, 0x41, 0x00, 0x41, 0x00, 0x30, 0x00, 0x31, 0x00, 0x32, 0x00, 0x33, 0x00, 0x34, 0x00, 0x35, 0x00, 0x36, 0x00, 0x37, 0x00, 0x38, 0x00, 0x39, 0x00, 0x31, 0x00, 0x32, 0x00, 0x33, 0x00, 0x34, 0x00, 0x35, 0x00, 0x36, 0x00, 0x37, 0x00, 0x00, 0x01, (byte) 0xF4 };
+		assertArrayEquals(expectedBytes, loadedBytes);
+
+		// loading record
+		CarRecord_recordBase recordLoaded = new CarRecord_recordBase();
+		// read from actual adrress
+		file.read(recordLoaded.getByteSize(), recordLoaded);
+
+		assertEquals(carNumber, recordLoaded.getValue().getCarNumber());
+		assertEquals(vinNumber, recordLoaded.getValue().getVinNumber());
+		assertEquals(weight, recordLoaded.getValue().getWeight());
+	}
+	
+	@Test
+	public void testBlockFile() throws FileNotFoundException {
 		String path = "testDir/blockFileTest";
 		String carNumber = "ZA111AA";
 		String vinNumber = "01234567891234567";
@@ -54,6 +87,11 @@ public class BlockFileTest {
 		assertEquals(carNumber, carLoaded.getCarNumber());
 		assertEquals(vinNumber, carLoaded.getVinNumber());
 		assertEquals(weight, carLoaded.getWeight());
+	}
+	
+	@Test
+	public void testOverCrowdingFile() throws Exception {
+		
 	}
 
 }

@@ -3,9 +3,9 @@ package sem2.recordBased;
 import sem2.Record;
 import util.BitConverter;
 
-public class CarRecord extends Record<Car> {
+public class CarRecord_recordBase extends Record<Car> {
 
-	public CarRecord() {
+	public CarRecord_recordBase() {
 		super(Car.carNumber_maxLength + Car.vinNumber_maxLength + Integer.BYTES);
 	}
 

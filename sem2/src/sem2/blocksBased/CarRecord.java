@@ -5,6 +5,7 @@ import sem2.recordBased.Car;
 import util.BitConverter;
 
 public class CarRecord extends Record<Car> {
+	// TODO think if you can add the static property woth length
 
 	public CarRecord() {
 		super(Car.carNumber_maxLength + Car.vinNumber_maxLength + Integer.BYTES);

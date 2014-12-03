@@ -11,10 +11,10 @@ public class BlockFile<T> {
 	private int blockSize = 0;
 	private int absoluteAddress = 0;
 
-	public BlockFile(String path, int blockSize) {
+	public BlockFile(String path, int blockFactor) {
 		super();
 		this.path = path;
-		this.blockSize = blockSize;
+		this.blockSize = blockFactor;
 	}
 
 	public void write(Block<T> block) {

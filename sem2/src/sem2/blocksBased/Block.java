@@ -95,24 +95,17 @@ public abstract class Block<T> extends FileItem {
 	}
 
 	public void addValue(T value) {
-		Record<?> record = null;
-		int i = 0;
-		for (; i < records.length; i++) {
-			record = records[i];
-			if (!record.isValid()) {
-				break;
-			}
-		}
+		Record<?> record = getFreeRecord();
 		if (record != null) {
 			((Record<T>) record).setValue(value);
-			if (i == records.length - 1) {
+			if (records[records.length-1]!=null && record.equals(records[records.length-1])) {
 				full = true;
 			}
 		}
 	}
 
 	// finds first free record
-	private Record<T> getFreeRecord() {
+	public Record<T> getFreeRecord() {
 		Record<?> ret = null;
 		for (int i = 0; i < records.length; i++) {
 			ret = records[i];
@@ -127,6 +120,10 @@ public abstract class Block<T> extends FileItem {
 		T value = (T) records[recordPosition].getValue();
 
 		return value;
+	}
+
+	public short getBlockFactor() {
+		return blockFactor;
 	}
 
 }
