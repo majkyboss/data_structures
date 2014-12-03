@@ -8,9 +8,9 @@ import java.io.FileNotFoundException;
 
 import org.junit.Test;
 
-import sem2_newStart.recordBased.Car;
-import sem2_newStart.recordBased.CarRecord;
-import sem2_newStart.recordBased.SomeFile;
+import sem2.recordBased.Car;
+import sem2.recordBased.CarRecord;
+import sem2.recordBased.RecordFile;
 import util.BinaryFileHandler;
 
 public class SomeFileTest {
@@ -26,7 +26,7 @@ public class SomeFileTest {
 		CarRecord record = new CarRecord();
 		record.setValue(c);
 
-		SomeFile<Car> file = new SomeFile<>(path, record.getByteSize());
+		RecordFile<Car> file = new RecordFile<>(path, record.getByteSize());
 		// get first valid address
 		int address = file.getValidAddress();
 

@@ -1,4 +1,4 @@
-package sem2_newStart.blocksBased;
+package sem2.blocksBased;
 
 import java.io.File;
 import java.io.FileInputStream;

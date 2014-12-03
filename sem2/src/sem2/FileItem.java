@@ -1,4 +1,4 @@
-package sem2_newStart;
+package sem2;
 
 public abstract class FileItem {
 	/**

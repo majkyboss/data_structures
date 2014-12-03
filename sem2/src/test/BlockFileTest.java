@@ -8,12 +8,11 @@ import java.io.FileNotFoundException;
 
 import org.junit.Test;
 
-import sem2_newStart.blocksBased.Block;
-import sem2_newStart.blocksBased.BlockFile;
-import sem2_newStart.blocksBased.CarBlock;
-import sem2_newStart.recordBased.Car;
-import sem2_newStart.recordBased.CarRecord;
-import sem2_newStart.recordBased.SomeFile;
+import sem2.blocksBased.Block;
+import sem2.blocksBased.BlockFile;
+import sem2.blocksBased.CarBlock;
+import sem2.blocksBased.CarRecord;
+import sem2.recordBased.Car;
 import util.BinaryFileHandler;
 
 public class BlockFileTest {

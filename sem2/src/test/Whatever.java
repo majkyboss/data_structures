@@ -24,7 +24,7 @@ public class Whatever {
 		// 11003494
 
 		int retVal = Integer.compare(hash1, hash2);
-		assertEquals(hash1, hash2 - 1);
+		assertNotEquals(hash1, hash2 - 1);
 	}
 
 	public static class First {

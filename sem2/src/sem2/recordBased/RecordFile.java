@@ -1,18 +1,18 @@
-package sem2_newStart.recordBased;
+package sem2.recordBased;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import sem2_newStart.Record;
+import sem2.Record;
 import util.BinaryFileHandler;
 
-public class SomeFile<T> {
+public class RecordFile<T> {
 	private String path = "";
 	private int blockSize = 0;
 	private int absoluteAddress = 0;
 
-	public SomeFile(String path, int blockSize) {
+	public RecordFile(String path, int blockSize) {
 		super();
 		this.path = path;
 		this.blockSize = blockSize;

@@ -1,60 +1,30 @@
 package sem2;
 
-public class Record {
-	private RecordValue value;
-	private boolean valid = false;
-	private int address = 0;
-	private int byteSize = 0;
+public abstract class Record<T> extends FileItem {
+	protected T value;
+	private boolean valid;
 
-	public Record(int recordSize, int address) {
-		super();
-		byteSize = recordSize;
-		this.address = address;
+	public Record(int byteSize) {
+		super(byteSize);
 	}
 
-	public byte[] getBytes() {
-		// TODO add header
-		return value.getBytes();
-	}
-
-	public void fillFromBytes(byte[] value, int offset) {
-		this.value.fillFromBytes(value, offset);
-	}
-
-	public int getByteSize() {
-		return byteSize;
-	}
-
-	public boolean equals(Record par) {
-		// TODO Auto-generated method stub
-		return false;
+	public Record(byte[] bytes) {
+		super(bytes);
 	}
 
 	public boolean isValid() {
 		return valid;
 	}
 
-	public void setInvalid() {
-		valid = false;
+	public void setValid(boolean valid) {
+		this.valid = valid;
 	}
 
-	public void setAddress(int address) {
-		this.address = address;
-	}
-
-	public int getAddress() {
-		return address;
-	}
-
-	public RecordValue getValue() {
+	public T getValue() {
 		return value;
 	}
 
-	public void setValue(RecordValue value) {
-		if (value != null) {
-			this.value = value;
-			valid = true;
-		}
+	public void setValue(T value) {
+		this.value = value;
 	}
-
 }

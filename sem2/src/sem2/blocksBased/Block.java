@@ -1,11 +1,9 @@
-package sem2_newStart.blocksBased;
+package sem2.blocksBased;
 
 import java.util.Arrays;
 
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
-
-import sem2_newStart.FileItem;
-import sem2_newStart.Record;
+import sem2.FileItem;
+import sem2.Record;
 import util.BitConverter;
 
 public abstract class Block<T> extends FileItem {

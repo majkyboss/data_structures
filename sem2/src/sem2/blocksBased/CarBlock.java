@@ -1,6 +1,6 @@
-package sem2_newStart.blocksBased;
+package sem2.blocksBased;
 
-import sem2_newStart.recordBased.Car;
+import sem2.recordBased.Car;
 
 public class CarBlock extends Block<Car> {
 
