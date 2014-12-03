@@ -29,6 +29,16 @@ public class CarRecord extends Record<Car> {
 
 	@Override
 	public void fillFromBytes(byte[] bytes) {
+		boolean nullBytes = true;
+		for (int i = 0; i < bytes.length; i++) {
+			if (bytes[i] != 0) {
+				nullBytes = false;
+				break;
+			}
+		}
+		if (nullBytes) {
+			return;
+		}
 		int offset = 0;
 		int carNum_length = Car.carNumber_maxLength;
 		String carNum = BitConverter.getString(bytes, offset, carNum_length);

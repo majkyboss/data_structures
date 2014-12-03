@@ -66,19 +66,21 @@ public abstract class Block<T> extends FileItem {
 	public void fillFromBytes(byte[] bytes) {
 		int offset = 0;
 		blockFactor = BitConverter.getShort(bytes, offset);
-		offset += getHeaderSize();
+		int headerSize = getHeaderSize();
+		offset += headerSize;
 
 		// Do not forget - initialize the array and records
 		records = new Record<?>[blockFactor];
 		initRecords();
 
-		int recordSize = getByteSize() / blockFactor;
+		int recordSize = (getByteSize()-headerSize) / blockFactor;
 
 		if (getByteSize() == bytes.length) {
 			for (int i = 0; i < records.length; i++) {
 				Record<?> record = records[i];
-				byte[] recordBytes = Arrays.copyOfRange(bytes, offset, recordSize);
+				byte[] recordBytes = Arrays.copyOfRange(bytes, offset, offset+recordSize);
 				record.fillFromBytes(recordBytes);
+				offset += recordSize;
 			}
 		}
 

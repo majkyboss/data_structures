@@ -45,12 +45,16 @@ public class BlockFileTest {
 
 		// loading record
 		CarRecord recordLoaded = new CarRecord();
+		CarBlock blockLoaded = new CarBlock(record.getByteSize(), (short) 2);
 		// read from actual adrress
-		// file.read(recordLoaded.getByteSize(), recordLoaded);
+		file.read(recordLoaded.getByteSize(), blockLoaded);
+		
 
-		// assertEquals(carNumber, recordLoaded.getValue().getCarNumber());
-		// assertEquals(vinNumber, recordLoaded.getValue().getVinNumber());
-		// assertEquals(weight, recordLoaded.getValue().getWeight());
+		Car carLoaded = blockLoaded.getValue(0);
+
+		assertEquals(carNumber, carLoaded.getCarNumber());
+		assertEquals(vinNumber, carLoaded.getVinNumber());
+		assertEquals(weight, carLoaded.getWeight());
 	}
 
 }

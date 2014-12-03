@@ -1,7 +1,10 @@
 package sem2_newStart;
 
 public abstract class FileItem {
-	protected int byteSize;
+	/**
+	 * may not reflect real size - use {@link #getByteSize()} method
+	 */
+	private int byteSize;
 	protected int address;
 	
 	public FileItem(int byteSize) {

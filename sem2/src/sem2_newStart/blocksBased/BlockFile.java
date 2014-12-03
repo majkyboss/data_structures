@@ -21,10 +21,10 @@ public class BlockFile<T> {
 		BinaryFileHandler.saveToBinaryFile(block.getBytes(), new File(path), absoluteAddress, block.getByteSize());
 	}
 
-	public void read(int length, Block<T> record) {
+	public void read(int length, Block<T> block) {
 		try {
-			byte[] bytes = BinaryFileHandler.loadBinaryFile(new FileInputStream(new File(path)), absoluteAddress, record.getByteSize());
-			record.fillFromBytes(bytes);
+			byte[] bytes = BinaryFileHandler.loadBinaryFile(new FileInputStream(new File(path)), absoluteAddress, block.getByteSize());
+			block.fillFromBytes(bytes);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
