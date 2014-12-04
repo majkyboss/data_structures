@@ -25,7 +25,7 @@ public abstract class Block<T> extends FileItem {
 
 	protected abstract void initRecords();
 
-	private byte[] getHeader() {
+	protected byte[] getHeader() {
 		byte[] bytes = new byte[getHeaderSize()];
 		int offset = 0;
 		BitConverter.putShort(blockFactor, bytes, offset);
@@ -33,7 +33,7 @@ public abstract class Block<T> extends FileItem {
 		return bytes;
 	}
 
-	private int getHeaderSize() {
+	protected int getHeaderSize() {
 		return Short.BYTES;
 	}
 
@@ -60,10 +60,15 @@ public abstract class Block<T> extends FileItem {
 		return bytes;
 	}
 
+	protected void fillHeaderFromBytes(byte[] bytes) {
+		int offset = 0;
+		blockFactor = BitConverter.getShort(bytes, offset);
+	}
+
 	@Override
 	public void fillFromBytes(byte[] bytes) {
 		int offset = 0;
-		blockFactor = BitConverter.getShort(bytes, offset);
+		fillHeaderFromBytes(bytes);
 		int headerSize = getHeaderSize();
 		offset += headerSize;
 
@@ -98,7 +103,7 @@ public abstract class Block<T> extends FileItem {
 		Record<?> record = getFreeRecord();
 		if (record != null) {
 			((Record<T>) record).setValue(value);
-			if (records[records.length-1]!=null && record.equals(records[records.length-1])) {
+			if (records[records.length - 1] != null && record.equals(records[records.length - 1])) {
 				full = true;
 			}
 		}

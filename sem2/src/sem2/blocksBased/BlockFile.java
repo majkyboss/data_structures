@@ -41,7 +41,7 @@ public class BlockFile<T> {
 	}
 
 	public int getValidAddress() {
-		// TODO implement finding first valid address in file
+		// TODO implement finding first valid block address in file
 
 		return 0;
 	}

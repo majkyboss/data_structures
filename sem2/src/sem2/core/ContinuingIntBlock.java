@@ -1,6 +1,7 @@
 package sem2.core;
 
 import sem2.blocksBased.Block;
+import util.BitConverter;
 
 /**
  * Adding the value:
@@ -40,5 +41,24 @@ public class ContinuingIntBlock extends Block<Integer> {
 	public int getOverCrowdingBlockAddress() {
 		return overCrowdingBlockAddress;
 	}
+
+	@Override
+	protected int getHeaderSize() {
+		int retVal = super.getHeaderSize();
+		retVal += Integer.BYTES;
+		return retVal;
+	}
+	
+	@Override
+	protected byte[] getHeader() {
+		byte[] bytes = new byte[getHeaderSize()];
+		int offset = 0;
+		BitConverter.putBytes(super.getHeader(), bytes, offset);
+		offset += super.getHeaderSize();
+		
+		return bytes;
+	}
+
+	
 
 }
