@@ -1,6 +1,7 @@
 package test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -111,17 +112,17 @@ public class BasicTests {
 		String sortedFilePath = "testDir/linHashFileTest_Sorted";
 		String ocFilePath = "testDir/linHashFileTest_OC";
 		short blockFactor = 4;
-		
+
 		LinearHashFile<Car> hashFile = new LinearHashFile<Car>(record.getByteSize(), blockFactor, dataFilePath, sortedFilePath, ocFilePath) {
 			@Override
 			protected Block<Car> getEmptyBlock() {
 				return new CarBlock(record.getByteSize(), blockFactor);
 			}
 		};
-		
+
 		Car c = new Car(carNumber, vinNumber, weight);
 		hashFile.add(c);
-		
+
 		System.out.println();
 	}
 

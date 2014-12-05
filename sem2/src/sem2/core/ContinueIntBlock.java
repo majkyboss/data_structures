@@ -52,14 +52,14 @@ public class ContinueIntBlock extends Block<Integer> {
 		retVal += Integer.BYTES;
 		return retVal;
 	}
-	
+
 	@Override
 	protected byte[] getHeader() {
 		byte[] bytes = new byte[getHeaderSize()];
 		int offset = 0;
 		BitConverter.putBytes(super.getHeader(), bytes, offset);
 		offset += super.getHeaderSize();
-		
+
 		return bytes;
 	}
 
@@ -68,7 +68,5 @@ public class ContinueIntBlock extends Block<Integer> {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-	
 
 }

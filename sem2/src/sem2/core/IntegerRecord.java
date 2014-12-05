@@ -16,11 +16,11 @@ public class IntegerRecord extends Record<Integer> {
 	@Override
 	public byte[] getBytes() {
 		byte[] bytes = new byte[getByteSize()];
-		
+
 		if (value == null) {
 			return bytes;
 		}
-		
+
 		int offset = 0;
 		BitConverter.putInt(value, bytes, offset);
 		return bytes;
@@ -38,7 +38,7 @@ public class IntegerRecord extends Record<Integer> {
 		if (nullBytes) {
 			return;
 		}
-		
+
 		int offset = 0;
 		value = BitConverter.getInt(bytes, offset);
 		setValid(true);
