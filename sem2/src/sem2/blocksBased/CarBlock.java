@@ -21,4 +21,10 @@ public class CarBlock extends Block<Car> {
 		}
 	}
 
+	@Override
+	protected boolean addToFullBlock(Car value) {
+		//do nothing
+		return false;
+	}
+
 }

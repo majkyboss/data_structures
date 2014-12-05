@@ -99,15 +99,20 @@ public abstract class Block<T> extends FileItem {
 		this.full = full;
 	}
 
-	public void addValue(T value) {
+	public boolean addValue(T value) {
 		Record<?> record = getFreeRecord();
 		if (record != null) {
 			((Record<T>) record).setValue(value);
 			if (records[records.length - 1] != null && record.equals(records[records.length - 1])) {
 				full = true;
 			}
+			return true;
+		} else {
+			return addToFullBlock(value);
 		}
 	}
+	
+	abstract protected boolean addToFullBlock(T value);
 
 	// finds first free record
 	public Record<T> getFreeRecord() {

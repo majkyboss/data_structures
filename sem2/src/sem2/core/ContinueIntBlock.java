@@ -16,16 +16,16 @@ import util.BitConverter;
  * @author Banik
  *
  */
-public class ContinuingIntBlock extends Block<Integer> {
+public class ContinueIntBlock extends Block<Integer> {
 	// TODO change to abstract class and make infinityIntBlock (continue block
 	// with address to another blocks as value)
-	private int overCrowdingBlockAddress;
+	private int overCrowdingBlockAddress = -1;
 
-	public ContinuingIntBlock(int recordByteSize, short blockFactor) {
-		super(recordByteSize, blockFactor);
+	public ContinueIntBlock(short blockFactor) {
+		super(Integer.BYTES, blockFactor);
 	}
 
-	public ContinuingIntBlock(byte[] bytes) {
+	public ContinueIntBlock(byte[] bytes) {
 		super(bytes);
 	}
 
@@ -40,6 +40,10 @@ public class ContinuingIntBlock extends Block<Integer> {
 
 	public int getOverCrowdingBlockAddress() {
 		return overCrowdingBlockAddress;
+	}
+
+	public void setOverCrowdingBlockAddress(int overCrowdingBlockAddress) {
+		this.overCrowdingBlockAddress = overCrowdingBlockAddress;
 	}
 
 	@Override
@@ -57,6 +61,12 @@ public class ContinuingIntBlock extends Block<Integer> {
 		offset += super.getHeaderSize();
 		
 		return bytes;
+	}
+
+	@Override
+	protected boolean addToFullBlock(Integer value) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	
