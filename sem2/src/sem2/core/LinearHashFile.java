@@ -8,7 +8,9 @@ import sem2.core.specificFiles.SortedFile;
 
 public abstract class LinearHashFile<T> {
 	private int recordByteSize = 0;
-	private short blockFactor = 0;
+	private short dfBlockFactor = 0;
+	private short sfBlockFactor = 0;
+	private short ocfBlockFactor = 0;
 	private DataFile<T> dataFile;
 	private SortedFile<Integer> sortedFile;
 	private OverCrowdingFile<Integer> ocFile;
@@ -16,10 +18,13 @@ public abstract class LinearHashFile<T> {
 	public LinearHashFile(int recordByteSize, short blockFactor, String dataFilePath, String sortedFilePath, String ocFilePath) {
 		super();
 		this.recordByteSize = recordByteSize;
-		this.blockFactor = blockFactor;
-		this.dataFile = new DataFile<>(dataFilePath, blockFactor, recordByteSize);
-		this.sortedFile = new SortedFile<>(sortedFilePath, blockFactor, Integer.BYTES);
-		this.ocFile = new OverCrowdingFile<>(ocFilePath, blockFactor, Integer.BYTES);
+		this.dfBlockFactor = blockFactor;
+		this.sfBlockFactor = blockFactor;
+		this.ocfBlockFactor = blockFactor;
+		
+		this.dataFile = new DataFile<>(dataFilePath, dfBlockFactor, recordByteSize);
+		this.sortedFile = new SortedFile<>(sortedFilePath, sfBlockFactor, Integer.BYTES);
+		this.ocFile = new OverCrowdingFile<>(ocFilePath, ocfBlockFactor, Integer.BYTES);
 	}
 
 	public void add(T value) {
@@ -33,7 +38,7 @@ public abstract class LinearHashFile<T> {
 		// add data file address into sorted file
 
 		int sfAddress = getAddressFromHash(value.hashCode());
-		ContinueIntBlock sfBlock = getSortedBlock();
+		ContinueIntBlock sfBlock = new ContinueIntBlock(sfBlockFactor);
 		sortedFile.seek(sfAddress);
 		sortedFile.read(sfBlock);
 		Record<Integer> sfRecord = null;
@@ -53,7 +58,7 @@ public abstract class LinearHashFile<T> {
 					ocAddress = ocFile.getValidAddress();
 					if (ocAddress == -1) {
 						// create new block in oc file
-						ContinueIntBlock newBlock = getSortedBlock();
+						ContinueIntBlock newBlock = new ContinueIntBlock(ocfBlockFactor);
 						ocAddress = ocFile.getMaxAddress() + 1;
 						newBlock.setAddress(ocAddress);
 						inserted = newBlock.addValue(dfAddress);
@@ -66,7 +71,7 @@ public abstract class LinearHashFile<T> {
 						ocFile.write(newBlock);
 					} else {
 						// use first free
-						ContinueIntBlock newBlock = getSortedBlock();
+						ContinueIntBlock newBlock = new ContinueIntBlock(ocfBlockFactor);
 						ocFile.seek(ocAddress);
 						ocFile.read(newBlock);
 
@@ -104,9 +109,10 @@ public abstract class LinearHashFile<T> {
 		return 0;
 	}
 
-	private ContinueIntBlock getSortedBlock() {
-		return new ContinueIntBlock(blockFactor);
-	}
+//	private ContinueIntBlock getSortedBlock() {
+//		return new ContinueIntBlock(dfBlockFactor);
+//	}
 
 	abstract protected Block<T> getEmptyBlock();
 }
+

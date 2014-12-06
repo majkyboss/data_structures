@@ -123,6 +123,12 @@ public class BasicTests {
 		Car c = new Car(carNumber, vinNumber, weight);
 		hashFile.add(c);
 
+//		Car c2 = new Car(carNumber + "__", vinNumber + "__", weight + 300);
+//		hashFile.add(c2);
+//
+//		Car c3 = new Car(carNumber + "|__" + "|__", vinNumber + "|__" + "|__", weight + 300 + 300);
+//		hashFile.add(c3);
+
 		System.out.println();
 	}
 
