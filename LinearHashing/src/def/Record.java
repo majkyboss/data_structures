@@ -1,11 +1,11 @@
-package sem2_second_start;
+package def;
 
 public interface Record {
 	int getByteSize();
 
 	byte[] getBytes();
 
-	void fillFromBytes(byte[] bytes);
-	
+	void fillFromBytes(byte[] bytes, int offset);
+
 	boolean isValid();
 }

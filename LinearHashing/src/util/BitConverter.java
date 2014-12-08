@@ -3,6 +3,7 @@ package util;
 public class BitConverter {
 	public static final int INT_SIZE = Integer.BYTES;
 	public static final int LONG_SIZE = Long.BYTES;
+	public static final int CHAR_SIZE = 2;
 
 	public static void putInt(int value, byte[] array, int offset) {
 		array[offset] = (byte) (0xff & (value >> 24));
@@ -93,8 +94,7 @@ public class BitConverter {
 	public static String getString(byte[] array, int offset, int length) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < length; i += 2) {
-			short charLoadedShort = (short) (((array[offset + i] & 0xff) << 8) | (array[offset
-					+ i + 1] & 0xff));
+			short charLoadedShort = (short) (((array[offset + i] & 0xff) << 8) | (array[offset + i + 1] & 0xff));
 			char[] charLoaded = Character.toChars(charLoadedShort);
 			sb.append(charLoaded);
 		}
