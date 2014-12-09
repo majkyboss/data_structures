@@ -13,11 +13,12 @@ public class UnsortedFile {
 	 * Same as length
 	 */
 	private int fisrtUnusedAddress = 0;
-	private int lastBlockIndex = 0;
+	private int lastBlockIndex = -1;
 	private int blockFactor;
 	private int recordByteSize;
 	private String path;
 	private LinkedList<Integer> invalidBlocks = new LinkedList<Integer>();
+	private LinkedList<Integer> notFullValidBlocks = new LinkedList<Integer>();
 
 	public UnsortedFile(String path, int blockFactor, int recordByteSize) {
 		super();
@@ -31,13 +32,18 @@ public class UnsortedFile {
 		if (!block.isValid()) {
 			return;
 		}
-		BinaryFileHandler.saveToBinaryFile(block.getBytes(), new File(path), fisrtUnusedAddress, recordByteSize * blockFactor);
-		fisrtUnusedAddress += recordByteSize * blockFactor;
-		lastBlockIndex += (fisrtUnusedAddress - blockFactor * recordByteSize) / (recordByteSize * blockFactor);
+		// BinaryFileHandler.saveToBinaryFile(block.getBytes(), new File(path),
+		// fisrtUnusedAddress, recordByteSize * blockFactor);
+		BinaryFileHandler.saveToBinaryFile(block.getBytes(), new File(path), (lastBlockIndex + 1) * blockFactor * recordByteSize, recordByteSize * blockFactor);
+		fisrtUnusedAddress += (lastBlockIndex + 2) * blockFactor * recordByteSize;
+		lastBlockIndex++;
 		block.setIndex(lastBlockIndex);
+		if (!block.isFull()) {
+			notFullValidBlocks.addLast(lastBlockIndex);
+		}
 	}
 
-	public void loadBlock(int blockIndex, Block toBlock) {
+	public Block loadBlock(int blockIndex, Block toBlock) {
 		byte[] bytes = new byte[recordByteSize * blockFactor];
 		try {
 			bytes = BinaryFileHandler.loadBinaryFile(new FileInputStream(new File(path)), blockIndex * blockFactor * recordByteSize, recordByteSize * blockFactor);
@@ -50,6 +56,7 @@ public class UnsortedFile {
 
 		toBlock.fillFromBytes(bytes);
 		toBlock.setIndex(blockIndex);
+		return toBlock;
 	}
 
 	public void writeBlock(int blockIndex, Block block) {
@@ -58,9 +65,22 @@ public class UnsortedFile {
 			return;
 		}
 		BinaryFileHandler.saveToBinaryFile(block.getBytes(), new File(path), blockIndex * blockFactor * recordByteSize, recordByteSize * blockFactor);
-		if (blockIndex * blockFactor * recordByteSize + blockFactor * recordByteSize > fisrtUnusedAddress) {
-			fisrtUnusedAddress = blockIndex * blockFactor * recordByteSize + blockFactor * recordByteSize;
+
+		// if block is not full and block is valid (from first if in this
+		// method)
+		if (!block.isFull()) {
+			notFullValidBlocks.add(blockIndex);
+			notFullValidBlocks.sort(new Comparator<Integer>() {
+				@Override
+				public int compare(Integer o1, Integer o2) {
+					return Integer.compare(o1, o2);
+				}
+			});
 		}
+
+		// if last block was 2 and new block was added to index more then
+		// lastBlockIndex+1 (lastBlockIndex+2>newBlockIndex>lastBlockIndex ...
+		// means append to end), add all skipped blocks to invalid list
 		if (blockIndex - 1 > lastBlockIndex) {
 			int tempIndex = blockIndex - 1;
 			while (tempIndex > lastBlockIndex) {
@@ -68,7 +88,11 @@ public class UnsortedFile {
 				tempIndex--;
 			}
 		}
-		lastBlockIndex = blockIndex;
+
+		if (blockIndex * blockFactor * recordByteSize + blockFactor * recordByteSize > fisrtUnusedAddress) {
+			fisrtUnusedAddress = blockIndex * blockFactor * recordByteSize + blockFactor * recordByteSize;
+			lastBlockIndex = blockIndex;
+		}
 	}
 
 	private void addToInvalid(int blockIndex) {
@@ -112,4 +136,31 @@ public class UnsortedFile {
 		return sb.toString();
 	}
 
+	public Integer getNotFullBlockAddress() {
+		return notFullValidBlocks.pollFirst();
+	}
+
+	public Integer getInvalidBlockAddress() {
+		if (invalidBlocks.isEmpty()) {
+			return lastBlockIndex + 1;
+		} else {
+			return invalidBlocks.pollFirst();
+		}
+	}
+
+	public Integer getFreeRecordBlockIndex() {
+		if (notFullValidBlocks.isEmpty()) {
+			if (invalidBlocks.isEmpty()) {
+				return lastBlockIndex + 1;
+			} else {
+				return invalidBlocks.pollFirst();
+			}
+		} else {
+			return notFullValidBlocks.pollFirst();
+		}
+	}
+
+	public int getLastBlockIndex() {
+		return lastBlockIndex;
+	}
 }

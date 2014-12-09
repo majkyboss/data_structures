@@ -37,6 +37,7 @@ public class MainTest {
 //
 //	}
 	//@f:on
+//@f:off
 	public static void main(String[] args) {
 		int blockFactor = 2;
 		String path = "testDir/dataFile";
@@ -107,4 +108,5 @@ public class MainTest {
 		System.out.println(file.toString(block));
 
 	}
+	//@f:on
 }
