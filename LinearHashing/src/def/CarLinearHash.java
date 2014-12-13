@@ -1,6 +1,7 @@
 package def;
 
 import java.io.File;
+import java.util.LinkedList;
 
 import util.BinaryFileHandler;
 import util.EmptyBlockFactory;
@@ -89,27 +90,70 @@ public class CarLinearHash {
 		n++;
 		// pocet alokovanych: (last+1=count) * (records in one block)
 		int Nsorted = (sortedFileByCarNumber.getLastBlockIndex() + 1) * blockFactor;
-		int NoverCrovding = (overCrowdingFile.getLastBlockIndex() + 1) * blockFactor;
-		double d = n / (Nsorted+NoverCrovding);
+		int Novercrovding = (overCrowdingFile.getLastBlockIndex() + 1) * blockFactor;
+		double d = n / (Nsorted + Novercrovding);
 		if (d > dMax) {
 			int a = (int) (this.s + this.m * Math.pow(2, this.u));
-			OvercrowdedBlock newBlock = EmptyBlockFactory.carOcBlock(blockFactor);
-			newBlock.setIndex(a);
+			// OvercrowdedBlock newBlock =
+			// EmptyBlockFactory.carOcBlock(blockFactor);
+			// newBlock.setIndex(a);
 			OvercrowdedBlock tempBlock = EmptyBlockFactory.carOcBlock(blockFactor);
 			sortedFileByCarNumber.loadBlock(s, tempBlock);
+			LinkedList<Record> recordsToMove = new LinkedList<Record>();
 			for (int i = 0; i < blockFactor; i++) {
-				Car c = (Car) tempBlock.getRecord(i);
-				if (getHuPlus1(c.getCarNumber().hashCode()) != this.s) {
-					if (newBlock.isFull()) {
-						int newAddress = overCrowdingFile.getInvalidBlockAddress();
-						newBlock.setOcAddress(newAddress);
-						
-					}
-					newBlock.appendRecord(c);
+				Record c = tempBlock.getRecord(i);
+				if (c == null) {
+					break;
+				}
+				if (c.isValid() && getHuPlus1(((Car) c).getCarNumber().hashCode()) != this.s) {
+					recordsToMove.add(c);
 					tempBlock.removeRecord(i);
 				}
 			}
-			
+			// if in tempBlock overcrowding space is something
+			int ocAdddress = tempBlock.getOcAddress();
+			OvercrowdedBlock parentBlock = tempBlock;
+			UnsortedFile file = sortedFileByCarNumber;
+			while (ocAdddress != -1) {
+				OvercrowdedBlock ocBlock = EmptyBlockFactory.carOcBlock(blockFactor);
+				overCrowdingFile.loadBlock(ocAdddress, ocBlock);
+				for (int i = 0; i < blockFactor; i++) {
+					Record c = ocBlock.getRecord(i);
+					if (c == null) {
+						break;
+					}
+					if (c.isValid()) {
+						if (getHuPlus1(((Car) c).getCarNumber().hashCode()) != this.s) {
+							recordsToMove.add(c);
+							ocBlock.removeRecord(i);
+						} else if (!parentBlock.isFull()) {
+							parentBlock.appendRecord(c);
+							ocBlock.removeRecord(i);
+						}
+					}
+
+				}
+				ocAdddress = ocBlock.getOcAddress();
+				if (parentBlock.isFull()) {
+					file.writeBlock(parentBlock.getIndex(), parentBlock);
+					parentBlock = ocBlock;
+					file = overCrowdingFile;
+				} else {
+					// if parentBlock is not full and I checked all blocks in
+					// ocBlock and anyone was valid or all blocks were removed
+					// (so invalid too) - logically
+					parentBlock.setOcAddress(ocAdddress);
+					overCrowdingFile.writeBlock(ocBlock.getIndex(), ocBlock);
+					// write block already adds the invalid block to invalid
+					// list
+					// overCrowdingFile.addToInvalid(ocBlock.getIndex());
+				}
+			}
+			sortedFileByCarNumber.writeBlock(tempBlock.getIndex(), tempBlock);
+			// TODO implements addCars
+			for (Record record : recordsToMove) {
+				insertCarToSorted((Car) record, a);
+			}
 		}
 
 	}

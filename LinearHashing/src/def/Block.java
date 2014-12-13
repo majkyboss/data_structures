@@ -101,7 +101,8 @@ public class Block {
 
 	public void removeRecord(int index) {
 		Record record = records[index];
-		record.fillFromBytes(new byte[record.getByteSize()], 0);
+		record.setValid(false);
+//		record.fillFromBytes(new byte[record.getByteSize()], 0);
 	}
 
 }

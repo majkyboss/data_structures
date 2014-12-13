@@ -8,4 +8,6 @@ public interface Record {
 	void fillFromBytes(byte[] bytes, int offset);
 
 	boolean isValid();
+	
+	void setValid(boolean valid);
 }

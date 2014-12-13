@@ -58,6 +58,11 @@ public class Car implements Record {
 	}
 
 	@Override
+	public void setValid(boolean valid) {
+		this.valid = valid;
+	}
+
+	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("carNumber: ");
