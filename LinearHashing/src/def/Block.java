@@ -19,7 +19,7 @@ public class Block {
 	}
 
 	public byte[] getBytes() {
-		byte[] bytes = new byte[getByteSize()];
+		byte[] bytes = new byte[this.getByteSize()];
 		int offset = 0;
 		for (int i = 0; i < records.length; i++) {
 			BitConverter.putBytes(records[i].getBytes(), bytes, offset);
@@ -68,6 +68,10 @@ public class Block {
 		this.index = index;
 	}
 
+	public int getIndex() {
+		return index;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -86,6 +90,18 @@ public class Block {
 		}
 
 		return sb.toString();
+	}
+
+	public Record getRecord(int index) {
+		if (index < records.length) {
+			return records[index];
+		}
+		return null;
+	}
+
+	public void removeRecord(int index) {
+		Record record = records[index];
+		record.fillFromBytes(new byte[record.getByteSize()], 0);
 	}
 
 }

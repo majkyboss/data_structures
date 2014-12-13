@@ -77,4 +77,20 @@ public class Car implements Record {
 
 		return sb.toString();
 	}
+
+	public String getCarNumber() {
+		return carNumber;
+	}
+
+	public void setCarNumber(String carNumber) {
+		this.carNumber = carNumber;
+	}
+
+	public String getVinNumber() {
+		return vinNumber;
+	}
+
+	public void setVinNumber(String vinNumber) {
+		this.vinNumber = vinNumber;
+	}
 }

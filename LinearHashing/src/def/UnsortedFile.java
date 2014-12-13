@@ -12,20 +12,21 @@ public class UnsortedFile {
 	/**
 	 * Same as length
 	 */
-	private int fisrtUnusedAddress = 0;
+	private int firstUnusedAddress = 0;
 	private int lastBlockIndex = -1;
 	private int blockFactor;
-	private int recordByteSize;
+	private int blockByteSize;
 	private String path;
 	private LinkedList<Integer> invalidBlocks = new LinkedList<Integer>();
 	private LinkedList<Integer> notFullValidBlocks = new LinkedList<Integer>();
 
-	public UnsortedFile(String path, int blockFactor, int recordByteSize) {
+	public UnsortedFile(String path, int blockFactor, int blockByteSize) {
 		super();
 		this.path = path;
 		this.blockFactor = blockFactor;
-		this.recordByteSize = recordByteSize;
-		fisrtUnusedAddress = (int) new File(path).length();
+		this.blockByteSize = blockByteSize;
+		firstUnusedAddress = (int) new File(path).length();
+		lastBlockIndex = (firstUnusedAddress / blockByteSize) - 1;
 	}
 
 	public void appendBlock(Block block) {
@@ -34,8 +35,8 @@ public class UnsortedFile {
 		}
 		// BinaryFileHandler.saveToBinaryFile(block.getBytes(), new File(path),
 		// fisrtUnusedAddress, recordByteSize * blockFactor);
-		BinaryFileHandler.saveToBinaryFile(block.getBytes(), new File(path), (lastBlockIndex + 1) * blockFactor * recordByteSize, recordByteSize * blockFactor);
-		fisrtUnusedAddress += (lastBlockIndex + 2) * blockFactor * recordByteSize;
+		BinaryFileHandler.saveToBinaryFile(block.getBytes(), new File(path), (lastBlockIndex + 1) * blockByteSize, blockByteSize);
+		firstUnusedAddress += (lastBlockIndex + 2) * blockByteSize;
 		lastBlockIndex++;
 		block.setIndex(lastBlockIndex);
 		if (!block.isFull()) {
@@ -44,14 +45,14 @@ public class UnsortedFile {
 	}
 
 	public Block loadBlock(int blockIndex, Block toBlock) {
-		byte[] bytes = new byte[recordByteSize * blockFactor];
+		byte[] bytes = new byte[blockByteSize];
 		try {
-			bytes = BinaryFileHandler.loadBinaryFile(new FileInputStream(new File(path)), blockIndex * blockFactor * recordByteSize, recordByteSize * blockFactor);
+			bytes = BinaryFileHandler.loadBinaryFile(new FileInputStream(new File(path)), blockIndex * blockByteSize, blockByteSize);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		if (bytes.length == 0) {
-			bytes = new byte[recordByteSize * blockFactor];
+			bytes = new byte[blockByteSize];
 		}
 
 		toBlock.fillFromBytes(bytes);
@@ -64,7 +65,7 @@ public class UnsortedFile {
 			addToInvalid(blockIndex);
 			return;
 		}
-		BinaryFileHandler.saveToBinaryFile(block.getBytes(), new File(path), blockIndex * blockFactor * recordByteSize, recordByteSize * blockFactor);
+		BinaryFileHandler.saveToBinaryFile(block.getBytes(), new File(path), blockIndex * blockByteSize, blockByteSize);
 
 		// if block is not full and block is valid (from first if in this
 		// method)
@@ -89,8 +90,8 @@ public class UnsortedFile {
 			}
 		}
 
-		if (blockIndex * blockFactor * recordByteSize + blockFactor * recordByteSize > fisrtUnusedAddress) {
-			fisrtUnusedAddress = blockIndex * blockFactor * recordByteSize + blockFactor * recordByteSize;
+		if (blockIndex * blockByteSize + blockByteSize >= firstUnusedAddress) {
+			firstUnusedAddress = blockIndex * blockByteSize + blockByteSize;
 			lastBlockIndex = blockIndex;
 		}
 	}
@@ -114,8 +115,8 @@ public class UnsortedFile {
 				lastIndex = invalidBlocks.removeLast();
 				blocksToDel.add(lastIndex);
 			}
-			BinaryFileHandler.trimFile(new File(path), lastIndex * blockFactor * recordByteSize);
-			fisrtUnusedAddress = lastIndex * blockFactor * recordByteSize;
+			BinaryFileHandler.trimFile(new File(path), lastIndex * blockByteSize);
+			firstUnusedAddress = lastIndex * blockByteSize;
 			lastBlockIndex = lastIndex - 1;
 		}
 	}
@@ -127,7 +128,7 @@ public class UnsortedFile {
 		sb.append("File: ");
 		sb.append(new File(path).getName());
 		sb.append("\n---------------------------------\n");
-		while (blockIndex * blockFactor * recordByteSize < fisrtUnusedAddress) {
+		while (blockIndex * blockByteSize < firstUnusedAddress) {
 			loadBlock(blockIndex, tempBlock);
 			sb.append(tempBlock.toString());
 			blockIndex++;
