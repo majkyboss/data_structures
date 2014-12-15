@@ -29,7 +29,7 @@ public class UnsortedFile {
 		lastBlockIndex = (firstUnusedAddress / blockByteSize) - 1;
 	}
 
-	public void appendBlock(Block block) {
+	public synchronized void appendBlock(Block block) {
 		if (!block.isValid()) {
 			return;
 		}
@@ -44,13 +44,10 @@ public class UnsortedFile {
 		}
 	}
 
-	public Block loadBlock(int blockIndex, Block toBlock) {
+	public synchronized Block loadBlock(int blockIndex, Block toBlock) {
 		byte[] bytes = new byte[blockByteSize];
-		try {
-			bytes = BinaryFileHandler.loadBinaryFile(new FileInputStream(new File(path)), blockIndex * blockByteSize, blockByteSize);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+
+		bytes = BinaryFileHandler.loadBinaryFile(new File(path), blockIndex * blockByteSize, blockByteSize);
 		if (bytes.length == 0) {
 			bytes = new byte[blockByteSize];
 		}
@@ -60,7 +57,7 @@ public class UnsortedFile {
 		return toBlock;
 	}
 
-	public void writeBlock(int blockIndex, Block block) {
+	public synchronized void writeBlock(int blockIndex, Block block) {
 		if (!block.isValid()) {
 			addToInvalid(blockIndex);
 			return;

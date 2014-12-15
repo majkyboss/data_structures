@@ -98,4 +98,9 @@ public class Car implements Record {
 	public void setVinNumber(String vinNumber) {
 		this.vinNumber = vinNumber;
 	}
+
+	@Override
+	public int hashCode() {
+		return Math.abs(carNumber.hashCode() + vinNumber.hashCode());
+	}
 }

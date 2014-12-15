@@ -34,8 +34,8 @@ public class CarLinearHash {
 		}
 
 		if (cleanFiles) {
-			// BinaryFileHandler.trimFile(new File(dirPath + "sortedFile"), 0);
-			// BinaryFileHandler.trimFile(new File(dirPath + "ocFile"), 0);
+			BinaryFileHandler.trimFile(new File(dirPath + "sortedFile"), 0);
+			BinaryFileHandler.trimFile(new File(dirPath + "ocFile"), 0);
 			BinaryFileHandler.trimFile(new File(dirPath + "dataFile"), 0);
 		}
 
@@ -75,10 +75,11 @@ public class CarLinearHash {
 		// add record to block
 		// save block to ocFile
 
-		// TODO change to hash functions
 		// Integer sortedBlockIndex = sortedFile.getFreeRecordBlockIndex();
 		int sortedBlockIndex = 0;
-		sortedBlockIndex = getBlockIndex(car.getCarNumber().hashCode());
+		Car carBackupCarNum = new Car();
+		carBackupCarNum.setCarNumber(car.getCarNumber());
+		sortedBlockIndex = getBlockIndex(carBackupCarNum.hashCode());
 		// TODO same for another key attributes
 
 		// insert record
@@ -91,7 +92,7 @@ public class CarLinearHash {
 		// pocet alokovanych: (last+1=count) * (records in one block)
 		int Nsorted = (sortedFileByCarNumber.getLastBlockIndex() + 1) * blockFactor;
 		int Novercrovding = (overCrowdingFile.getLastBlockIndex() + 1) * blockFactor;
-		double d = n / (Nsorted + Novercrovding);
+		double d = (double) n / (Nsorted + Novercrovding);
 		if (d > dMax) {
 			int a = (int) (this.s + this.m * Math.pow(2, this.u));
 			// OvercrowdedBlock newBlock =
@@ -105,9 +106,12 @@ public class CarLinearHash {
 				if (c == null) {
 					break;
 				}
-				if (c.isValid() && getHuPlus1(((Car) c).getCarNumber().hashCode()) != this.s) {
-					recordsToMove.add(c);
+				Car cBackup = new Car();
+				cBackup.setCarNumber(((Car) c).getCarNumber());
+				if (c.isValid() && getHuPlus1(cBackup.hashCode()) != this.s) {
+					cBackup.fillFromBytes(c.getBytes(), 0);
 					tempBlock.removeRecord(i);
+					recordsToMove.add(cBackup);
 				}
 			}
 			// if in tempBlock overcrowding space is something
@@ -123,12 +127,16 @@ public class CarLinearHash {
 						break;
 					}
 					if (c.isValid()) {
-						if (getHuPlus1(((Car) c).getCarNumber().hashCode()) != this.s) {
-							recordsToMove.add(c);
+						Car cBackup = new Car();
+						cBackup.setCarNumber(((Car) c).getCarNumber());
+						if (getHuPlus1(cBackup.hashCode()) != this.s) {
+							cBackup.fillFromBytes(c.getBytes(), 0);
 							ocBlock.removeRecord(i);
+							recordsToMove.add(cBackup);
 						} else if (!parentBlock.isFull()) {
-							parentBlock.appendRecord(c);
+							cBackup.fillFromBytes(c.getBytes(), 0);
 							ocBlock.removeRecord(i);
+							parentBlock.appendRecord(cBackup);
 						}
 					}
 
@@ -138,7 +146,9 @@ public class CarLinearHash {
 					file.writeBlock(parentBlock.getIndex(), parentBlock);
 					parentBlock = ocBlock;
 					file = overCrowdingFile;
-				} else {
+				}
+				if (!parentBlock.isFull() && !ocBlock.isValid()) {
+
 					// if parentBlock is not full and I checked all blocks in
 					// ocBlock and anyone was valid or all blocks were removed
 					// (so invalid too) - logically
@@ -148,11 +158,35 @@ public class CarLinearHash {
 					// list
 					// overCrowdingFile.addToInvalid(ocBlock.getIndex());
 				}
+				overCrowdingFile.writeBlock(ocBlock.getIndex(), ocBlock);
 			}
 			sortedFileByCarNumber.writeBlock(tempBlock.getIndex(), tempBlock);
-			// TODO implements addCars
-			for (Record record : recordsToMove) {
-				insertCarToSorted((Car) record, a);
+			// for (Record record : recordsToMove) {
+			// insertCarToSorted((Car) record, a);
+			// }
+			tempBlock = EmptyBlockFactory.carOcBlock(blockFactor);
+			file = sortedFileByCarNumber;
+			int tempBlockIndex = a;
+			while (!recordsToMove.isEmpty()) {
+				tempBlock = EmptyBlockFactory.carOcBlock(blockFactor);
+				for (int i = 0; (i < blockFactor && !recordsToMove.isEmpty()); i++) {
+					Record record = recordsToMove.pollFirst();
+					record.setValid(true);
+					tempBlock.appendRecord(record);
+				}
+				if (tempBlock.isFull() && !recordsToMove.isEmpty()) {
+					int ocAddress = overCrowdingFile.getInvalidBlockAddress();
+					tempBlock.setOcAddress(ocAddress);
+				}
+				file.writeBlock(tempBlockIndex, tempBlock);
+				tempBlockIndex = tempBlock.getOcAddress();
+				file = overCrowdingFile;
+			}
+
+			this.s++;
+			if (this.s >= this.m * Math.pow(2, this.u)) {
+				this.s = 0;
+				this.u++;
 			}
 		}
 
@@ -195,7 +229,7 @@ public class CarLinearHash {
 			i = getHuPlus1(hashedKey);
 		}
 
-		return 0;
+		return i;
 	}
 
 	private int getHu(int hashedKey) {
@@ -223,5 +257,11 @@ public class CarLinearHash {
 
 	public Car getCarByVinNumber(String vinNumber) {
 		return null;
+	}
+
+	@Override
+	public String toString() {
+		System.out.println();
+		return super.toString();
 	}
 }

@@ -116,12 +116,13 @@ public class MainTest {
 //		int blockFactor = 2;
 		String path = "testDir/";
 
-		Car car1 = new Car("car 1");
-
 		CarLinearHash file = new CarLinearHash(path, new Car(), true);
-		file.addCar(car1);
-
-		System.out.println();
+		for (int i = 0; i < 500; i++) {
+			Car car = new Car("car "+i);
+			file.addCar(car);
+		}
+		
+		System.out.println(file.toString());
 
 		// Record[] records = new Record[blockFactor];
 		// for (int i = 0; i < records.length; i++) {

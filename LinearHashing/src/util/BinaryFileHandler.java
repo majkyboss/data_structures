@@ -4,18 +4,20 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
 import def.Block;
 
 public class BinaryFileHandler {
-	public static byte[] loadBinaryFile(FileInputStream fileStream, int start, int length) {
+	public static synchronized byte[] loadBinaryFile(File file, int start, int length) {
 		byte[] buffer = new byte[2];
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 
 		BufferedInputStream in;
 		try {
+			FileInputStream fileStream = new FileInputStream(file);
 			in = new BufferedInputStream(fileStream);
 
 			int c = 0;
@@ -26,6 +28,9 @@ public class BinaryFileHandler {
 				out.write(buffer, 0, c);
 				bytesRead += c;
 			}
+			
+			fileStream.close();
+//			in.close();
 
 			return out.toByteArray();
 
@@ -34,13 +39,15 @@ public class BinaryFileHandler {
 			// FileOutputStream("/tmp/newFile.mp4"));
 			// bos.write(out.toByteArray());
 
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	public static void saveToBinaryFile(byte[] bytes, File file, int start, int length) {
+	public static synchronized void saveToBinaryFile(byte[] bytes, File file, int start, int length) {
 		try {
 			RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw");
 
@@ -61,7 +68,7 @@ public class BinaryFileHandler {
 		System.out.println(block.toString());
 	}
 
-	public static void trimFile(File file, int fromAddress) {
+	public static synchronized void trimFile(File file, int fromAddress) {
 		try {
 			RandomAccessFile raf = new RandomAccessFile(file, "rw");
 			raf.setLength(fromAddress);
